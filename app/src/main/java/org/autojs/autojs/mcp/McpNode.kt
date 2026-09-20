@@ -1,0 +1,158 @@
+package org.autojs.autojs.mcp
+
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
+import com.google.gson.JsonPrimitive
+import org.autojs.autojs.core.automator.UiObject
+
+/**
+ * Serializes accessibility nodes for AI consumption.
+ *
+ * @Created by fork author on Sep 16, 2026.
+ *
+ * @Design
+ *  ! Token budget is the constraint that matters here. Only truthy booleans are
+ *  ! emitted, text is truncated, and the tree dump is hard-capped, because a
+ *  ! single unrestricted dump can easily exceed a whole context window and bury
+ *  ! the information the model actually needs.
+ *  ! zh-CN: 这里真正受限的是 token 预算. 因此只输出为真的布尔值, 文本会被截断,
+ *  ! 且树的导出有硬上限 —— 一次不受限的导出很容易超出整个上下文窗口,
+ *  ! 反而把模型真正需要的信息淹没.
+ */
+internal object McpNode {
+
+    const val DEFAULT_TEXT_LIMIT = 120
+    const val DEFAULT_MAX_DEPTH = 12
+    const val DEFAULT_MAX_NODES = 800
+    const val HARD_MAX_NODES = 4000
+
+    /** `[left, top, right, bottom]`. */
+    fun bounds(node: UiObject): JsonArray = runCatching {
+        val rect = node.bounds()
+        JsonArray().apply {
+            add(rect.left)
+            add(rect.top)
+            add(rect.right)
+            add(rect.bottom)
+        }
+    }.getOrElse { JsonArray() }
+
+    /** `[x, y]`, the exact center of the node in screen coordinates. */
+    fun center(node: UiObject): JsonArray = runCatching {
+        JsonArray().apply {
+            add(node.exactCenterX().toInt())
+            add(node.exactCenterY().toInt())
+        }
+    }.getOrElse { JsonArray() }
+
+    /**
+     * Compact description of a single node, used by `ui_find` and as the
+     * `matched` payload of `ui_action`.
+     * zh-CN: 单个节点的精简描述, 供 `ui_find` 使用, 并作为 `ui_action` 的
+     * `matched` 返回内容.
+     */
+    fun summary(
+        node: UiObject,
+        includeActions: Boolean = false,
+        textLimit: Int = DEFAULT_TEXT_LIMIT,
+    ): JsonObject = McpJson.obj().apply {
+        putIfNotBlank("className", node.className())
+        putIfNotBlank("id", node.simpleId())
+        putIfNotBlank("idFull", node.fullId())
+        putIfNotBlank("text", truncate(node.text(), textLimit))
+        putIfNotBlank("desc", truncate(node.desc(), textLimit))
+        putIfNotBlank("packageName", node.packageName())
+        add("bounds", bounds(node))
+        add("center", center(node))
+        addProperty("depth", node.depth())
+        addProperty("indexInParent", node.indexInParent())
+        addProperty("childCount", node.childCount())
+        if (node.clickable()) addProperty("clickable", true)
+        if (node.longClickable()) addProperty("longClickable", true)
+        if (node.scrollable()) addProperty("scrollable", true)
+        if (node.editable()) addProperty("editable", true)
+        if (node.checked()) addProperty("checked", true)
+        if (node.selected()) addProperty("selected", true)
+        if (node.focusable()) addProperty("focusable", true)
+        if (node.password()) addProperty("password", true)
+        // Only the false case is interesting: the default assumption is visible.
+        // zh-CN: 只有 false 值得输出, 默认假定节点可见.
+        if (!node.visibleToUser()) addProperty("visibleToUser", false)
+        if (!node.enabled()) addProperty("enabled", false)
+        if (includeActions) {
+            add("actions", JsonArray().apply {
+                runCatching { node.actionNames() }.getOrNull()?.forEach { add(JsonPrimitive(it)) }
+            })
+        }
+    }
+
+    /**
+     * Recursive tree dump honouring [maxDepth] and [maxNodes].
+     * zh-CN: 遵循 [maxDepth] 与 [maxNodes] 的递归树导出.
+     */
+    fun tree(
+        root: UiObject,
+        maxDepth: Int = DEFAULT_MAX_DEPTH,
+        maxNodes: Int = DEFAULT_MAX_NODES,
+        packageFilter: String? = null,
+        includeInvisible: Boolean = false,
+        includeActions: Boolean = false,
+        textLimit: Int = DEFAULT_TEXT_LIMIT,
+    ): JsonObject {
+        val counter = intArrayOf(0)
+        var hitNodeLimit = false
+
+        fun visit(node: UiObject, depth: Int): JsonObject? {
+            if (counter[0] >= maxNodes) {
+                hitNodeLimit = true
+                return null
+            }
+            counter[0]++
+
+            if (packageFilter != null && !node.packageName().orEmpty().contains(packageFilter)) {
+                return null
+            }
+            if (!includeInvisible && !node.visibleToUser()) {
+                return null
+            }
+
+            val json = summary(node, includeActions, textLimit)
+
+            if (depth < maxDepth) {
+                val children = JsonArray()
+                for (i in 0 until node.childCount()) {
+                    val child = node.child(i) ?: continue
+                    val childJson = visit(child, depth + 1) ?: continue
+                    children.add(childJson)
+                }
+                if (children.size() > 0) {
+                    json.add("children", children)
+                }
+            } else if (node.childCount() > 0) {
+                // Mark the cut so the model knows the tree continues.
+                // zh-CN: 标记截断点, 让模型知道树的其余部分被省略了.
+                json.addProperty("childrenOmitted", node.childCount())
+            }
+
+            return json
+        }
+
+        val tree = visit(root, 0) ?: McpJson.obj()
+        if (hitNodeLimit) {
+            tree.addProperty("truncated", true)
+        }
+        tree.addProperty("nodeCount", counter[0])
+        return tree
+    }
+
+    fun truncate(value: String?, limit: Int): String? {
+        val text = value?.trim()?.takeIf { it.isNotEmpty() } ?: return null
+        if (limit <= 0 || text.length <= limit) return text
+        return text.substring(0, limit) + "…"
+    }
+
+    private fun JsonObject.putIfNotBlank(key: String, value: String?) {
+        value?.takeIf { it.isNotBlank() }?.let { addProperty(key, it) }
+    }
+
+}

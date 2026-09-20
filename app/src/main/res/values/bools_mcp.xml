@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+
+    MCP server preference defaults (fork-specific).
+    zh-CN: MCP 服务偏好默认值 (分支定制).
+
+    @Security by fork author.
+    ! Every default here is the restrictive one on purpose.
+    ! zh-CN: 此处所有默认值都刻意选择了最保守的取值.
+
+-->
+<resources>
+    <bool name="pref_mcp_server_enabled">false</bool>
+    <bool name="pref_mcp_server_bind_lan">false</bool>
+    <bool name="pref_mcp_server_expose_dangerous_tools">false</bool>
+</resources>

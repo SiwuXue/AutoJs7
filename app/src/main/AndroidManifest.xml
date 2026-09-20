@@ -422,6 +422,19 @@
 
         <service android:name="org.autojs.autojs.external.ScriptExecutionIntentService" />
 
+        <!-- @Added by fork author on Sep 16, 2026. -->
+        <!--  ! Keeps the opt-in MCP server reachable while an AI client is connected. -->
+        <!--  ! zh-CN: 在 AI 客户端连接期间保持可选启用的 MCP 服务可达. -->
+        <service
+            android:name="org.autojs.autojs.mcp.McpServerService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="To keep the opt-in local MCP server reachable while an AI client is connected" />
+        </service>
+
         <activity android:name="org.autojs.autojs.external.tasker.TaskPrefEditActivity" />
 
         <service

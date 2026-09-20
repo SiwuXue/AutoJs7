@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+
+    MCP server integer resources (fork-specific).
+    zh-CN: MCP 服务整数资源 (分支定制).
+
+-->
+<resources>
+    <integer name="mcp_server_port_default_value">7788</integer>
+    <integer name="mcp_server_port_min_value">1024</integer>
+    <integer name="mcp_server_port_max_value">65535</integer>
+</resources>

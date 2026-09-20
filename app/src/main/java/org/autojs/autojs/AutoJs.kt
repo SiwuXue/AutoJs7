@@ -17,6 +17,8 @@ import org.autojs.autojs.execution.ScriptExecutionGlobalListener
 import org.autojs.autojs.external.fileprovider.AppFileProvider
 import org.autojs.autojs.ipc.LayoutInspectEvent
 import org.autojs.autojs.ipc.LayoutInspectEventBus
+import org.autojs.autojs.mcp.McpLogBuffer
+import org.autojs.autojs.mcp.McpServer
 import org.autojs.autojs.pluginclient.DevPluginService
 import org.autojs.autojs.runtime.ScriptRuntime
 import org.autojs.autojs.runtime.api.AppUtils
@@ -104,6 +106,14 @@ open class AutoJs(appContext: Application) : AbstractAutoJs(appContext) {
                 }
             }
         }.launchIn(mScope)
+
+        // @Added by fork author on Sep 16, 2026.
+        //  ! Restore the opt-in MCP server if the user had left it enabled.
+        //  ! Binding a listening socket can block, so it must stay off the main
+        //  ! thread that is still finishing application start-up.
+        //  ! zh-CN: 若用户此前保持 MCP 服务开启, 则在此恢复.
+        //  ! 绑定监听 socket 可能阻塞, 因此必须避开仍在执行应用启动的主线程.
+        Thread({ McpServer.applyPreference() }, "mcp-restore").apply { isDaemon = true }.start()
     }
 
     private interface LayoutInspectFloatyWindow {
@@ -138,6 +148,12 @@ open class AutoJs(appContext: Application) : AbstractAutoJs(appContext) {
                     //  ! 可能会发生 android.os.NetworkOnMainThreadException 异常.
                     //  ! 而且, 我不确定使用线程执行器是否是个好主意.
                     mPrintExecutor.submit { devPluginService.print(it) }
+                    // @Added by fork author on Sep 16, 2026.
+                    //  ! Mirror console output for the MCP server, so an AI client can
+                    //  ! pull script logs instead of polling the console view.
+                    //  ! zh-CN: 为 MCP 服务镜像控制台输出,
+                    //  ! 使 AI 客户端能以拉取方式获取脚本日志, 而不必轮询控制台视图.
+                    McpLogBuffer.append(level, it)
                 }
             }
         }

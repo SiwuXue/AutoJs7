@@ -73,12 +73,29 @@
         android:layout_height="400dp"
         android:paddingStart="4dp">
 
+        <!--
+            @Fix by fork author on Sep 16, 2026.
+            ! These attributes referenced `@color/console_debug` and `@color/console_verbose`,
+            ! which do not exist: the palette is named `console_view_*` in colors.xml, and the
+            ! legacy names survive only as `legacy_console_*` behind the com.stardust.R
+            ! redirect. Resource linking therefore failed and the branch could not be built.
+            ! The values used now are not arbitrary: activity_main_inrt.xml sets the same two
+            ! attributes on the same view with the literals #111214 and #BDBDBD, which are
+            ! exactly console_view_debug and console_view_verbose.
+            ! zh-CN: 这两个属性原本引用 `@color/console_debug` 与 `@color/console_verbose`,
+            ! 而它们并不存在: 调色板在 colors.xml 中名为 `console_view_*`, 旧名仅以
+            ! `legacy_console_*` 的形式存在于 com.stardust.R 重定向之后.
+            ! 因此资源链接失败, 该分支根本无法构建.
+            ! 现在使用的值并非随意挑选: activity_main_inrt.xml 在同一个视图上以字面量
+            ! #111214 与 #BDBDBD 设置同样的两个属性, 而它们正是
+            ! console_view_debug 与 console_view_verbose.
+        -->
         <org.autojs.autojs.core.console.ConsoleView
             android:id="@+id/console"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:color_debug="@color/console_debug"
-            app:color_verbose="@color/console_verbose"/>
+            app:color_debug="@color/console_view_debug"
+            app:color_verbose="@color/console_view_verbose"/>
 
     </FrameLayout>
 

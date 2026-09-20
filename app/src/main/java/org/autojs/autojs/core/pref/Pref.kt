@@ -110,6 +110,62 @@ object Pref {
             resources.getBoolean(R.bool.pref_auto_check_for_updates),
         )
 
+    // @Added by fork author.
+    //  ! MCP (Model Context Protocol) server preferences.
+    //  ! Every getter below falls back to the matching resource default, and each
+    //  ! of those defaults is deliberately the restrictive value.
+    //  ! zh-CN: MCP (Model Context Protocol) 服务偏好项.
+    //  ! 以下取值器均回退到对应的资源默认值, 且这些默认值都刻意选择了最保守的取值.
+
+    @JvmStatic
+    val isMcpServerEnabled
+        get() = getBoolean(
+            R.string.key_mcp_server_enabled,
+            resources.getBoolean(R.bool.pref_mcp_server_enabled),
+        )
+
+    @JvmStatic
+    val isMcpServerLanAccessEnabled
+        get() = getBoolean(
+            R.string.key_mcp_server_bind_lan,
+            resources.getBoolean(R.bool.pref_mcp_server_bind_lan),
+        )
+
+    @JvmStatic
+    val isMcpServerDangerousToolsExposed
+        get() = getBoolean(
+            R.string.key_mcp_server_expose_dangerous_tools,
+            resources.getBoolean(R.bool.pref_mcp_server_expose_dangerous_tools),
+        )
+
+    @JvmStatic
+    val mcpServerPort: Int
+        get() {
+            // Clamp the read result into the valid range without silently
+            // rewriting the stored value, so an out-of-range typo stays
+            // visible and correctable in settings.
+            // zh-CN: 仅将读取结果夹取到合法范围, 不静默改写存储值,
+            // 以便越界笔误仍能在设置中被看到并修正.
+            val defValue = resources.getInteger(R.integer.mcp_server_port_default_value)
+            val min = resources.getInteger(R.integer.mcp_server_port_min_value)
+            val max = resources.getInteger(R.integer.mcp_server_port_max_value)
+            return getInt(R.string.key_mcp_server_port, defValue).coerceIn(min, max)
+        }
+
+    @JvmStatic
+    val mcpServerPortRange: IntRange
+        get() = IntRange(
+            resources.getInteger(R.integer.mcp_server_port_min_value),
+            resources.getInteger(R.integer.mcp_server_port_max_value),
+        )
+
+    @JvmStatic
+    val mcpServerTokenOrNull: String?
+        get() = getStringOrNull(R.string.key_mcp_server_token)?.takeIf { it.isNotBlank() }
+
+    @JvmStatic
+    fun putMcpServerToken(token: String) = putStringSync(key(R.string.key_mcp_server_token), token)
+
     private val lastUpdatesCheckedTimestamp: Long
         get() = getTimestamp(R.string.key_last_updates_checked)
 

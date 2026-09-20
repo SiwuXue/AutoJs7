@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+
+    MCP server resources (fork-specific).
+    zh-CN: MCP 服务相关资源 (分支定制).
+
+    @Note by fork author.
+    ! All MCP related resources live in dedicated files so that the diff against
+    ! upstream AutoJs6 stays small and easy to review.
+    ! zh-CN: 所有 MCP 相关资源集中放在独立文件中, 以便与上游 AutoJs6 的差异保持最小且易于审阅.
+
+-->
+<resources>
+
+    <!-- Preference keys. -->
+    <!--  ! The "$" is a literal namespacing prefix used by all AutoJs6 preference keys. -->
+    <!--  ! zh-CN: "$" 是 AutoJs6 所有偏好键使用的字面命名空间前缀. -->
+    <string name="key_mcp_server_enabled" translatable="false">key_$_mcp_server_enabled</string>
+    <string name="key_mcp_server_bind_lan" translatable="false">key_$_mcp_server_bind_lan</string>
+    <string name="key_mcp_server_expose_dangerous_tools" translatable="false">key_$_mcp_server_expose_dangerous_tools</string>
+    <string name="key_mcp_server_port" translatable="false">key_$_mcp_server_port</string>
+    <string name="key_mcp_server_token" translatable="false">key_$_mcp_server_token</string>
+    <string name="key_mcp_server_risk_acknowledged" translatable="false">key_$_mcp_server_risk_acknowledged</string>
+
+    <!-- Category. -->
+    <string name="text_mcp_server">MCP server</string>
+
+    <!-- Entries. -->
+    <string name="text_mcp_server_enabled">Enable MCP server</string>
+    <string name="text_mcp_server_bind_lan">Allow access from local network</string>
+    <string name="text_mcp_server_expose_dangerous_tools">Expose dangerous tools</string>
+    <string name="text_mcp_server_port">Listening port</string>
+    <string name="text_mcp_server_token">Access token</string>
+
+    <!-- Summaries. -->
+    <string name="summary_mcp_server_running">Running · %1$s</string>
+    <string name="summary_mcp_server_stopped">Stopped</string>
+    <string name="summary_mcp_server_failed">Failed to start · %1$s</string>
+    <string name="summary_mcp_server_a11y_required">Accessibility service is not running</string>
+    <string name="summary_mcp_server_bind_lan">Off means 127.0.0.1 only</string>
+    <string name="summary_mcp_server_expose_dangerous_tools">Off by default and strongly discouraged</string>
+    <string name="summary_mcp_server_port">%1$d</string>
+    <string name="summary_mcp_server_token">Tap to view or reset</string>
+
+    <!-- Long click descriptions. -->
+    <string name="description_mcp_server_enabled">Starts a local MCP (Model Context Protocol) server so that AI clients such as Claude Desktop or Cursor can drive this device through accessibility, scripting and shell capabilities.</string>
+    <string name="description_mcp_server_enabled_more">The server is bound to 127.0.0.1 by default. A random access token is generated automatically and is required by every request.</string>
+    <string name="description_mcp_server_bind_lan">When enabled the server listens on all network interfaces, which lets other devices on the same network reach it. Only turn this on in a network you trust.</string>
+    <string name="description_mcp_server_expose_dangerous_tools">Dangerous tools can execute arbitrary scripts, run shell commands and write files. They stay hidden from tools/list unless this switch is explicitly enabled.</string>
+    <string name="description_mcp_server_port">Port must be within 1024 to 65535. Restart the server after changing it.</string>
+
+    <!-- Dialogs. -->
+    <string name="dialog_mcp_server_risk_title">Security notice</string>
+    <string name="dialog_mcp_server_risk_message">Enabling the MCP server opens a network port that lets a connected AI client tap the screen, read the view hierarchy, run scripts and take screenshots.\n\nThe server is bound to 127.0.0.1 and requires an access token. Do not enable local network access on a network you do not control.</string>
+    <string name="dialog_mcp_server_token_title">Access token</string>
+    <string name="dialog_mcp_server_token_message">Send this value in the Authorization header:</string>
+    <string name="dialog_mcp_server_token_reset">Reset token</string>
+    <string name="dialog_mcp_server_token_reset_confirm">Existing clients will stop working until the new token is configured. Continue?</string>
+    <string name="dialog_mcp_server_port_title">Listening port</string>
+    <string name="dialog_mcp_server_port_invalid">Port must be an integer within 1024 to 65535.</string>
+
+    <!-- MCP protocol facing texts. -->
+    <string name="text_mcp_server_instructions">Controls an Android device through the AutoJs6 accessibility service and script engine. Call dump_ui_tree first to understand the current screen, then use ui_find and ui_action to interact with it. When there is no view hierarchy to query -- games, canvases, video surfaces -- reach for find_image or ocr_recognize instead, and use read_notifications for content that never appears in the view tree at all.</string>
+    <string name="text_mcp_server_name" translatable="false">autojs6-mcp</string>
+
+    <!-- Foreground service notification. -->
+    <string name="mcp_notification_channel_name">%1$s MCP server</string>
+    <string name="mcp_notification_title">MCP server is running</string>
+    <string name="mcp_notification_text">Listening on %1$s</string>
+
+    <!-- Errors surfaced to the AI client. -->
+    <string name="mcp_error_accessibility_unavailable">Accessibility service is not connected. Enable the AutoJs6 accessibility service first.</string>
+    <string name="mcp_error_ui_not_readable">The screen could not be read at the moment nothing matched, so this empty result does not prove the element is absent. The accessibility service is most likely reconnecting. Retry in a moment, and if it keeps failing re-enable the AutoJs6 accessibility service.</string>
+    <string name="mcp_error_unauthorized">Missing or invalid access token.</string>
+    <string name="mcp_error_tool_disabled">This tool is disabled by the current MCP server settings.</string>
+    <string name="mcp_error_invalid_args">Invalid arguments: %1$s</string>
+    <string name="mcp_error_tool_failed">Tool execution failed: %1$s</string>
+
+</resources>

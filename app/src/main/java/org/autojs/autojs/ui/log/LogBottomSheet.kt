@@ -79,26 +79,36 @@ class LogBottomSheet : BottomSheetDialogFragment() {
         }
 
         // Setup ConsoleView with global console
-        val autoJs = AutoJs.getInstance()
-        if (autoJs != null) {
-            binding.console.setConsole(autoJs.globalConsole)
-            
-            // Hide input container (not needed in bottom sheet)
-            binding.console.findViewById<View>(R.id.input_container)?.visibility = View.GONE
-            
-            // Enable clickable stack frame links (only in bottom sheet, not in LogActivity)
-            binding.console.setEnableStackFrameLinks(true)
-            
-            // Set up clickable stack frame listener
-            binding.console.setOnStackFrameClickListener { fileName, lineNumber, columnNumber ->
-                mStackFrameClickListener?.onStackFrameClick(fileName, lineNumber, columnNumber)
-                dismiss()
-            }
+        // @Fixed on Sep 16, 2026.
+        //  ! `AutoJs.instance` is annotated `@JvmStatic`, which generates a static
+        //  ! `getInstance()` for Java callers but is NOT resolvable from Kotlin --
+        //  ! Kotlin sees only the companion property. That asymmetry is why the
+        //  ! Java router in DevPluginResponseHandler may call `getInstance()`
+        //  ! while this Kotlin file could not compile.
+        //  ! The property is also `lateinit` rather than nullable, so the null
+        //  ! check this replaced could never have been meaningful.
+        //  ! zh-CN: `AutoJs.instance` 标注了 `@JvmStatic`, 会为 Java 调用方生成静态的
+        //  ! `getInstance()`, 但 Kotlin 侧无法解析 —— Kotlin 只能看到伴生对象属性.
+        //  ! 正是这种不对称, 让 DevPluginResponseHandler 里的 Java 路由可以调用
+        //  ! `getInstance()`, 而本 Kotlin 文件却编译不过.
+        //  ! 该属性还是 `lateinit` 而非可空类型, 因此被替换掉的空值判断本就无意义.
+        binding.console.setConsole(AutoJs.instance.globalConsole)
+
+        // Hide input container (not needed in bottom sheet)
+        binding.console.findViewById<View>(R.id.input_container)?.visibility = View.GONE
+
+        // Enable clickable stack frame links (only in bottom sheet, not in LogActivity)
+        binding.console.setEnableStackFrameLinks(true)
+
+        // Set up clickable stack frame listener
+        binding.console.setOnStackFrameClickListener { fileName, lineNumber, columnNumber ->
+            mStackFrameClickListener?.onStackFrameClick(fileName, lineNumber, columnNumber)
+            dismiss()
         }
 
         // Clear button
         binding.btnClear.setOnClickListener {
-            AutoJs.getInstance()?.globalConsole?.clear()
+            AutoJs.instance.globalConsole.clear()
         }
 
         // Open full log activity button

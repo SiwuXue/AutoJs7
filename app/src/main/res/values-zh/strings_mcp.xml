@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+
+    MCP server resources (fork-specific, Simplified Chinese).
+    zh-CN: MCP 服务相关资源 (分支定制, 简体中文).
+
+-->
+<resources>
+
+    <!-- Category. -->
+    <string name="text_mcp_server">MCP 服务</string>
+
+    <!-- Entries. -->
+    <string name="text_mcp_server_enabled">启用 MCP 服务</string>
+    <string name="text_mcp_server_bind_lan">允许局域网访问</string>
+    <string name="text_mcp_server_expose_dangerous_tools">暴露高危工具</string>
+    <string name="text_mcp_server_port">监听端口</string>
+    <string name="text_mcp_server_token">访问令牌</string>
+
+    <!-- Summaries. -->
+    <string name="summary_mcp_server_running">运行中 · %1$s</string>
+    <string name="summary_mcp_server_stopped">已停止</string>
+    <string name="summary_mcp_server_failed">启动失败 · %1$s</string>
+    <string name="summary_mcp_server_a11y_required">无障碍服务未运行</string>
+    <string name="summary_mcp_server_bind_lan">关闭时仅监听 127.0.0.1</string>
+    <string name="summary_mcp_server_expose_dangerous_tools">默认关闭, 强烈不建议开启</string>
+    <string name="summary_mcp_server_port">%1$d</string>
+    <string name="summary_mcp_server_token">点击查看或重置</string>
+
+    <!-- Long click descriptions. -->
+    <string name="description_mcp_server_enabled">启动本地 MCP (Model Context Protocol) 服务, 使 Claude Desktop, Cursor 等 AI 客户端能够通过无障碍, 脚本引擎与 Shell 能力操控本机.</string>
+    <string name="description_mcp_server_enabled_more">服务默认只监听 127.0.0.1, 并自动生成随机访问令牌, 每个请求都必须携带该令牌.</string>
+    <string name="description_mcp_server_bind_lan">开启后服务将监听所有网络接口, 同一网络下的其他设备即可访问. 请仅在可信网络中开启.</string>
+    <string name="description_mcp_server_expose_dangerous_tools">高危工具可以执行任意脚本, 运行 Shell 命令以及写入文件. 未显式开启该开关前, 它们不会出现在 tools/list 中.</string>
+    <string name="description_mcp_server_port">端口范围 1024 至 65535, 修改后需重启服务生效.</string>
+
+    <!-- Dialogs. -->
+    <string name="dialog_mcp_server_risk_title">安全提示</string>
+    <string name="dialog_mcp_server_risk_message">启用 MCP 服务会开放一个网络端口, 使已连接的 AI 客户端能够点击屏幕, 读取页面节点树, 执行脚本以及截屏.\n\n服务仅监听 127.0.0.1 且强制校验访问令牌. 请勿在不受你控制的网络中开启局域网访问.</string>
+    <string name="dialog_mcp_server_token_title">访问令牌</string>
+    <string name="dialog_mcp_server_token_message">请在请求头中携带该值:</string>
+    <string name="dialog_mcp_server_token_reset">重置令牌</string>
+    <string name="dialog_mcp_server_token_reset_confirm">现有客户端将立即失效, 需要重新配置令牌. 是否继续?</string>
+    <string name="dialog_mcp_server_port_title">监听端口</string>
+    <string name="dialog_mcp_server_port_invalid">端口必须是 1024 至 65535 之间的整数.</string>
+
+    <!-- MCP protocol facing texts. -->
+    <string name="text_mcp_server_instructions">通过 AutoJs6 的无障碍服务与脚本引擎操控 Android 设备. 建议先调用 dump_ui_tree 了解当前屏幕, 再用 ui_find 与 ui_action 进行交互. 当没有可查询的视图树时 —— 游戏, 画布, 视频层 —— 改用 find_image 或 ocr_recognize, 而完全不体现在视图树中的内容则用 read_notifications 获取.</string>
+
+    <!-- Foreground service notification. -->
+    <string name="mcp_notification_channel_name">%1$s MCP 服务</string>
+    <string name="mcp_notification_title">MCP 服务运行中</string>
+    <string name="mcp_notification_text">正在监听 %1$s</string>
+
+    <!-- Errors surfaced to the AI client. -->
+    <string name="mcp_error_accessibility_unavailable">无障碍服务未连接, 请先启用 AutoJs6 的无障碍服务.</string>
+    <string name="mcp_error_ui_not_readable">没有任何匹配的同时也读不到屏幕, 因此这个空结果不能说明元素不存在. 无障碍服务很可能正在重连, 请稍后重试; 若持续失败, 请重新启用 AutoJs6 的无障碍服务.</string>
+    <string name="mcp_error_unauthorized">访问令牌缺失或无效.</string>
+    <string name="mcp_error_tool_disabled">该工具已被当前的 MCP 服务设置禁用.</string>
+    <string name="mcp_error_invalid_args">参数无效: %1$s</string>
+    <string name="mcp_error_tool_failed">工具执行失败: %1$s</string>
+
+</resources>
