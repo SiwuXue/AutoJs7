@@ -12,7 +12,6 @@
     <!-- Entries. -->
     <string name="text_mcp_server_enabled">启用 MCP 服务</string>
     <string name="text_mcp_server_bind_lan">允许局域网访问</string>
-    <string name="text_mcp_server_expose_dangerous_tools">暴露高危工具</string>
     <string name="text_mcp_server_port">监听端口</string>
     <string name="text_mcp_server_token">访问令牌</string>
 
@@ -22,7 +21,6 @@
     <string name="summary_mcp_server_failed">启动失败 · %1$s</string>
     <string name="summary_mcp_server_a11y_required">无障碍服务未运行</string>
     <string name="summary_mcp_server_bind_lan">关闭时仅监听 127.0.0.1</string>
-    <string name="summary_mcp_server_expose_dangerous_tools">默认关闭, 强烈不建议开启</string>
     <string name="summary_mcp_server_port">%1$d</string>
     <string name="summary_mcp_server_token">点击查看或重置</string>
 
@@ -30,7 +28,6 @@
     <string name="description_mcp_server_enabled">启动本地 MCP (Model Context Protocol) 服务, 使 Claude Desktop, Cursor 等 AI 客户端能够通过无障碍, 脚本引擎与 Shell 能力操控本机.</string>
     <string name="description_mcp_server_enabled_more">服务默认只监听 127.0.0.1, 并自动生成随机访问令牌, 每个请求都必须携带该令牌.</string>
     <string name="description_mcp_server_bind_lan">开启后服务将监听所有网络接口, 同一网络下的其他设备即可访问. 请仅在可信网络中开启.</string>
-    <string name="description_mcp_server_expose_dangerous_tools">高危工具可以执行任意脚本, 运行 Shell 命令以及写入文件. 未显式开启该开关前, 它们不会出现在 tools/list 中.</string>
     <string name="description_mcp_server_port">端口范围 1024 至 65535, 修改后需重启服务生效.</string>
 
     <!-- Dialogs. -->
@@ -55,7 +52,6 @@
     <string name="mcp_error_accessibility_unavailable">无障碍服务未连接, 请先启用 AutoJs6 的无障碍服务.</string>
     <string name="mcp_error_ui_not_readable">没有任何匹配的同时也读不到屏幕, 因此这个空结果不能说明元素不存在. 无障碍服务很可能正在重连, 请稍后重试; 若持续失败, 请重新启用 AutoJs6 的无障碍服务.</string>
     <string name="mcp_error_unauthorized">访问令牌缺失或无效.</string>
-    <string name="mcp_error_tool_disabled">该工具已被当前的 MCP 服务设置禁用.</string>
     <string name="mcp_error_invalid_args">参数无效: %1$s</string>
     <string name="mcp_error_tool_failed">工具执行失败: %1$s</string>
 

@@ -15,18 +15,17 @@ import org.autojs.autojs.mcp.McpToolRisk
  * @Created by fork author on Sep 16, 2026.
  *
  * @Design
- *  ! `record_start` and `record_stop` are deliberately in different risk tiers.
- *  ! Starting is what escalates -- it begins observing the user's input, typed
- *  ! text included -- so it is gated behind the dangerous tools switch. Stopping
- *  ! only reduces exposure, so it stays available even when that switch is off.
- *  ! The same principle is why `list_scripts` is readable while `run_script` is
- *  ! not: operations that de-escalate should never require the ability to
- *  ! escalate.
- *  ! zh-CN: `record_start` 与 `record_stop` 刻意分属不同风险档.
- *  ! 升级风险的是"开始" —— 它开始观察用户输入, 包括键入的文本 —— 因此被高危开关拦截.
- *  ! 而"停止"只会降低暴露面, 所以即使开关关闭也保持可用.
- *  ! 同理, `list_scripts` 可读而 `run_script` 不可以: 降低风险的操作,
- *  ! 不应以"具备升级风险的能力"为前提.
+ *  ! `record_start` and `record_stop` carry different risk labels. Starting is
+ *  ! what escalates -- it begins observing the user's input, typed text
+ *  ! included -- while stopping only reduces exposure. The same principle is
+ *  ! why `list_scripts` is readable while `run_script` is not: operations that
+ *  ! de-escalate should never require the ability to escalate. The labels are
+ *  ! metadata for clients; every registered tool is exposed unconditionally.
+ *  ! zh-CN: `record_start` 与 `record_stop` 分属不同风险档.
+ *  ! 升级风险的是"开始" —— 它开始观察用户输入, 包括键入的文本;
+ *  ! 而"停止"只会降低暴露面. 同理, `list_scripts` 可读而 `run_script` 不可以:
+ *  ! 降低风险的操作, 不应以"具备升级风险的能力"为前提.
+ *  ! 风险标签仅作为元数据供客户端使用, 所有注册的工具一律无条件暴露.
  */
 internal object McpRecordTools {
 
@@ -105,8 +104,7 @@ internal object McpRecordTools {
             append("Ends the current recording and returns the generated JavaScript. ")
             append("The script is returned as text only; persist it with `file_write` if it should be kept. ")
             append("An empty script means nothing captureable happened: the interactions were of an untracked kind, ")
-            append("or the recording had already timed out with no captured actions. ")
-            append("Available even when the dangerous tools switch is off, because stopping only reduces exposure.")
+            append("or the recording had already timed out with no captured actions.")
         },
         risk = McpToolRisk.SENSITIVE,
         inputSchema = McpSchema.emptyObject(),

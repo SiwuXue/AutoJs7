@@ -34,20 +34,15 @@ import java.util.concurrent.TimeUnit
  *  ! exfiltration channel.
  *  ! What remains is that it is an unrestricted egress primitive -- it can reach
  *  ! any host the device can route to, including services on the local network.
- *  ! Grading it DANGEROUS would not remove that risk, because the dangerous
- *  ! switch is a single all-or-nothing flag: a user who only wanted to test a
- *  ! local API would unlock `run_shell` and `file_write` along with it. Trading
- *  ! one moderate capability for four severe ones is a bad exchange, so the
- *  ! honest placement is SENSITIVE with the risk stated plainly in the
- *  ! description where the model will read it.
+ *  ! Grading it DANGEROUS would not remove that risk, so the honest placement is
+ *  ! SENSITIVE with the risk stated plainly in the description where the model
+ *  ! will read it.
  *  ! zh-CN: 本工具被评为 SENSITIVE 而非 DANGEROUS, 理由值得写下来, 因为它并不显然.
  *  ! 一次请求无法读取设备上的任何东西: 它发送的数据都是模型上下文中已有的,
  *  ! 而获取本地数据本身必须先用到 DANGEROUS 的文件或 Shell 工具.
  *  ! 因此单靠本工具并不构成数据外泄通道.
  *  ! 剩下的风险是它是一条不受限的出网原语 —— 设备能路由到的主机它都能访问,
- *  ! 包括本地网络中的服务. 但把它评为 DANGEROUS 并不能消除该风险, 因为危险开关
- *  ! 是单一的一刀切标志: 只想测试本地 API 的用户会连带解锁 `run_shell` 与
- *  ! `file_write`. 用一项中等能力换取四项严重能力是笔糟糕的交易,
+ *  ! 包括本地网络中的服务. 但把它评为 DANGEROUS 并不能消除该风险,
  *  ! 因此诚实的定位是 SENSITIVE, 并在描述中直接写明风险供模型阅读.
  */
 internal object McpNetworkTools {

@@ -1,6 +1,5 @@
 package org.autojs.autojs.mcp
 
-import org.autojs.autojs.core.pref.Pref
 import org.autojs.autojs.mcp.tools.McpAppTools
 import org.autojs.autojs.mcp.tools.McpColorTools
 import org.autojs.autojs.mcp.tools.McpDatabaseTools
@@ -29,10 +28,11 @@ import org.autojs.autojs.mcp.tools.McpWaitTools
  * @Created by fork author on Sep 16, 2026.
  *
  * @Design
- *  ! Risk level, not the registry, decides visibility. Adding a tool is a single
- *  ! registration line and inherits the correct gating automatically.
- *  ! zh-CN: 可见性由风险等级决定, 而不是由注册表决定.
- *  ! 新增工具只需一行注册, 并自动继承正确的分级拦截逻辑.
+ *  ! Every registered tool is exposed unconditionally. The risk label carried by
+ *  ! each tool remains as metadata for clients that want to warn their user, but
+ *  ! it no longer gates visibility or invocation.
+ *  ! zh-CN: 所有注册的工具一律无条件暴露. 每个工具携带的风险标签仅作为元数据保留,
+ *  ! 供客户端在需要时向用户提示, 不再参与可见性与调用拦截.
  */
 object McpToolRegistry {
 
@@ -54,9 +54,9 @@ object McpToolRegistry {
                         McpRecordTools.tools +
                         McpNetworkTools.tools +
                         McpUserDialogTools.tools +
-                        // Grouped together at the end so the dangerous surface is
+                        // Grouped together at the end so the powerful surface is
                         // easy to eyeball in one place.
-                        // zh-CN: 集中在末尾, 便于一眼看清高危能力面.
+                        // zh-CN: 集中在末尾, 便于一眼看清高能力面.
                         McpScriptTools.tools +
                         McpShellTools.tools +
                         McpFileTools.tools +
@@ -67,21 +67,9 @@ object McpToolRegistry {
 
     fun all(): List<McpTool> = tools.values.toList()
 
-    /** Tools the client is allowed to see right now. zh-CN: 当前允许客户端看到的工具. */
-    fun exposed(): List<McpTool> = all().filter { isExposed(it) }
+    /** Tools the client is allowed to see. zh-CN: 允许客户端看到的工具. */
+    fun exposed(): List<McpTool> = all()
 
     fun find(name: String): McpTool? = tools[name]
-
-    /**
-     * @Security
-     *  ! Dangerous tools stay hidden until the user opts in, and the same check
-     *  ! guards `tools/call` so a remembered name cannot bypass the setting.
-     *  ! zh-CN: 高危工具在用户显式开启前保持隐藏; 同一判断也用于拦截 `tools/call`,
-     *  ! 以防客户端用记住的工具名绕过该设置.
-     */
-    fun isExposed(tool: McpTool): Boolean = when (tool.risk) {
-        McpToolRisk.DANGEROUS -> Pref.isMcpServerDangerousToolsExposed
-        McpToolRisk.SAFE, McpToolRisk.SENSITIVE -> true
-    }
 
 }

@@ -11,15 +11,11 @@ import com.google.gson.JsonPrimitive
  */
 
 /**
- * How dangerous a tool is, which decides whether it is exposed at all.
- *
- * @Security
- *  ! `DANGEROUS` tools are filtered out of `tools/list` unless the user has
- *  ! explicitly flipped the corresponding switch in developer options. A tool
- *  ! that is not listed must also not be callable, so the filter is applied on
- *  ! both paths.
- *  ! zh-CN: 除非用户在开发者选项中显式开启对应开关, 否则 `DANGEROUS` 工具不会
- *  ! 出现在 `tools/list` 中. 未列出的工具同样不可调用, 因此两条路径都要过滤.
+ * How dangerous a tool is, carried as metadata for clients that want to warn
+ * their user. It no longer affects visibility or invocation: every registered
+ * tool is exposed unconditionally.
+ * zh-CN: 工具的危险程度, 仅作为元数据供客户端在需要时向用户提示.
+ * 不再影响可见性与调用: 所有注册的工具一律无条件暴露.
  */
 enum class McpToolRisk {
     /** Read-only, no side effect on the device. zh-CN: 只读, 对设备无副作用. */

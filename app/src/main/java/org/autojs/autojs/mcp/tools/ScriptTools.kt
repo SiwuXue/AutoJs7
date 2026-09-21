@@ -2,16 +2,21 @@ package org.autojs.autojs.mcp.tools
 
 import com.google.gson.JsonArray
 import org.autojs.autojs.AutoJs
+import org.autojs.autojs.execution.ExecutionConfig
 import org.autojs.autojs.mcp.McpArgumentException
 import org.autojs.autojs.mcp.McpArgs
 import org.autojs.autojs.mcp.McpJson
 import org.autojs.autojs.mcp.McpSchema
+import org.autojs.autojs.mcp.McpStorage
 import org.autojs.autojs.mcp.McpTool
 import org.autojs.autojs.mcp.McpToolResult
 import org.autojs.autojs.mcp.McpToolRisk
 import org.autojs.autojs.mcp.McpUi
+import org.autojs.autojs.model.script.ScriptFile
 import org.autojs.autojs.model.script.Scripts
 import org.autojs.autojs.script.StringScriptSource
+import org.autojs.autojs.util.WorkingDirectoryUtils
+import java.io.File
 
 /**
  * Script execution tools.
@@ -19,19 +24,18 @@ import org.autojs.autojs.script.StringScriptSource
  * @Created by fork author on Sep 16, 2026.
  *
  * @Security
- *  ! These are `DANGEROUS`: running arbitrary code is the whole point of the
- *  ! feature, so there is no way to make it "a bit safe". They stay hidden from
- *  ! `tools/list` and are refused by `tools/call` until the user turns on the
- *  ! dangerous tools switch, and they are grouped here so that the single
- *  ! boundary is easy to audit.
- *  ! zh-CN: 这些工具属于 `DANGEROUS`: 执行任意代码正是该功能的意义所在,
- *  ! 因此无法把它做成"相对安全". 在用户开启高危工具开关之前, 它们既不会出现在
- *  ! `tools/list` 中, 也会被 `tools/call` 拒绝. 集中放在这里,
- *  ! 是为了让这条唯一的边界易于审计.
+ *  ! These are `DANGEROUS` by risk label: running arbitrary code is the whole
+ *  ! point of the feature, so there is no way to make it "a bit safe". The label
+ *  ! is metadata for clients that want to warn their user -- every registered
+ *  ! tool is exposed unconditionally -- and they are grouped here so that the
+ *  ! single capability surface is easy to audit.
+ *  ! zh-CN: 这些工具的风险标签为 `DANGEROUS`: 执行任意代码正是该功能的意义所在,
+ *  ! 因此无法把它做成"相对安全". 该标签仅作为元数据供客户端在需要时向用户提示
+ *  ! —— 所有注册的工具一律无条件暴露. 集中放在这里, 是为了让这条唯一的能力面易于审计.
  */
 internal object McpScriptTools {
 
-    val tools: List<McpTool> = listOf(runScriptTool(), stopScriptTool(), listScriptsTool())
+    val tools: List<McpTool> = listOf(runScriptTool(), runFileTool(), stopScriptTool(), listScriptsTool())
 
     /**
      * Console prefix for scripts started over MCP, so their output is
@@ -103,6 +107,106 @@ internal object McpScriptTools {
         })
     }
 
+    // ---------------------------------------------------------------- run_file
+
+    private fun runFileTool(): McpTool = McpTool(
+        name = "run_file",
+        title = "Run a script file",
+        description = buildString {
+            append("Runs a script file that already exists on the device, given its path relative to the ")
+            append("working directory (for example `xainyu/main.js`). ")
+            append("This is the way to execute reusable, multi-file projects: the directory of the file becomes ")
+            append("the engine working directory, so `require('./modules/...')` resolves normally. ")
+            append("Create or update scripts with `file_write` first, then run the entry file here. ")
+            append("Read what it printed with `read_log`, check whether it is still alive with `list_scripts`, ")
+            append("and stop it with `stop_script`. ")
+            append("Console output is prefixed with `${CONSOLE_PREFIX}` to tell it apart from other activity.")
+        },
+        risk = McpToolRisk.DANGEROUS,
+        inputSchema = McpSchema.objectOf(
+            properties = mapOf(
+                "path" to McpSchema.string(
+                    "Script file to execute, relative to the working directory. " +
+                            "Point at the entry script (such as `main.js`), not the project directory."
+                ),
+                "outsideWorkingDirectory" to McpSchema.boolean(
+                    "Allow a path outside the working directory.", false,
+                ),
+            ),
+            required = listOf("path"),
+        ),
+    ) { args -> invokeRunFile(args) }
+
+    private fun invokeRunFile(args: McpArgs): McpToolResult {
+        val requested = args.requireString("path")
+        val outsideWorkingDirectory = args.optBoolean("outsideWorkingDirectory", false)
+
+        val scriptFile = try {
+            resolve(requested, outsideWorkingDirectory)
+        } catch (e: McpArgumentException) {
+            return McpToolResult.error(e.message ?: "Invalid `path`.")
+        }
+        if (!scriptFile.exists()) {
+            return McpToolResult.error(McpStorage.explain("`${scriptFile.path}` does not exist.", scriptFile))
+        }
+        if (scriptFile.isDirectory) {
+            return McpToolResult.error(
+                "`${scriptFile.path}` is a directory. Point at the entry script, such as `main.js`."
+            )
+        }
+
+        val source = ScriptFile(scriptFile).toSource().apply { prefix = CONSOLE_PREFIX }
+        // The parent directory is passed as the engine working directory, which is
+        // what makes `require('./modules/...')` resolve relative to the script --
+        // the whole reason this tool exists next to `run_script`.
+        // zh-CN: 把父目录作为引擎工作目录传入, `require('./modules/...')` 因此能
+        // 相对脚本文件解析 —— 这正是本工具与 `run_script` 并存的原因.
+        val execution = runCatching {
+            AutoJs.instance.scriptEngineService.execute(
+                source,
+                ExecutionConfig(workingDirectory = scriptFile.parent),
+            )
+        }.getOrElse {
+            return McpToolResult.error(
+                "Starting the script failed: ${it::class.java.simpleName}: ${it.message ?: "no message"}"
+            )
+        } ?: return McpToolResult.error(
+            "The script engine refused to start. It may be unavailable while the app is shutting down."
+        )
+
+        return McpToolResult.json(McpJson.obj().apply {
+            addProperty("ok", true)
+            addProperty("id", execution.id)
+            addProperty("name", source.name)
+            addProperty("path", scriptFile.path)
+            addProperty("workingDirectory", scriptFile.parent)
+            addProperty(
+                "hint",
+                "Use `read_log` to see output and `stop_script` with this id to stop it."
+            )
+        })
+    }
+
+    /**
+     * @throws McpArgumentException when the path escapes the working directory.
+     * zh-CN: 当路径越出工作目录时抛出.
+     */
+    private fun resolve(requested: String, outsideWorkingDirectory: Boolean): File {
+        val root = File(WorkingDirectoryUtils.path).canonicalFile
+        val candidate = File(requested)
+            .let { if (it.isAbsolute) it else File(root, requested) }
+            .canonicalFile
+
+        val insideRoot = candidate == root || candidate.path.startsWith(root.path + File.separator)
+        if (!insideRoot && !outsideWorkingDirectory) {
+            throw McpArgumentException(
+                "`$requested` resolves to `$candidate`, which is outside the AutoJs6 working directory " +
+                        "`$root`. Pass `outsideWorkingDirectory: true` if that is really intended."
+            )
+        }
+        return candidate
+    }
+
     // -------------------------------------------------------------- stop_script
 
     private fun stopScriptTool(): McpTool = McpTool(
@@ -151,13 +255,10 @@ internal object McpScriptTools {
         description = buildString {
             append("Lists scripts whose engine is still alive, with the id needed by `stop_script`. ")
             append("Finished scripts disappear from this list, so an empty result means nothing is running. ")
-            append("This is readable even when the dangerous tools are disabled, so a client can always see ")
-            append("what this device is busy with.")
         },
-        // Read-only, so it stays available even with the dangerous switch off:
-        // seeing what is running should never require the ability to start things.
-        // zh-CN: 只读, 因此在关闭高危开关时依然可用:
-        // 查看正在运行的内容, 不应以"能启动东西"为前提.
+        // Read-only: seeing what is running should never require the ability to
+        // start things.
+        // zh-CN: 只读: 查看正在运行的内容, 不应以"能启动东西"为前提.
         risk = McpToolRisk.SAFE,
         inputSchema = McpSchema.emptyObject(),
     ) { _ -> invokeListScripts() }

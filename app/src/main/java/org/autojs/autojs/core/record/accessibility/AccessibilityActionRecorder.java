@@ -81,7 +81,12 @@ public class AccessibilityActionRecorder extends Recorder.AbstractRecorder imple
 
     @Override
     public String getCode() {
-        return mConverter.getScript();
+        // `mConverter` only exists between startImpl() and stopImpl(); querying
+        // the code before any recording has started must yield an empty script
+        // rather than a NullPointerException.
+        // zh-CN: `mConverter` 仅存在于 startImpl() 与 stopImpl() 之间;
+        // 未开始任何录制时查询代码应返回空脚本, 而不是抛出 NullPointerException.
+        return mConverter == null ? "" : mConverter.getScript();
     }
 
     public void setShouldIgnoreFirstAction(boolean shouldIgnoreFirstAction) {

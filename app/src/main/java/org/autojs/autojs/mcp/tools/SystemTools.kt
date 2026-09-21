@@ -93,7 +93,6 @@ internal object McpSystemTools {
             addProperty("running", McpServer.isRunning)
             addProperty("endpoint", McpServer.endpointDescription())
             addProperty("lanAccessEnabled", Pref.isMcpServerLanAccessEnabled)
-            addProperty("dangerousToolsExposed", Pref.isMcpServerDangerousToolsExposed)
             addProperty("connectedClients", McpServer.connectedClientCount())
         })
     }

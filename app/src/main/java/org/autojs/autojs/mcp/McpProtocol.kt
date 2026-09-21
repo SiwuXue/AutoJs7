@@ -210,16 +210,6 @@ internal object McpProtocol {
         val tool = McpToolRegistry.find(name)
             ?: return McpToolResult.error("Unknown tool `$name`.").toJson()
 
-        if (!McpToolRegistry.isExposed(tool)) {
-            // Guard the call path as well as the listing path: a client may
-            // remember a tool name from a previous session.
-            // zh-CN: 调用路径同样需要拦截: 客户端可能记住了上次会话中的工具名.
-            return McpToolResult.error(
-                McpUi.context.getString(R.string.mcp_error_tool_disabled) +
-                        " Enable \"${McpUi.context.getString(R.string.text_mcp_server_expose_dangerous_tools)}\" in AutoJs6 developer options to use `$name`."
-            ).toJson()
-        }
-
         return try {
             tool.invoke(McpArgs(rawArguments)).toJson()
         } catch (e: McpArgumentException) {

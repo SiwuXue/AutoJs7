@@ -132,13 +132,6 @@ object Pref {
         )
 
     @JvmStatic
-    val isMcpServerDangerousToolsExposed
-        get() = getBoolean(
-            R.string.key_mcp_server_expose_dangerous_tools,
-            resources.getBoolean(R.bool.pref_mcp_server_expose_dangerous_tools),
-        )
-
-    @JvmStatic
     val mcpServerPort: Int
         get() {
             // Clamp the read result into the valid range without silently

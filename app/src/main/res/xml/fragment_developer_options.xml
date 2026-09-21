@@ -53,14 +53,6 @@
             app:layout="@layout/preference_custom"
             app:title="@string/text_mcp_server_token" />
 
-        <org.autojs.autojs.theme.preference.ThemeColorSwitchPreference
-            android:defaultValue="false"
-            app:key="@string/key_mcp_server_expose_dangerous_tools"
-            app:layout="@layout/preference_custom"
-            app:longClickPrompt="@string/description_mcp_server_expose_dangerous_tools"
-            app:summary="@string/summary_mcp_server_expose_dangerous_tools"
-            app:title="@string/text_mcp_server_expose_dangerous_tools" />
-
     </org.autojs.autojs.theme.preference.ThemeColorPreferenceCategory>
 
 </PreferenceScreen>

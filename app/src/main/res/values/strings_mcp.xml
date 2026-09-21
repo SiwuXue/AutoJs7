@@ -16,7 +16,6 @@
     <!--  ! zh-CN: "$" 是 AutoJs6 所有偏好键使用的字面命名空间前缀. -->
     <string name="key_mcp_server_enabled" translatable="false">key_$_mcp_server_enabled</string>
     <string name="key_mcp_server_bind_lan" translatable="false">key_$_mcp_server_bind_lan</string>
-    <string name="key_mcp_server_expose_dangerous_tools" translatable="false">key_$_mcp_server_expose_dangerous_tools</string>
     <string name="key_mcp_server_port" translatable="false">key_$_mcp_server_port</string>
     <string name="key_mcp_server_token" translatable="false">key_$_mcp_server_token</string>
     <string name="key_mcp_server_risk_acknowledged" translatable="false">key_$_mcp_server_risk_acknowledged</string>
@@ -27,7 +26,6 @@
     <!-- Entries. -->
     <string name="text_mcp_server_enabled">Enable MCP server</string>
     <string name="text_mcp_server_bind_lan">Allow access from local network</string>
-    <string name="text_mcp_server_expose_dangerous_tools">Expose dangerous tools</string>
     <string name="text_mcp_server_port">Listening port</string>
     <string name="text_mcp_server_token">Access token</string>
 
@@ -37,7 +35,6 @@
     <string name="summary_mcp_server_failed">Failed to start · %1$s</string>
     <string name="summary_mcp_server_a11y_required">Accessibility service is not running</string>
     <string name="summary_mcp_server_bind_lan">Off means 127.0.0.1 only</string>
-    <string name="summary_mcp_server_expose_dangerous_tools">Off by default and strongly discouraged</string>
     <string name="summary_mcp_server_port">%1$d</string>
     <string name="summary_mcp_server_token">Tap to view or reset</string>
 
@@ -45,7 +42,6 @@
     <string name="description_mcp_server_enabled">Starts a local MCP (Model Context Protocol) server so that AI clients such as Claude Desktop or Cursor can drive this device through accessibility, scripting and shell capabilities.</string>
     <string name="description_mcp_server_enabled_more">The server is bound to 127.0.0.1 by default. A random access token is generated automatically and is required by every request.</string>
     <string name="description_mcp_server_bind_lan">When enabled the server listens on all network interfaces, which lets other devices on the same network reach it. Only turn this on in a network you trust.</string>
-    <string name="description_mcp_server_expose_dangerous_tools">Dangerous tools can execute arbitrary scripts, run shell commands and write files. They stay hidden from tools/list unless this switch is explicitly enabled.</string>
     <string name="description_mcp_server_port">Port must be within 1024 to 65535. Restart the server after changing it.</string>
 
     <!-- Dialogs. -->
@@ -71,7 +67,6 @@
     <string name="mcp_error_accessibility_unavailable">Accessibility service is not connected. Enable the AutoJs6 accessibility service first.</string>
     <string name="mcp_error_ui_not_readable">The screen could not be read at the moment nothing matched, so this empty result does not prove the element is absent. The accessibility service is most likely reconnecting. Retry in a moment, and if it keeps failing re-enable the AutoJs6 accessibility service.</string>
     <string name="mcp_error_unauthorized">Missing or invalid access token.</string>
-    <string name="mcp_error_tool_disabled">This tool is disabled by the current MCP server settings.</string>
     <string name="mcp_error_invalid_args">Invalid arguments: %1$s</string>
     <string name="mcp_error_tool_failed">Tool execution failed: %1$s</string>
 

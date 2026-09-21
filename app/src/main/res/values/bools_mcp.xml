@@ -11,5 +11,4 @@
 <resources>
     <bool name="pref_mcp_server_enabled">false</bool>
     <bool name="pref_mcp_server_bind_lan">false</bool>
-    <bool name="pref_mcp_server_expose_dangerous_tools">false</bool>
 </resources>

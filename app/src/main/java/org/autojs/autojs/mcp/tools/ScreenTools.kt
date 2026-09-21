@@ -1,7 +1,9 @@
 package org.autojs.autojs.mcp.tools
 
+import android.graphics.Bitmap
 import android.util.Base64
 import com.google.gson.JsonArray
+import org.autojs.autojs.mcp.McpArgumentException
 import org.autojs.autojs.mcp.McpArgs
 import org.autojs.autojs.mcp.McpJson
 import org.autojs.autojs.mcp.McpSchema
@@ -10,6 +12,9 @@ import org.autojs.autojs.mcp.McpTool
 import org.autojs.autojs.mcp.McpToolResult
 import org.autojs.autojs.mcp.McpToolRisk
 import org.autojs.autojs.mcp.McpUi
+import org.autojs.autojs.util.WorkingDirectoryUtils
+import java.io.File
+import java.io.FileOutputStream
 
 /**
  * Screenshot tool.
@@ -58,6 +63,15 @@ internal object McpScreenTools {
                     "Capture only this screen rectangle as [left, top, right, bottom]. " +
                             "Cuts both the token cost and the encoding time.",
                     McpSchema.integer("Coordinate in screen pixels."),
+                ),
+                "savePath" to McpSchema.string(
+                    "When set, the image is written to this file (relative to the working directory) and the " +
+                            "tool returns its path and size instead of the image content. Use it to keep " +
+                            "evidence screenshots or to produce a template for `find_image` without a " +
+                            "base64 round-trip.",
+                ),
+                "outsideWorkingDirectory" to McpSchema.boolean(
+                    "Allow a `savePath` outside the working directory.", false,
                 ),
             ),
         ),
@@ -111,6 +125,39 @@ internal object McpScreenTools {
         try {
             val scaled = McpScreenCapture.downscaleIfNeeded(target, maxWidth)
             try {
+                val savePath = args.optString("savePath")?.takeIf { it.isNotBlank() }
+                if (savePath != null) {
+                    // File mode: write the image on the device and hand back its
+                    // path. This closes the template loop for `find_image` and
+                    // keeps evidence screenshots without a base64 round-trip
+                    // through the client.
+                    // zh-CN: 文件模式: 将图像写入设备端并返回路径. 由此为 `find_image`
+                    // 制作模板、留存证据截图, 都不再需要 base64 在客户端绕行.
+                    val outFile = try {
+                        resolveSavePath(savePath, args.optBoolean("outsideWorkingDirectory", false))
+                    } catch (e: McpArgumentException) {
+                        return McpToolResult.error(e.message ?: "Invalid `savePath`.")
+                    }
+                    outFile.parentFile?.mkdirs()
+                    val compressFormat =
+                        if (format == "png") Bitmap.CompressFormat.PNG else Bitmap.CompressFormat.JPEG
+                    val writeOutcome = runCatching {
+                        FileOutputStream(outFile).use { scaled.compress(compressFormat, quality, it) }
+                    }
+                    if (writeOutcome.isFailure) {
+                        return McpToolResult.error(
+                            "Saving the screenshot failed: " +
+                                    (writeOutcome.exceptionOrNull()?.let { "${it::class.java.simpleName}: ${it.message ?: "no message"}" } ?: "unknown error")
+                        )
+                    }
+                    metadata.addProperty("ok", true)
+                    metadata.addProperty("path", outFile.path)
+                    metadata.addProperty("width", scaled.width)
+                    metadata.addProperty("height", scaled.height)
+                    metadata.addProperty("bytes", outFile.length())
+                    return McpToolResult.json(metadata)
+                }
+
                 val encoded = McpScreenCapture.encodeBase64(scaled, format, quality)
                     ?: return McpToolResult.error("Failed to encode the captured bitmap as $format.")
                 metadata.addProperty("width", scaled.width)
@@ -124,6 +171,26 @@ internal object McpScreenTools {
             if (target !== screen) target.recycle()
             screen.recycle()
         }
+    }
+
+    /**
+     * @throws McpArgumentException when the path escapes the working directory.
+     * zh-CN: 当路径越出工作目录时抛出.
+     */
+    private fun resolveSavePath(requested: String, outsideWorkingDirectory: Boolean): File {
+        val root = File(WorkingDirectoryUtils.path).canonicalFile
+        val candidate = File(requested)
+            .let { if (it.isAbsolute) it else File(root, requested) }
+            .canonicalFile
+
+        val insideRoot = candidate == root || candidate.path.startsWith(root.path + File.separator)
+        if (!insideRoot && !outsideWorkingDirectory) {
+            throw McpArgumentException(
+                "`$requested` resolves to `$candidate`, which is outside the AutoJs6 working directory " +
+                        "`$root`. Pass `outsideWorkingDirectory: true` if that is really intended."
+            )
+        }
+        return candidate
     }
 
 }
