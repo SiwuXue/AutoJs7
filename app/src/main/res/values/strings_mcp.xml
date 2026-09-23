@@ -61,7 +61,14 @@
     <!-- Foreground service notification. -->
     <string name="mcp_notification_channel_name">%1$s MCP server</string>
     <string name="mcp_notification_title">MCP server is running</string>
-    <string name="mcp_notification_text">Listening on %1$s</string>
+    <string name="mcp_notification_clients">Connected clients: %1$d</string>
+    <string name="mcp_notification_action_stop">Stop</string>
+    <string name="mcp_notification_action_settings">Settings</string>
+
+    <!-- Endpoint labels, shared by the settings summary and the notification. -->
+    <string name="mcp_endpoint_local">Local: %1$s</string>
+    <string name="mcp_endpoint_lan">LAN: %1$s</string>
+    <string name="mcp_endpoint_lan_disabled">LAN: off</string>
 
     <!-- Errors surfaced to the AI client. -->
     <string name="mcp_error_accessibility_unavailable">Accessibility service is not connected. Enable the AutoJs6 accessibility service first.</string>

@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import org.autojs.autojs6.R;
 
+import java.util.List;
+
 /**
  * Created by SuperMonster003 on Apr 10, 2022.
  */
@@ -50,21 +52,42 @@ public class ForegroundServiceUtils {
     }
 
     public static Notification getNotification(Context context, Intent intent, Class<?> className, String title, String content) {
+        return getNotification(context, intent, className, title, content, null);
+    }
+
+    /**
+     * Builds the persistent notification for a foreground service.
+     *
+     * @param actions optional action buttons, or null for none.
+     */
+    public static Notification getNotification(Context context, Intent intent, Class<?> className, String title, String content, @Nullable List<NotificationCompat.Action> actions) {
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         String channelId = getChannelId(className);
 
-        Notification notification = new NotificationCompat.Builder(context, channelId)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                 .setContentTitle(title)
                 .setContentText(content)
+                // Without an explicit big-text style a multi-line body is collapsed
+                // to its first line, which would hide the second endpoint.
+                // zh-CN: 若不显式声明大文本样式, 多行内容会被折叠为第一行,
+                // 从而隐藏第二个端点地址.
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(content))
                 .setContentIntent(contentIntent)
                 .setSmallIcon(R.drawable.autojs6_status_bar_icon)
                 .setAutoCancel(true)
                 .setOngoing(true)
                 .setSilent(true)
                 .setWhen(System.currentTimeMillis())
-                .setChannelId(channelId)
-                .build();
+                .setChannelId(channelId);
+
+        if (actions != null) {
+            for (NotificationCompat.Action action : actions) {
+                builder.addAction(action);
+            }
+        }
+
+        Notification notification = builder.build();
 
         notification.flags |= Notification.FLAG_FOREGROUND_SERVICE;
 

@@ -100,8 +100,7 @@ class McpServerSwitchPreference : ThemeColorServiceSwitchPreference {
     }
 
     /** Stopping needs no consent, and consent is only ever asked once. */
-    private fun requiresConsent(): Boolean =
-        !isChecked && !Pref.getBoolean(R.string.key_mcp_server_risk_acknowledged, false)
+    private fun requiresConsent(): Boolean = McpServer.requiresConsent()
 
     private fun showRiskDialog() {
         if (riskDialog?.isShowing == true) return
@@ -132,7 +131,7 @@ class McpServerSwitchPreference : ThemeColorServiceSwitchPreference {
             }
         }
 
-        val base = prefContext.getString(R.string.summary_mcp_server_running, McpServer.endpointDescription())
+        val base = prefContext.getString(R.string.summary_mcp_server_running, endpointSummary())
         // The server still runs without accessibility, but most tools will fail,
         // which is worth saying up front rather than letting the AI discover it.
         // zh-CN: 无无障碍服务时服务端仍会运行, 但多数工具会失败;
@@ -140,6 +139,23 @@ class McpServerSwitchPreference : ThemeColorServiceSwitchPreference {
         return when {
             McpUi.hasAccessibilityService() -> base
             else -> "$base · ${prefContext.getString(R.string.summary_mcp_server_a11y_required)}"
+        }
+    }
+
+    /**
+     * Both endpoints, one per line, so this screen lists the same pair the
+     * notification does rather than only whichever address is currently preferred.
+     * zh-CN: 两个端点各占一行, 使本界面与通知列出同一组地址,
+     * 而不是只显示当前优先的那一个.
+     */
+    private fun endpointSummary(): String = buildString {
+        append(prefContext.getString(R.string.mcp_endpoint_local, McpServer.localEndpoint()))
+        append('\n')
+        val lan = McpServer.lanEndpoint()
+        if (lan != null) {
+            append(prefContext.getString(R.string.mcp_endpoint_lan, lan))
+        } else {
+            append(prefContext.getString(R.string.mcp_endpoint_lan_disabled))
         }
     }
 

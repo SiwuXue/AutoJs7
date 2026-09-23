@@ -19,6 +19,7 @@ import org.autojs.autojs.ipc.LayoutInspectEvent
 import org.autojs.autojs.ipc.LayoutInspectEventBus
 import org.autojs.autojs.mcp.McpLogBuffer
 import org.autojs.autojs.mcp.McpServer
+import org.autojs.autojs.mcp.McpWatchdog
 import org.autojs.autojs.pluginclient.DevPluginService
 import org.autojs.autojs.runtime.ScriptRuntime
 import org.autojs.autojs.runtime.api.AppUtils
@@ -113,7 +114,20 @@ open class AutoJs(appContext: Application) : AbstractAutoJs(appContext) {
         //  ! thread that is still finishing application start-up.
         //  ! zh-CN: 若用户此前保持 MCP 服务开启, 则在此恢复.
         //  ! 绑定监听 socket 可能阻塞, 因此必须避开仍在执行应用启动的主线程.
-        Thread({ McpServer.applyPreference() }, "mcp-restore").apply { isDaemon = true }.start()
+        Thread({
+            McpServer.applyPreference()
+            // @Added by fork author on Sep 23, 2026.
+            //  ! Arm the watchdog next to the restore rather than relying on the
+            //  ! service to do it: on Android 12+ a background start of a
+            //  ! foreground service can be refused outright, in which case the
+            //  ! service never runs and could never have armed its own guard.
+            //  ! zh-CN: 在恢复之后紧接着武装看门狗, 而不是依赖服务自行完成:
+            //  ! 在 Android 12+ 上后台启动前台服务可能被直接拒绝, 那样服务从未运行,
+            //  ! 也就永远无法为自己装上守卫.
+            if (org.autojs.autojs.core.pref.Pref.isMcpServerEnabled) {
+                McpWatchdog.start()
+            }
+        }, "mcp-restore").apply { isDaemon = true }.start()
     }
 
     private interface LayoutInspectFloatyWindow {

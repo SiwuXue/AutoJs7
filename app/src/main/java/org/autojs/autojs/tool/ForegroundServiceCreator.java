@@ -1,10 +1,15 @@
 package org.autojs.autojs.tool;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import androidx.core.app.NotificationCompat;
 import org.autojs.autojs.util.ForegroundServiceUtils;
+
+import java.util.List;
 
 import static org.autojs.autojs.util.ForegroundServiceUtils.FOREGROUND_SERVICE_TYPE_UNKNOWN;
 import static org.autojs.autojs.util.StringUtils.str;
@@ -22,18 +27,21 @@ public class ForegroundServiceCreator {
     public String serviceDescription;
     public String notificationTitle;
     public String notificationContent;
+    public List<NotificationCompat.Action> notificationActions;
 
     private static class Creator {
         Intent intent;
         Class<?> className;
         Service service;
         Notification notification;
+        List<NotificationCompat.Action> actions;
 
-        public Creator(Class<?> className, Intent intent, Service service, Notification notification) {
+        public Creator(Class<?> className, Intent intent, Service service, Notification notification, List<NotificationCompat.Action> actions) {
             this.className = className;
             this.intent = intent;
             this.service = service;
             this.notification = notification;
+            this.actions = actions;
         }
 
         public static class Service {
@@ -73,6 +81,7 @@ public class ForegroundServiceCreator {
         this.serviceDescription = service.description;
         this.notificationTitle = notification.title;
         this.notificationContent = notification.content;
+        this.notificationActions = creator.actions;
     }
 
     public void startForeground(int foregroundServiceType) {
@@ -85,12 +94,40 @@ public class ForegroundServiceCreator {
                 intent,
                 className,
                 notificationTitle,
-                notificationContent);
+                notificationContent,
+                notificationActions);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && foregroundServiceType != FOREGROUND_SERVICE_TYPE_UNKNOWN) {
             service.startForeground(notificationId, notification, foregroundServiceType);
         } else {
             service.startForeground(notificationId, notification);
+        }
+    }
+
+    /**
+     * Replaces the notification body while the service keeps running.
+     *
+     * @Note
+     *  ! `startForeground` cannot be used for this: calling it again with the same
+     *  ! id is allowed but re-announces the service, whereas `notify` only swaps
+     *  ! the content. The action buttons and the title are kept as they were.
+     *  ! zh-CN: 此处不能改用 `startForeground`: 用同一 id 再次调用虽然可行,
+     *  ! 但那会重新声明该服务, 而 `notify` 只替换内容.
+     *  ! 操作按钮与标题保持原样.
+     */
+    public void updateNotification(String content) {
+        this.notificationContent = content;
+
+        Notification notification = ForegroundServiceUtils.getNotification(service,
+                intent,
+                className,
+                notificationTitle,
+                notificationContent,
+                notificationActions);
+
+        NotificationManager manager = (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (manager != null) {
+            manager.notify(notificationId, notification);
         }
     }
 
@@ -108,6 +145,7 @@ public class ForegroundServiceCreator {
         private String serviceDescription;
         private String notificationTitle;
         private String notificationContent;
+        private List<NotificationCompat.Action> notificationActions;
 
         public Builder(Service context) {
             this.service = context;
@@ -164,11 +202,22 @@ public class ForegroundServiceCreator {
             return this;
         }
 
+        /**
+         * Adds action buttons to the persistent notification.
+         *
+         * @param actions actions to show, or null for none.
+         */
+        public Builder setActions(List<NotificationCompat.Action> actions) {
+            this.notificationActions = actions;
+            return this;
+        }
+
         public ForegroundServiceCreator create() {
             return new ForegroundServiceCreator(new Creator(className,
                     intent,
                     new Creator.Service(service, serviceName, serviceDescription),
-                    new Creator.Notification(notificationId, notificationTitle, notificationContent)));
+                    new Creator.Notification(notificationId, notificationTitle, notificationContent),
+                    notificationActions));
         }
     }
 

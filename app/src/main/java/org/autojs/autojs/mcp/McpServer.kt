@@ -3,6 +3,7 @@ package org.autojs.autojs.mcp
 import android.util.Log
 import io.reactivex.subjects.BehaviorSubject
 import org.autojs.autojs.core.pref.Pref
+import org.autojs.autojs6.R
 import java.net.BindException
 import java.net.Inet4Address
 import java.net.InetAddress
@@ -82,6 +83,10 @@ object McpServer {
         val instance = McpHttpServer(
             requestedPort = port,
             bindAddress = InetAddress.getByName(if (lanAccess) WILDCARD_HOST else LOOPBACK_HOST),
+            // Forwarded rather than consumed here: the notification that shows the
+            // count belongs to the foreground service, not to this facade.
+            // zh-CN: 这里只做转发而非自行消费: 展示连接数的通知属于前台服务, 不属于本门面.
+            onClientCountChanged = { count -> onClientCountChanged?.invoke(count) },
         )
 
         return try {
@@ -146,12 +151,40 @@ object McpServer {
 
     fun connectedClientCount(): Int = server?.connectedClientCount() ?: 0
 
-    /** Human readable URL of the MCP endpoint. zh-CN: MCP 端点的可读 URL. */
-    fun endpointDescription(): String {
-        val port = server?.localPort ?: Pref.mcpServerPort
-        val host = if (Pref.isMcpServerLanAccessEnabled) localNetworkAddress() ?: LOOPBACK_HOST else LOOPBACK_HOST
-        return "http://$host:$port${McpHttpServer.ENDPOINT_MCP}"
+    /**
+     * Notified whenever a client connects or disconnects, so the foreground
+     * service can keep its notification in step. Set by the service and cleared
+     * when it goes away.
+     * zh-CN: 每当有客户端连接或断开时回调, 使前台服务能同步刷新通知.
+     * 由服务设置, 服务销毁时清空.
+     */
+    @Volatile
+    var onClientCountChanged: ((Int) -> Unit)? = null
+
+    /** Loopback endpoint, always reachable from this device. zh-CN: 本机回环端点. */
+    fun localEndpoint(): String =
+        "http://$LOOPBACK_HOST:${boundPort()}${McpHttpServer.ENDPOINT_MCP}"
+
+    /**
+     * LAN endpoint, or null when local network access is off or no site-local
+     * address could be resolved.
+     * zh-CN: 局域网端点; 未开启局域网访问或解析不到站点本地地址时为 null.
+     */
+    fun lanEndpoint(): String? {
+        if (!Pref.isMcpServerLanAccessEnabled) return null
+        val host = localNetworkAddress() ?: return null
+        return "http://$host:${boundPort()}${McpHttpServer.ENDPOINT_MCP}"
     }
+
+    /**
+     * The single URL used in logs: the LAN one when it exists, since that is the
+     * address a remote client actually needs, otherwise the loopback one.
+     * zh-CN: 日志中使用的单一 URL: 存在局域网地址时优先使用它 ——
+     * 那才是远程客户端真正需要的地址 —— 否则回退到回环地址.
+     */
+    fun endpointDescription(): String = lanEndpoint() ?: localEndpoint()
+
+    private fun boundPort(): Int = server?.localPort ?: Pref.mcpServerPort
 
     private fun currentRunningState(): McpServerState = McpServerState.Running(
         port = server?.localPort ?: Pref.mcpServerPort,
