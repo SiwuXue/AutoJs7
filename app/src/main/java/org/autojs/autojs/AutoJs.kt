@@ -10,6 +10,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.autojs.autojs.core.accessibility.AccessibilityTool
+import org.autojs.autojs.core.accessibility.AccessibilityWatchdog
 import org.autojs.autojs.core.accessibility.Capture
 import org.autojs.autojs.core.accessibility.LayoutInspector.CaptureAvailableListener
 import org.autojs.autojs.core.console.GlobalConsole
@@ -128,6 +129,13 @@ open class AutoJs(appContext: Application) : AbstractAutoJs(appContext) {
                 McpWatchdog.start()
             }
         }, "mcp-restore").apply { isDaemon = true }.start()
+
+        // @Added by fork author on Sep 23, 2026.
+        //  ! Independent of the MCP server: every UI tool needs accessibility, and
+        //  ! an app update disables the service on the system's own initiative.
+        //  ! zh-CN: 与 MCP 服务无关: 所有 UI 工具都依赖无障碍,
+        //  ! 而应用更新会让系统主动禁用该服务.
+        AccessibilityWatchdog.start()
     }
 
     private interface LayoutInspectFloatyWindow {
