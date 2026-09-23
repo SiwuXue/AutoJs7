@@ -26,6 +26,7 @@ import org.autojs.autojs.core.record.GlobalActionRecorder;
 import org.autojs.autojs.core.record.Recorder;
 import org.autojs.autojs.core.shizuku.IUserService;
 import org.autojs.autojs.event.GlobalKeyObserver;
+import org.autojs.autojs.mcp.McpServer;
 import org.autojs.autojs.model.explorer.ExplorerDirPage;
 import org.autojs.autojs.model.explorer.ExplorerPage;
 import org.autojs.autojs.model.explorer.Explorers;
@@ -313,6 +314,7 @@ public class CircularMenu implements LayoutInspector.CaptureAvailableListener {
                         // ViewUtils.showToast(mContext, mContext.getString(R.string.text_pointer_location_toggle_failed_with_hint), true);
                         mPointerLocationTool.config();
                     }))
+                    .item(R.drawable.ic_phonelink_black_48dp, mContext.getString(R.string.text_mcp_server), this::getMcpServerState, onCircularMenuItemClick(itemView -> toggleMcpServer()))
                     .item(R.drawable.ic_close_white_48dp, mContext.getString(R.string.text_close_floating_button), onCircularMenuItemClick(itemView -> {
                         closeAndSaveState(false);
                     }))
@@ -331,6 +333,50 @@ public class CircularMenu implements LayoutInspector.CaptureAvailableListener {
     @NonNull
     private String getPointerLocationState() {
         return mPointerLocationTool.isShowing() ? mContext.getString(R.string.text_enabled) : mContext.getString(R.string.text_disabled);
+    }
+
+    @NonNull
+    private String getMcpServerState() {
+        return McpServer.isActive() ? mContext.getString(R.string.text_enabled) : mContext.getString(R.string.text_disabled);
+    }
+
+    private void toggleMcpServer() {
+        if (McpServer.isActive()) {
+            McpServer.disable();
+            ViewUtils.showToast(mContext, mContext.getString(R.string.summary_mcp_server_stopped));
+            return;
+        }
+        if (McpServer.requiresConsent()) {
+            showMcpRiskDialog();
+            return;
+        }
+        enableMcpServer();
+    }
+
+    private void enableMcpServer() {
+        McpServer.enable();
+        ViewUtils.showToast(mContext, mContext.getString(R.string.mcp_notification_title));
+    }
+
+    /**
+     * Same one-time security notice the settings screen shows before the port
+     * first opens, so the quick toggle never becomes a way to skip consent.
+     * zh-CN: 与设置页相同的一次性安全提示, 确保快捷开关不会成为绕过知情同意的路径.
+     */
+    private void showMcpRiskDialog() {
+        DialogUtils.showAdaptive(new MaterialDialog.Builder(mContext)
+                .title(R.string.dialog_mcp_server_risk_title)
+                .content(R.string.dialog_mcp_server_risk_message)
+                .positiveText(R.string.dialog_button_confirm)
+                .positiveColorRes(R.color.dialog_button_attraction)
+                .negativeText(R.string.dialog_button_cancel)
+                .negativeColorRes(R.color.dialog_button_default)
+                .onPositive((dialog, which) -> {
+                    McpServer.acknowledgeConsent();
+                    enableMcpServer();
+                })
+                .onNegative((dialog, which) -> dialog.dismiss())
+                .build());
     }
 
     @NonNull

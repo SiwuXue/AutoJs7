@@ -112,7 +112,7 @@ class McpServerSwitchPreference : ThemeColorServiceSwitchPreference {
             .negativeText(R.string.dialog_button_cancel)
             .negativeColorRes(R.color.dialog_button_default)
             .onPositive { _, _ ->
-                Pref.putBoolean(R.string.key_mcp_server_risk_acknowledged, true)
+                McpServer.acknowledgeConsent()
                 riskDialog = null
                 // Re-run the toggle now that consent has been recorded.
                 // zh-CN: 同意已记录, 重新执行切换.

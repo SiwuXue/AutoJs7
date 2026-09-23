@@ -137,6 +137,52 @@ object McpServer {
     }
 
     /**
+     * Live switch state shared by every UI entry point: the settings switch and
+     * the floating circular menu both read this, so neither can claim the server
+     * is up while the socket is actually down.
+     * zh-CN: 所有 UI 入口共享的实时开关状态: 设置页开关与悬浮菜单都读取它,
+     * 因此两者都不会在 socket 实际未监听时声称服务已开启.
+     */
+    @JvmStatic
+    fun isActive(): Boolean = isRunning || McpServerService.isRunning(McpUi.context)
+
+    /**
+     * Quick toggle used by the floating circular menu.
+     *
+     * @Note
+     *  ! The preference is written *before* the service is started or stopped.
+     *  ! Writing it afterwards would leave a window in which [McpWatchdog] reads
+     *  ! "enabled but not running" and starts the service again.
+     *  ! zh-CN: 偏好先于服务的启停写入. 若反过来, 会出现一个窗口期:
+     *  ! [McpWatchdog] 读到 "已启用但未运行" 并把服务重新拉起.
+     */
+    @JvmStatic
+    fun enable() {
+        Pref.putBoolean(R.string.key_mcp_server_enabled, true)
+        McpServerService.start(McpUi.context)
+    }
+
+    @JvmStatic
+    fun disable() {
+        Pref.putBoolean(R.string.key_mcp_server_enabled, false)
+        McpWatchdog.stop()
+        McpServerService.stop(McpUi.context)
+    }
+
+    /**
+     * Informed consent, asked once per installation before the port first opens.
+     * zh-CN: 知情同意: 每次安装仅询问一次, 在端口首次开放之前.
+     */
+    @JvmStatic
+    fun requiresConsent(): Boolean =
+        !isActive() && !Pref.getBoolean(R.string.key_mcp_server_risk_acknowledged, false)
+
+    @JvmStatic
+    fun acknowledgeConsent() {
+        Pref.putBoolean(R.string.key_mcp_server_risk_acknowledged, true)
+    }
+
+    /**
      * Restarts the server so a changed port or bind address takes effect.
      * zh-CN: 重启服务, 使修改后的端口或绑定地址生效.
      */
