@@ -4,6 +4,8 @@ import android.accessibilityservice.AccessibilityService as PlatformAccessibilit
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.view.accessibility.AccessibilityNodeInfo
+import android.view.accessibility.AccessibilityWindowInfo
 import org.autojs.autojs.AutoJs
 import org.autojs.autojs.app.GlobalAppContext
 import org.autojs.autojs.core.accessibility.AccessibilityBridge
@@ -60,6 +62,104 @@ internal object McpUi {
         val root = service.rootInActiveWindow ?: service.fastRootInActiveWindow ?: return null
         return UiObject.createRoot(root)
     }
+
+    /**
+     * A candidate root for `dump_ui_tree`, together with the window it came
+     * from, so the tool can report which window was actually dumped.
+     * zh-CN: `dump_ui_tree` 的候选根节点, 附带其来源窗口,
+     * 使工具能如实报告读到的是哪个窗口.
+     */
+    class DumpRoot(
+        /** -1 for the active window, otherwise the index in the window list. zh-CN: 活动窗口为 -1, 其余为窗口列表下标. */
+        val windowIndex: Int,
+        val fromActiveWindow: Boolean,
+        val packageName: String?,
+        val title: String?,
+        val type: Int,
+        val layer: Int,
+        val root: UiObject,
+    )
+
+    /**
+     * Root candidates for a tree dump, best first.
+     *
+     * @Why
+     *  ! [rootOrNull] only ever asks for the *active* window. When that root
+     *  ! cannot be read -- observed on WeChat, whose screens came back empty
+     *  ! while every other app dumped fine -- the caller had nothing left to
+     *  ! try, even though the service already holds the interactive window list
+     *  ! (`FLAG_RETRIEVE_INTERACTIVE_WINDOWS`). Walking that list is what turns
+     *  ! "the active root happened to be unreadable" into "the app's own window
+     *  ! is still readable".
+     *  ! The cached `fastRootInActiveWindow` is deliberately *not* used here: it
+     *  ! is only refreshed from a successful active-window read, so the very
+     *  ! failure this list exists for would leave it stale -- and a stale root
+     *  ! silently reports another app's UI as if it were the current screen.
+     *  ! zh-CN: [rootOrNull] 只会去取*活动*窗口的根. 当该根读不到时 —— 实测微信就是
+     *  ! 这种情况: 它的界面返回空树, 而其他应用一切正常 —— 调用方就无路可走,
+     *  ! 尽管服务本就持有可交互窗口列表 (`FLAG_RETRIEVE_INTERACTIVE_WINDOWS`).
+     *  ! 遍历该列表, 正是把"恰好活动窗口读不到"变成"应用自己的窗口仍然能读"的关键.
+     *  ! 这里刻意**不**使用缓存的 `fastRootInActiveWindow`: 它只在活动窗口读取成功时
+     *  ! 才刷新, 因此本列表所要应对的那种失败恰好会让它保持陈旧 ——
+     *  ! 而一个陈旧的根会把别的应用的界面当成当前屏幕悄悄报出去.
+     */
+    fun dumpRootCandidates(): List<DumpRoot> = runCatching {
+        val service = AccessibilityService.instance ?: return emptyList()
+        val ownPackage = context.packageName
+        val candidates = ArrayList<DumpRoot>()
+        val seenPackages = HashSet<String>()
+
+        fun add(
+            root: AccessibilityNodeInfo?,
+            windowIndex: Int,
+            fromActive: Boolean,
+            title: String?,
+            type: Int,
+            layer: Int,
+            skipOwnOverlay: Boolean,
+        ) {
+            val node = root ?: return
+            val uiRoot = runCatching { UiObject.createRoot(node) }.getOrNull() ?: return
+            val pkg = runCatching { uiRoot.packageName() }.getOrNull()
+            // Our own floating overlay is never the thing a caller wants to dump.
+            // zh-CN: 自家的悬浮窗永远不是调用方想要 dump 的对象.
+            if (skipOwnOverlay && pkg == ownPackage) return
+            if (pkg != null && !seenPackages.add(pkg)) return
+            candidates += DumpRoot(windowIndex, fromActive, pkg, title, type, layer, uiRoot)
+        }
+
+        val activeWindow = service.windows.orEmpty().firstOrNull { it.isActive }
+        add(
+            service.rootInActiveWindow, -1, true,
+            activeWindow?.title?.toString(), activeWindow?.type ?: 0, activeWindow?.layer ?: 0,
+            skipOwnOverlay = false,
+        )
+
+        service.windows.orEmpty()
+            .sortedByDescending { it.layer }
+            .forEachIndexed { index, window ->
+                if (window.type == AccessibilityWindowInfo.TYPE_SYSTEM) return@forEachIndexed
+                add(window.root, index, false, window.title?.toString(), window.type, window.layer, skipOwnOverlay = true)
+            }
+
+        candidates
+    }.getOrDefault(emptyList())
+
+    /**
+     * Human readable summary of the windows the service can currently see, used
+     * only to explain a dump that found no readable window at all.
+     * zh-CN: 当前可被服务看到的窗口的可读摘要, 仅用于解释"一个可读窗口都没有"的情形.
+     */
+    fun describeWindows(): String = runCatching {
+        val service = AccessibilityService.instance ?: return "accessibility service is not connected"
+        val windows = service.windows.orEmpty()
+        if (windows.isEmpty()) return "the service reports no windows"
+        windows.sortedByDescending { it.layer }
+            .mapIndexed { index, window ->
+                "[$index] type=${window.type} layer=${window.layer} title=${window.title ?: "null"}"
+            }
+            .joinToString("; ")
+    }.getOrElse { "window listing failed: ${it.javaClass.simpleName}" }
 
     /**
      * Fails when the screen cannot be read, so a query that came back empty is

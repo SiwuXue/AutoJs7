@@ -87,8 +87,28 @@ internal object McpNode {
     }
 
     /**
+     * Result of [tree]: the serialized tree plus the counters behind it.
+     * zh-CN: [tree] 的结果: 序列化后的树, 以及支撑它的统计计数.
+     */
+    class TreeResult(
+        val json: JsonObject,
+        val nodeCount: Int,
+        /** Nodes dropped for being invisible to the user. zh-CN: 因对用户不可见而被丢弃的节点数. */
+        val prunedInvisible: Int,
+        val hitNodeLimit: Boolean,
+    )
+
+    /**
      * Recursive tree dump honouring [maxDepth] and [maxNodes].
-     * zh-CN: 遵循 [maxDepth] 与 [maxNodes] 的递归树导出.
+     *
+     * @WhyCounters
+     *  ! An all-invisible tree used to be indistinguishable from an empty
+     *  ! screen: both came back as `nodeCount: 0` with no error, which is how
+     *  ! an app could dump as "nothing on screen" while its UI was plainly
+     *  ! there. Reporting the prune count is what tells the two apart.
+     *  ! zh-CN: 整棵树都不可见与屏幕真的为空过去无法区分: 两者都返回 `nodeCount: 0`
+     *  ! 且不报错 —— 这正是"界面明明在, 却 dump 出一片空白"的由来.
+     *  ! 上报剪枝计数正是区分二者的关键.
      */
     fun tree(
         root: UiObject,
@@ -98,9 +118,10 @@ internal object McpNode {
         includeInvisible: Boolean = false,
         includeActions: Boolean = false,
         textLimit: Int = DEFAULT_TEXT_LIMIT,
-    ): JsonObject {
+    ): TreeResult {
         val counter = intArrayOf(0)
         var hitNodeLimit = false
+        var prunedInvisible = 0
 
         fun visit(node: UiObject, depth: Int): JsonObject? {
             if (counter[0] >= maxNodes) {
@@ -113,6 +134,7 @@ internal object McpNode {
                 return null
             }
             if (!includeInvisible && !node.visibleToUser()) {
+                prunedInvisible++
                 return null
             }
 
@@ -142,7 +164,7 @@ internal object McpNode {
             tree.addProperty("truncated", true)
         }
         tree.addProperty("nodeCount", counter[0])
-        return tree
+        return TreeResult(tree, counter[0], prunedInvisible, hitNodeLimit)
     }
 
     fun truncate(value: String?, limit: Int): String? {

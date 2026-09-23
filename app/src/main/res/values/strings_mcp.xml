@@ -77,4 +77,8 @@
     <string name="mcp_error_invalid_args">Invalid arguments: %1$s</string>
     <string name="mcp_error_tool_failed">Tool execution failed: %1$s</string>
 
+    <!-- Dump diagnostics. -->
+    <string name="mcp_dump_empty_tree_hint">The dumped window produced no usable nodes (an empty placeholder root at most). Invisible nodes have already been re-included automatically, so if it is still empty the app does not expose its content to accessibility -- fall back to ocr_recognize, find_image or read_notifications.</string>
+    <string name="mcp_dump_no_window_hint">No readable window was found. Make sure an app is in the foreground and the AutoJs6 accessibility service is connected.</string>
+
 </resources>

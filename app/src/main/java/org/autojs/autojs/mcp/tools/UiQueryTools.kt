@@ -13,6 +13,7 @@ import org.autojs.autojs.mcp.McpToolRisk
 import org.autojs.autojs.mcp.McpUi
 import org.autojs.autojs.core.automator.UiObject
 import org.autojs.autojs.runtime.api.ScreenMetrics
+import org.autojs.autojs6.R
 
 /**
  * Read-only tools that inspect the current screen.
@@ -167,13 +168,17 @@ internal object McpUiQueryTools {
         // zh-CN: 守卫放在请求检查之后, 首次调用服务之前.
         McpUi.requireAccessibilityService()
 
-        val root = McpUi.rootOrNull()
-            ?: return McpToolResult.error(
-                "No active window is available. Make sure some app is in the foreground and the AutoJs6 accessibility service is connected."
+        val candidates = McpUi.dumpRootCandidates()
+        if (candidates.isEmpty()) {
+            return McpToolResult.error(
+                "No active window is available. Make sure some app is in the foreground and the AutoJs6 accessibility service is connected. " +
+                        McpUi.context.getString(R.string.mcp_dump_no_window_hint) +
+                        " Windows: " + McpUi.describeWindows()
             )
+        }
 
-        val tree = McpNode.tree(
-            root = root,
+        fun build(entry: McpUi.DumpRoot, includeInvisible: Boolean): McpNode.TreeResult = McpNode.tree(
+            root = entry.root,
             maxDepth = maxDepth,
             maxNodes = maxNodes,
             packageFilter = packageFilter,
@@ -182,10 +187,95 @@ internal object McpUiQueryTools {
             textLimit = textLimit,
         )
 
+        // A tree that carries nothing but its own root is not an answer. WeChat
+        // is the reference case: its window root is a placeholder (empty class,
+        // zero bounds, no children, invisible), so the count is 1 -- insisting
+        // on "non-zero" would stop right there and report a screen that looks
+        // empty without saying why. The remaining windows get their turn, then
+        // the retry that re-includes invisible nodes.
+        // zh-CN: 除根节点外什么都没有的树不算答案. 微信正是参照案例:
+        // 它的窗口根是一个占位节点 (class 为空, 边界全零, 无子节点, 不可见),
+        // 计数为 1 —— 若只判断"非零"就会停在这里, 报出一个既空又不说明原因的屏幕.
+        // 因此先让其余窗口依次获得机会, 再用"包含不可见节点"重试.
+        fun usable(result: McpNode.TreeResult): Boolean = result.nodeCount > 1
+
+        var selected = candidates.first()
+        var tree = build(selected, includeInvisible)
+        var fallback: String? = null
+
+        if (!usable(tree)) {
+            val attempts = ArrayList<Triple<McpUi.DumpRoot, McpNode.TreeResult, String>>()
+            candidates.drop(1).forEach { attempts += Triple(it, build(it, includeInvisible), "windowFallback") }
+            if (!includeInvisible) {
+                candidates.forEach { attempts += Triple(it, build(it, true), "includeInvisible") }
+            }
+
+            val hit = attempts.firstOrNull { usable(it.second) }
+            if (hit != null) {
+                selected = hit.first
+                tree = hit.second
+                fallback = hit.third
+            } else {
+                // Nothing was usable; keep the most informative attempt anyway,
+                // because `diagnostics` is what explains the situation.
+                // zh-CN: 没有一个可用; 仍然保留信息量最大的那次尝试,
+                // 因为解释情况的是 `diagnostics`.
+                attempts.maxByOrNull { it.second.nodeCount }?.let {
+                    if (it.second.nodeCount > tree.nodeCount) {
+                        selected = it.first
+                        tree = it.second
+                        fallback = it.third
+                    }
+                }
+            }
+        }
+
         return McpToolResult.json(McpJson.obj().apply {
             add("screen", screenSize())
-            add("root", tree)
+            add("window", describeWindow(selected))
+            fallback?.let { addProperty("fallback", it) }
+            add("root", tree.json)
+            if (!usable(tree)) {
+                add("diagnostics", describeEmptyTree(selected, candidates, tree))
+                addProperty("hint", McpUi.context.getString(R.string.mcp_dump_empty_tree_hint))
+            }
         })
+    }
+
+    /**
+     * Metadata of the window whose root was dumped, so the caller can tell
+     * which window the tree belongs to instead of assuming it is the whole
+     * screen.
+     * zh-CN: 被 dump 的根节点所属窗口的元信息, 使调用方知道这棵树属于哪个窗口,
+     * 而不是想当然地认为它就是整块屏幕.
+     */
+    private fun describeWindow(entry: McpUi.DumpRoot): JsonObject = McpJson.obj().apply {
+        addProperty("active", entry.fromActiveWindow)
+        addProperty("windowIndex", entry.windowIndex)
+        entry.packageName?.let { addProperty("packageName", it) }
+        entry.title?.let { addProperty("title", it) }
+        addProperty("type", entry.type)
+        addProperty("layer", entry.layer)
+    }
+
+    /**
+     * Machine readable explanation of a dump that produced no nodes, so the
+     * caller can tell "the screen really is empty" apart from "this app does
+     * not expose anything to accessibility".
+     * zh-CN: 空树时给出的机器可读解释, 使调用方能区分"屏幕本来就是空的"
+     * 与"这个应用没有向无障碍暴露任何内容".
+     */
+    private fun describeEmptyTree(
+        selected: McpUi.DumpRoot,
+        candidates: List<McpUi.DumpRoot>,
+        tree: McpNode.TreeResult,
+    ): JsonObject = McpJson.obj().apply {
+        addProperty("empty", true)
+        addProperty("prunedInvisible", tree.prunedInvisible)
+        selected.root.className()?.let { addProperty("rootClassName", it) }
+        addProperty("rootVisible", selected.root.visibleToUser())
+        addProperty("rootChildCount", selected.root.childCount())
+        add("candidates", JsonArray().apply { candidates.forEach { add(describeWindow(it)) } })
     }
 
     // ------------------------------------------------------------------ ui_find

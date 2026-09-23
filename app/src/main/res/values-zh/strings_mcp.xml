@@ -62,4 +62,8 @@
     <string name="mcp_error_invalid_args">参数无效: %1$s</string>
     <string name="mcp_error_tool_failed">工具执行失败: %1$s</string>
 
+    <!-- Dump diagnostics. -->
+    <string name="mcp_dump_empty_tree_hint">被 dump 的窗口没有产生可用节点(至多是一个空的占位根). 已自动重新包含不可见节点; 若仍为空, 说明该应用没有向无障碍暴露内容 —— 请改用 ocr_recognize, find_image 或 read_notifications.</string>
+    <string name="mcp_dump_no_window_hint">没有找到可读取的窗口. 请确认有应用处于前台, 且 AutoJs6 的无障碍服务已连接.</string>
+
 </resources>

@@ -144,7 +144,13 @@ open class AccessibilityService : android.accessibilityservice.AccessibilityServ
     }
 
     override fun getRootInActiveWindow(): AccessibilityNodeInfo? {
-        return runCatching { super.getRootInActiveWindow() }.getOrNull()
+        // Swallowing the failure keeps callers simple, but it used to do so
+        // silently -- which left "why does this app dump as empty" unanswerable.
+        // zh-CN: 吞掉失败可以让调用方保持简单, 但过去连日志都没有,
+        // 导致"这个应用为什么 dump 为空"无从回答.
+        return runCatching { super.getRootInActiveWindow() }
+            .onFailure { Log.w(TAG, "getRootInActiveWindow failed: ${it.javaClass.simpleName}: ${it.message}") }
+            .getOrNull()
     }
 
     override fun onDestroy() {
