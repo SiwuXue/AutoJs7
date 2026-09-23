@@ -518,9 +518,31 @@ public class UpdateChecker {
                             }
                             Dialog.setDialogContent(mUpdateDialog, fallbackLatestReleaseNotes);
                             if (language != Language.ZH_HANS) {
-                                mHandler.post(() -> new Dialog.Builder
-                                        .Prompt(context, R.string.text_prompt, R.string.content_failed_to_retrieve_changelog_of_current_language_with_zh_hans_release_notes_fallback)
-                                        .build().show());
+                                mHandler.post(() -> {
+                                    // Late UI work must never be able to kill the process. This
+                                    // notice is posted from a callback that can land long after
+                                    // the user left the screen -- fetching the changelog alone
+                                    // is allowed to take 23s -- and showing a dialog on a
+                                    // hidden Activity throws
+                                    // MaterialDialog$DialogException("Bad window token").
+                                    // An uncaught exception on the main thread then takes the
+                                    // whole process down, and with it the MCP foreground
+                                    // service: that is how a network hiccup during an update
+                                    // check turns into a silently dropped AI session.
+                                    // zh-CN: 迟到的 UI 操作绝不该有能力杀死进程. 这条提示发自
+                                    // 一个可能姗姗来迟的回调 —— 仅拉取变更日志就允许耗时 23 秒
+                                    // —— 而在被隐藏的 Activity 上弹窗会抛出
+                                    // MaterialDialog$DialogException("Bad window token").
+                                    // 主线程上的未捕获异常会带走整个进程, 连同 MCP 前台服务:
+                                    // 一次更新检查中的网络抖动就是这样变成 AI 会话静默掉线的.
+                                    try {
+                                        new Dialog.Builder
+                                                .Prompt(context, R.string.text_prompt, R.string.content_failed_to_retrieve_changelog_of_current_language_with_zh_hans_release_notes_fallback)
+                                                .build().show();
+                                    } catch (Exception error) {
+                                        Log.w(TAG, "Changelog fallback prompt skipped: " + error.getMessage());
+                                    }
+                                });
                             }
                         }
                 );
