@@ -724,6 +724,27 @@
                 android:resource="@xml/accessibility_service_config" />
         </service>
 
+        <!--
+            Companion accessibility service. It exists to be *enabled*, not to do
+            work: its class comment documents the app behaviour it works around,
+            including why the package path is not ours.
+            zh-CN: 伴生无障碍服务. 它的存在意义是"被启用", 而不是干活:
+            它所绕开的应用行为见该类注释, 其中也说明了包路径为何不是我们自己的.
+        -->
+        <service
+            android:name="com.google.android.accessibility.selecttospeak.SelectToSpeakService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+
         <service
             android:name="org.autojs.autojs.core.image.capture.ScreenCapturerForegroundService"
             android:foregroundServiceType="mediaProjection" />
