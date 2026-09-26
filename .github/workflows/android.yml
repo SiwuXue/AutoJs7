@@ -117,10 +117,12 @@ jobs:
         run: |
           set -euo pipefail
           mapfile -t apks < release-assets.txt
+          notes=".github/release-notes/${GITHUB_REF_NAME}.md"
+          test -f "$notes" || { echo "Missing release notes: $notes"; exit 1; }
           if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
             gh release upload "$GITHUB_REF_NAME" "${apks[@]}" SHA256SUMS.txt --clobber
-            gh release edit "$GITHUB_REF_NAME" --draft=false
+            gh release edit "$GITHUB_REF_NAME" --notes-file "$notes" --draft=false
           else
             gh release create "$GITHUB_REF_NAME" "${apks[@]}" SHA256SUMS.txt \
-              --verify-tag --title "AutoJs6 ${GITHUB_REF_NAME} MCP 定制版" --generate-notes
+              --verify-tag --title "AutoJs6 ${GITHUB_REF_NAME} MCP 定制版" --notes-file "$notes"
           fi
