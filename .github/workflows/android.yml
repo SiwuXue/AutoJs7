@@ -84,7 +84,10 @@ jobs:
       - name: Build signed release APKs
         run: |
           chmod +x gradlew
-          ./gradlew :app:assembleInrtRelease :app:assembleAppRelease --no-daemon
+          # ABI splitting is disabled whenever an Inrt assemble task is in the
+          # same Gradle invocation, so build the two flavors separately.
+          ./gradlew :app:assembleInrtRelease --no-daemon
+          ./gradlew :app:assembleAppRelease --no-daemon
       - name: Verify APK signatures and generate checksums
         shell: bash
         run: |
@@ -93,6 +96,7 @@ jobs:
           apks=(app/build/outputs/apk/app/release/*-arm64-v8a.apk
                 app/build/outputs/apk/app/release/*-armeabi-v7a.apk
                 app/build/outputs/apk/app/release/*-universal.apk)
+          find app/build/outputs/apk/app/release -maxdepth 1 -type f -name '*.apk' -printf '%f\n' | sort
           test "${#apks[@]}" -eq 3 || { echo 'Expected arm64, armv7, and universal APKs'; exit 1; }
           apksigner="$(find "$ANDROID_HOME/build-tools" -mindepth 2 -maxdepth 2 -name apksigner | sort -V | tail -n 1)"
           test -n "$apksigner" && test -x "$apksigner" || { echo 'Android apksigner is missing'; exit 1; }
