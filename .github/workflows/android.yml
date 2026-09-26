@@ -94,8 +94,8 @@ jobs:
                 app/build/outputs/apk/app/release/*-armeabi-v7a.apk
                 app/build/outputs/apk/app/release/*-universal.apk)
           test "${#apks[@]}" -eq 3 || { echo 'Expected arm64, armv7, and universal APKs'; exit 1; }
-          apksigner="$ANDROID_HOME/build-tools/36.0.0/apksigner"
-          test -x "$apksigner" || { echo 'Android apksigner 36.0.0 is missing'; exit 1; }
+          apksigner="$(find "$ANDROID_HOME/build-tools" -mindepth 2 -maxdepth 2 -name apksigner | sort -V | tail -n 1)"
+          test -n "$apksigner" && test -x "$apksigner" || { echo 'Android apksigner is missing'; exit 1; }
           for apk in "${apks[@]}"; do "$apksigner" verify "$apk"; done
           for apk in "${apks[@]}"; do
             hash="$(sha256sum "$apk" | cut -d ' ' -f 1)"
