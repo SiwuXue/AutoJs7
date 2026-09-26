@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Give LeakCanary room to analyze heap dumps in debug builds only. -->
+    <application android:largeHeap="true" />
+</manifest>

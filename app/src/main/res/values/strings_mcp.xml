@@ -61,7 +61,7 @@
     <!-- Foreground service notification. -->
     <string name="mcp_notification_channel_name">%1$s MCP server</string>
     <string name="mcp_notification_title">MCP server is running</string>
-    <string name="mcp_notification_clients">Connected clients: %1$d</string>
+    <string name="mcp_notification_sessions">MCP sessions (last hour): %1$d</string>
     <string name="mcp_notification_action_stop">Stop</string>
     <string name="mcp_notification_action_settings">Settings</string>
 

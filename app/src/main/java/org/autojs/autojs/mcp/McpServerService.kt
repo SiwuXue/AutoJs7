@@ -33,10 +33,10 @@ import org.autojs.autojs6.R
  * @Note
  *  ! The notification is the user's only always-visible evidence that the channel
  *  ! is open, so it carries everything needed to act on that: both endpoints, the
- *  ! number of connected clients, and buttons to stop the server or open its
+ *  ! number of recent MCP sessions, and buttons to stop the server or open its
  *  ! settings without going through the app first.
  *  ! zh-CN: 通知是用户唯一始终可见的"通道已开启"证据, 因此它承载了据此行动所需的一切:
- *  ! 两个端点地址, 已连接客户端数量, 以及无需先进入应用即可停止服务或打开设置的按钮.
+ *  ! 两个端点地址, 近期 MCP 会话数量, 以及无需先进入应用即可停止服务或打开设置的按钮.
  */
 class McpServerService : Service() {
 
@@ -71,9 +71,9 @@ class McpServerService : Service() {
             .create()
             .apply { startForeground(foregroundServiceType) }
 
-        // Registered before the server starts so the very first client to connect
-        // is already counted in the notification.
-        // zh-CN: 在服务端启动前注册, 使第一个连接的客户端就已计入通知.
+        // Registered before the server starts so the first completed handshake
+        // can update the notification immediately.
+        // zh-CN: 在服务端启动前注册, 使首次完成握手时便能更新通知.
         McpServer.onClientCountChanged = { refreshNotification() }
 
         McpServer.start()
@@ -121,9 +121,9 @@ class McpServerService : Service() {
     }
 
     /**
-     * Body of the persistent notification: both endpoints plus the live client
-     * count, one per line.
-     * zh-CN: 常驻通知的内容: 两个端点地址加上实时客户端数量, 每行一项.
+     * Body of the persistent notification: both endpoints plus the recent MCP
+     * session count, one per line.
+     * zh-CN: 常驻通知的内容: 两个端点地址加上近期 MCP 会话数量, 每行一项.
      */
     private fun notificationContent(): String = buildString {
         append(getString(R.string.mcp_endpoint_local, McpServer.localEndpoint()))
@@ -138,7 +138,7 @@ class McpServerService : Service() {
             append(getString(R.string.mcp_endpoint_lan_disabled))
         }
         append('\n')
-        append(getString(R.string.mcp_notification_clients, McpServer.connectedClientCount()))
+        append(getString(R.string.mcp_notification_sessions, McpServer.activeSessionCount()))
     }
 
     /** Stop and settings buttons on the notification itself. zh-CN: 通知自带的停止与设置按钮. */

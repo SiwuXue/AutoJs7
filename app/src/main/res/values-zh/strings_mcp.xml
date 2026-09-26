@@ -46,7 +46,7 @@
     <!-- Foreground service notification. -->
     <string name="mcp_notification_channel_name">%1$s MCP 服务</string>
     <string name="mcp_notification_title">MCP 服务运行中</string>
-    <string name="mcp_notification_clients">已连接客户端: %1$d</string>
+    <string name="mcp_notification_sessions">MCP 会话（近 1 小时）: %1$d</string>
     <string name="mcp_notification_action_stop">停止服务</string>
     <string name="mcp_notification_action_settings">设置</string>
 

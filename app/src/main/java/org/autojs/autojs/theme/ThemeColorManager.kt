@@ -48,7 +48,7 @@ object ThemeColorManager {
         ThemeColorWidgetReferenceManager.add(object : ThemeColorMutableReference {
             val weakReference = WeakReference(activity)
             override fun setThemeColor(color: ThemeColor) {
-                ViewUtils.setNavigationBarBackgroundColor(activity, color.colorPrimary)
+                weakReference.get()?.let { ViewUtils.setNavigationBarBackgroundColor(it, color.colorPrimary) }
             }
 
             override fun isNull() = weakReference.get() == null

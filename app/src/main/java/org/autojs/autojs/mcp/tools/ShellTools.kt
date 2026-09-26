@@ -1,6 +1,5 @@
 package org.autojs.autojs.mcp.tools
 
-import org.autojs.autojs.mcp.McpArgumentException
 import org.autojs.autojs.mcp.McpArgs
 import org.autojs.autojs.mcp.McpJson
 import org.autojs.autojs.mcp.McpSchema
@@ -8,8 +7,8 @@ import org.autojs.autojs.mcp.McpTool
 import org.autojs.autojs.mcp.McpToolResult
 import org.autojs.autojs.mcp.McpToolRisk
 import org.autojs.autojs.runtime.api.AbstractShell
-import org.autojs.autojs.runtime.api.ProcessShell
 import org.autojs.autojs.runtime.api.WrappedShizuku
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 
 /**
@@ -36,6 +35,7 @@ internal object McpShellTools {
     private const val DEFAULT_SHIZUKU_TIMEOUT_MS = 15_000
 
     private const val MAX_SHIZUKU_TIMEOUT_MS = 60_000
+    private val shizukuBusy = AtomicBoolean(false)
 
     private fun runShellTool(): McpTool = McpTool(
         name = "run_shell",
@@ -43,8 +43,9 @@ internal object McpShellTools {
         description = buildString {
             append("Runs a shell command and returns its exit code, standard output and standard error. ")
             append("Set `withRoot` to route the command through `su`, which needs a rooted device. ")
-            append("Commands are given a `timeoutMs` budget: on expiry the call returns with `timedOut: true` while ")
-            append("the process keeps running in the background, so a long or interactive command cannot wedge the server. ")
+            append("Commands have a `timeoutMs` budget. On expiry the server attempts to terminate the process tree ")
+            append("and returns `timedOut: true`; independently detached processes may survive. ")
+            append("Output is drained continuously and capped at 1 MiB per stream. ")
             append("Prefer a purpose built tool whenever one exists; reach for the shell only when nothing else fits.")
         },
         risk = McpToolRisk.DANGEROUS,
@@ -69,54 +70,37 @@ internal object McpShellTools {
         val withRoot = args.optBoolean("withRoot", false)
         val timeoutMs = args.optInt("timeoutMs", DEFAULT_TIMEOUT_MS).coerceIn(100, MAX_TIMEOUT_MS)
 
-        // ProcessShell.exec() blocks until the process exits and offers no
-        // timeout, so it runs on a throwaway thread that the call site can stop
-        // waiting on. The thread is a daemon so an abandoned command can never
-        // hold the process open.
-        // zh-CN: ProcessShell.exec() 会阻塞到进程退出且不提供超时, 因此放在一个
-        // 可被调用方放弃等待的一次性线程上执行. 该线程为 daemon,
-        // 避免被遗弃的命令阻止进程退出.
-        val resultRef = AtomicReference<AbstractShell.Result?>()
-        val failureRef = AtomicReference<Throwable?>()
-
-        val worker = Thread({
-            runCatching { ProcessShell.exec(command, withRoot) }
-                .onSuccess { resultRef.set(it) }
-                .onFailure { failureRef.set(it) }
-        }, "mcp-shell")
-        worker.isDaemon = true
-        worker.start()
-
-        try {
-            worker.join(timeoutMs.toLong())
+        val outcome = try {
+            ManagedShellProcess.run(command, withRoot, timeoutMs)
         } catch (e: InterruptedException) {
             Thread.currentThread().interrupt()
             return McpToolResult.error("Waiting for the command was interrupted.")
+        } catch (e: Exception) {
+            return McpToolResult.error("Shell command failed to start: ${e.message ?: e::class.java.simpleName}")
         }
 
-        val result = resultRef.get()
-            ?: return McpToolResult.json(McpJson.obj().apply {
+        if (outcome.timedOut) {
+            return McpToolResult.json(McpJson.obj().apply {
                 addProperty("ok", false)
                 addProperty("timedOut", true)
                 addProperty("timeoutMs", timeoutMs)
                 addProperty("command", command)
-                failureRef.get()?.let { failure ->
-                    addProperty("error", "${failure::class.java.simpleName}: ${failure.message ?: "no message"}")
-                }
                 addProperty(
                     "hint",
-                    "The command did not finish in time and is still running in the background. " +
-                            "Its output will not be captured. Avoid interactive commands and long sleeps."
+                    "The command exceeded its deadline; its process tree was terminated where possible. " +
+                            "Independently detached processes may survive."
                 )
             })
+        }
 
         return McpToolResult.json(McpJson.obj().apply {
-            addProperty("ok", result.code == 0)
-            addProperty("code", result.code)
+            addProperty("ok", outcome.code == 0)
+            addProperty("code", outcome.code)
             addProperty("command", command)
             addProperty("withRoot", withRoot)
-            addProperty("stdout", result.result)
-            addProperty("stderr", result.error)
+            addProperty("stdout", outcome.stdout)
+            addProperty("stderr", outcome.stderr)
+            addProperty("outputTruncated", outcome.outputTruncated)
         })
     }
 
@@ -134,7 +118,8 @@ internal object McpShellTools {
             append("`screencap -p /sdcard/x.png`, `dumpsys ... | grep ...`. ")
             append("Keep large-output commands filtered with `grep` when possible. ")
             append("Commands are given a `timeoutMs` budget: on expiry the call returns with `timedOut: true`; ")
-            append("the underlying binder call may still be running, so avoid known-hanging commands such as ")
+            append("the underlying binder call may still be running; another Shizuku call is rejected until it completes. ")
+            append("Avoid known-hanging commands such as ")
             append("unfiltered `dumpsys`. Blocked while Shizuku is not ready -- the error message says which side failed.")
         },
         risk = McpToolRisk.DANGEROUS,
@@ -153,10 +138,16 @@ internal object McpShellTools {
         ),
     ) { args -> invokeShizuku(args) }
 
-    private fun invokeShizuku(args: McpArgs): McpToolResult {
+    internal fun invokeShizuku(
+        args: McpArgs,
+        execute: (String) -> AbstractShell.Result = WrappedShizuku::execCommand,
+    ): McpToolResult {
         val command = args.requireString("command")
         val timeoutMs = args.optInt("timeoutMs", DEFAULT_SHIZUKU_TIMEOUT_MS)
             .coerceIn(100, MAX_SHIZUKU_TIMEOUT_MS)
+        if (!shizukuBusy.compareAndSet(false, true)) {
+            return McpToolResult.error("SHIZUKU_BUSY: Another Shizuku command is still running.")
+        }
 
         // WrappedShizuku.execCommand() blocks on the binder and offers no timeout,
         // and a wedged binder channel is a known failure mode (large unfiltered
@@ -171,12 +162,21 @@ internal object McpShellTools {
         val failureRef = java.util.concurrent.atomic.AtomicReference<Throwable?>()
 
         val worker = Thread({
-            runCatching { WrappedShizuku.execCommand(command) }
-                .onSuccess { resultRef.set(it) }
-                .onFailure { failureRef.set(it) }
+            try {
+                runCatching { execute(command) }
+                    .onSuccess { resultRef.set(it) }
+                    .onFailure { failureRef.set(it) }
+            } finally {
+                shizukuBusy.set(false)
+            }
         }, "mcp-shizuku")
         worker.isDaemon = true
-        worker.start()
+        try {
+            worker.start()
+        } catch (e: Throwable) {
+            shizukuBusy.set(false)
+            return McpToolResult.error("Could not start Shizuku call: ${e.message ?: e::class.java.simpleName}")
+        }
 
         try {
             worker.join(timeoutMs.toLong())
@@ -185,15 +185,15 @@ internal object McpShellTools {
             return McpToolResult.error("Waiting for the Shizuku command was interrupted.")
         }
 
+        failureRef.get()?.let { failure ->
+            return McpToolResult.error("Shizuku command failed: ${failure::class.java.simpleName}: ${failure.message ?: "no message"}")
+        }
         val result = resultRef.get()
             ?: return McpToolResult.json(McpJson.obj().apply {
                 addProperty("ok", false)
                 addProperty("timedOut", true)
                 addProperty("timeoutMs", timeoutMs)
                 addProperty("command", command)
-                failureRef.get()?.let { failure ->
-                    addProperty("error", "${failure::class.java.simpleName}: ${failure.message ?: "no message"}")
-                }
                 addProperty(
                     "hint",
                     "The Shizuku command did not finish in time. The binder call cannot be cancelled, so " +

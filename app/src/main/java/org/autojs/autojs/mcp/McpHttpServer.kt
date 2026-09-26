@@ -18,7 +18,9 @@ import java.net.URLDecoder
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.ScheduledExecutorService
+import java.util.concurrent.Semaphore
+import java.util.concurrent.TimeUnit
 
 /**
  * Minimal HTTP/1.1 transport carrying MCP JSON-RPC messages.
@@ -55,13 +57,16 @@ internal class McpHttpServer(
     private var serverSocket: ServerSocket? = null
     private var acceptor: Thread? = null
     private var workers: ExecutorService? = null
+    private var sessionCleanup: ScheduledExecutorService? = null
 
     @Volatile
     private var running = false
 
     private val sessions = ConcurrentHashMap<String, McpSession>()
     private val sseStreams = ConcurrentHashMap<String, SseStream>()
-    private val clientCount = AtomicInteger(0)
+    private val lifecycleLock = Any()
+    private val connectionSlots = Semaphore(MAX_CONNECTIONS)
+    private val activeSockets = ConcurrentHashMap.newKeySet<Socket>()
 
     /** The port actually bound, which matters when [requestedPort] is 0. */
     val localPort: Int
@@ -70,9 +75,16 @@ internal class McpHttpServer(
     val isRunning: Boolean
         get() = running
 
-    fun connectedClientCount(): Int = clientCount.get()
+    fun connectedClientCount(): Int = if (running) activeSockets.size else 0
+
+    /** Streamable HTTP closes each TCP connection after a request. Count MCP
+     * sessions instead when reporting clients in the persistent notification. */
+    fun activeSessionCount(): Int = sessions.values.count {
+        it.protocolVersion != null && it.lastSeenAt >= System.currentTimeMillis() - SESSION_IDLE_TIMEOUT_MS
+    }
 
     @Throws(IOException::class)
+    @Synchronized
     fun start() {
         if (running) return
 
@@ -82,8 +94,19 @@ internal class McpHttpServer(
         serverSocket = socket
         running = true
 
-        workers = Executors.newCachedThreadPool { runnable ->
+        workers = Executors.newFixedThreadPool(MAX_CONNECTIONS) { runnable ->
             Thread(runnable, "mcp-conn").apply { isDaemon = true }
+        }
+
+        sessionCleanup = Executors.newSingleThreadScheduledExecutor { runnable ->
+            Thread(runnable, "mcp-session-cleanup").apply { isDaemon = true }
+        }.also { cleanup ->
+            cleanup.scheduleWithFixedDelay(
+                { runCatching { pruneSessions() }.onFailure { Log.w(TAG, "session cleanup failed", it) } },
+                SESSION_CLEANUP_INTERVAL_MS,
+                SESSION_CLEANUP_INTERVAL_MS,
+                TimeUnit.MILLISECONDS,
+            )
         }
 
         acceptor = Thread({ acceptLoop(socket) }, "mcp-acceptor").apply {
@@ -94,14 +117,18 @@ internal class McpHttpServer(
         Log.d(TAG, "MCP server listening on ${bindAddress.hostAddress}:${socket.localPort}")
     }
 
+    @Synchronized
     fun stop() {
-        running = false
-
-        sseStreams.values.forEach { it.close() }
-        sseStreams.clear()
+        val sockets = synchronized(lifecycleLock) {
+            running = false
+            activeSockets.toList().also { activeSockets.clear() }
+        }
 
         runCatching { serverSocket?.close() }
         serverSocket = null
+        sockets.forEach { closeQuietly(it) }
+        sseStreams.values.forEach { it.close() }
+        sseStreams.clear()
 
         acceptor?.interrupt()
         acceptor = null
@@ -109,8 +136,10 @@ internal class McpHttpServer(
         workers?.shutdownNow()
         workers = null
 
+        sessionCleanup?.shutdownNow()
+        sessionCleanup = null
+
         sessions.clear()
-        clientCount.set(0)
         onClientCountChanged(0)
     }
 
@@ -127,15 +156,28 @@ internal class McpHttpServer(
                 break
             }
 
-            val total = clientCount.incrementAndGet()
-            onClientCountChanged(total)
-
-            val executor = workers
-            if (executor == null) {
+            if (!connectionSlots.tryAcquire()) {
                 closeQuietly(client)
-                break
+                continue
             }
-            executor.execute { handleConnection(client) }
+            val admitted = synchronized(lifecycleLock) {
+                if (!running) false else activeSockets.add(client)
+            }
+            if (!admitted) {
+                closeQuietly(client)
+                connectionSlots.release()
+                continue
+            }
+            onClientCountChanged(connectedClientCount())
+            try {
+                val executor = workers ?: throw java.util.concurrent.RejectedExecutionException()
+                executor.execute { handleConnection(client) }
+            } catch (e: java.util.concurrent.RejectedExecutionException) {
+                closeQuietly(client)
+                activeSockets.remove(client)
+                connectionSlots.release()
+                onClientCountChanged(connectedClientCount())
+            }
         }
     }
 
@@ -162,8 +204,9 @@ internal class McpHttpServer(
             Log.w(TAG, "unexpected connection failure", e)
         } finally {
             closeQuietly(socket)
-            val remaining = clientCount.decrementAndGet()
-            onClientCountChanged(remaining.coerceAtLeast(0))
+            activeSockets.remove(socket)
+            connectionSlots.release()
+            onClientCountChanged(connectedClientCount())
         }
     }
 
@@ -225,7 +268,7 @@ internal class McpHttpServer(
             return
         }
 
-        val sessionHeader = request.headers[HEADER_SESSION_ID]
+        val sessionHeader = request.headers[HEADER_SESSION_ID.lowercase()]
         val session = when {
             sessionHeader == null -> newSession()
             else -> sessions[sessionHeader] ?: run {
@@ -241,6 +284,9 @@ internal class McpHttpServer(
         session.touch()
 
         val response = McpProtocol.handle(message, session)
+        if (message.isJsonObject && message.asJsonObject.get("method")?.takeIf { it.isJsonPrimitive }?.asString == "initialize") {
+            onClientCountChanged(activeSessionCount())
+        }
         val sessionHeaders = mapOf(HEADER_SESSION_ID to session.id)
 
         if (response == null) {
@@ -255,7 +301,11 @@ internal class McpHttpServer(
     }
 
     private fun handleSessionDelete(request: HttpRequest, output: BufferedOutputStream) {
-        request.headers[HEADER_SESSION_ID]?.let { sessions.remove(it) }
+        request.headers[HEADER_SESSION_ID.lowercase()]?.let { sessionId ->
+            if (sessions.remove(sessionId)?.protocolVersion != null) {
+                onClientCountChanged(activeSessionCount())
+            }
+        }
         writeEmpty(output, 204, "No Content")
     }
 
@@ -276,7 +326,8 @@ internal class McpHttpServer(
         // during iteration is easy to get subtly wrong.
         // zh-CN: 先收集再删除: 在迭代过程中修改 ConcurrentHashMap 的条目集合很容易出错.
         val stale = sessions.filterValues { it.lastSeenAt < cutoff }.keys.toList()
-        stale.forEach { sessions.remove(it) }
+        val removedActiveSession = stale.map { sessions.remove(it) }.any { it?.protocolVersion != null }
+        if (removedActiveSession) onClientCountChanged(activeSessionCount())
     }
 
     // ------------------------------------------------------- legacy SSE pair
@@ -306,7 +357,9 @@ internal class McpHttpServer(
             Log.d(TAG, "legacy SSE stream closed: ${e.message}")
         } finally {
             sseStreams.remove(session.id)
-            sessions.remove(session.id)
+            if (sessions.remove(session.id)?.protocolVersion != null) {
+                onClientCountChanged(activeSessionCount())
+            }
             stream.close()
         }
     }
@@ -339,6 +392,9 @@ internal class McpHttpServer(
         }
 
         val response = McpProtocol.handle(message, session)
+        if (message.isJsonObject && message.asJsonObject.get("method")?.takeIf { it.isJsonPrimitive }?.asString == "initialize") {
+            onClientCountChanged(activeSessionCount())
+        }
         if (response != null) {
             try {
                 stream.sendEvent("message", McpJson.stringify(response))
@@ -363,14 +419,20 @@ internal class McpHttpServer(
     private fun readRequest(input: InputStream): HttpRequest? {
         val requestLine = readLine(input) ?: return null
         if (requestLine.isBlank()) return null
+        var headerBytes = requestLine.length + 2
+        if (headerBytes > MAX_HEADER_BYTES) throw IOException("HTTP request line exceeds header limit")
 
         val parts = requestLine.split(' ')
         if (parts.size < 3) return null
 
         val headers = LinkedHashMap<String, String>()
+        var headerCount = 0
         while (true) {
             val line = readLine(input) ?: return null
+            headerBytes += line.length + 2
+            if (headerBytes > MAX_HEADER_BYTES) throw IOException("HTTP headers exceed $MAX_HEADER_BYTES bytes")
             if (line.isEmpty()) break
+            if (++headerCount > MAX_HEADER_COUNT) throw IOException("HTTP headers exceed $MAX_HEADER_COUNT fields")
             val separator = line.indexOf(':')
             if (separator <= 0) continue
             headers[line.substring(0, separator).trim().lowercase()] = line.substring(separator + 1).trim()
@@ -579,8 +641,12 @@ internal class McpHttpServer(
 
         private const val READ_TIMEOUT_MS = 60_000
         private const val SESSION_IDLE_TIMEOUT_MS = 3_600_000L
+        private const val SESSION_CLEANUP_INTERVAL_MS = 60_000L
         private const val SSE_KEEP_ALIVE_MS = 15_000L
         private const val MAX_LINE_BYTES = 16 * 1024
+        private const val MAX_HEADER_BYTES = 64 * 1024
+        private const val MAX_HEADER_COUNT = 100
+        private const val MAX_CONNECTIONS = 16
         private const val MAX_BODY_BYTES = 4 * 1024 * 1024
 
         private const val CRLF = "\r\n"

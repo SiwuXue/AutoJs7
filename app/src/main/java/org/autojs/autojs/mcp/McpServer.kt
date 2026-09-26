@@ -197,6 +197,8 @@ object McpServer {
 
     fun connectedClientCount(): Int = server?.connectedClientCount() ?: 0
 
+    fun activeSessionCount(): Int = server?.activeSessionCount() ?: 0
+
     /**
      * Notified whenever a client connects or disconnects, so the foreground
      * service can keep its notification in step. Set by the service and cleared

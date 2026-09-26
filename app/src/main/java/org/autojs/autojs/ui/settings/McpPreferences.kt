@@ -47,6 +47,12 @@ class McpServerSwitchPreference : ThemeColorServiceSwitchPreference {
     constructor(context: Context) : super(context)
 
     init {
+        // McpServer owns the persisted intent. The base service switch toggles
+        // its own stored value after starting the asynchronous foreground service,
+        // which can overwrite a newer value when the screen is recreated.
+        // zh-CN: 启用意图由 McpServer 统一保存; 前台服务异步启动期间,
+        // 基类再次写入开关值会与页面重建时的状态同步发生竞态.
+        isPersistent = false
         summaryProvider = SummaryProvider<McpServerSwitchPreference> { describeState() }
     }
 
@@ -65,12 +71,12 @@ class McpServerSwitchPreference : ThemeColorServiceSwitchPreference {
      * 其 `onCreate` 会拉起服务端, `onDestroy` 会将其关闭.
      */
     override fun start(): Boolean {
-        McpServerService.start(prefContext)
+        McpServer.enable()
         return true
     }
 
     override fun stop(): Boolean {
-        McpServerService.stop(prefContext)
+        McpServer.disable()
         return true
     }
 

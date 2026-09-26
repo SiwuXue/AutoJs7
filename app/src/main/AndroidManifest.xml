@@ -197,16 +197,12 @@
 
     <uses-permission android:name="com.android.vending.BILLING" />
 
-    <!-- Property "largeHeap" is not recommended to set to true. -->
-    <!-- https://stackoverflow.com/questions/27396892/what-are-advantages-of-setting-largeheap-to-true -->
-    <!-- However, "largeHeap" may be helpful for prevent LeakCanary from OOM when analyzing detected memory leaks. -->
     <application
         android:name="org.autojs.autojs.App"
         android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:icon="${icon}"
         android:label="${appName}"
-        android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
