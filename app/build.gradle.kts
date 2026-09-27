@@ -523,7 +523,7 @@ android {
             manifestPlaceholders.putAll(
                 mapOf(
                     "CHANNEL" to flavorNameInrt,
-                    "appName" to "AutoJs6.$flavorNameInrt",
+                    "appName" to "AutoJs7.$flavorNameInrt",
                     "intentCategory" to "android.intent.category.DEFAULT",
                     "intentCategoryInrt" to "android.intent.category.LAUNCHER",
                     "authorities" to "org.autojs.autojs6.$flavorNameInrt.fileprovider",

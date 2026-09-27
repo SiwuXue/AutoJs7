@@ -108,10 +108,10 @@ object McpServer {
     }
 
     @Synchronized
-    fun stop() {
+    fun stop(clearFailure: Boolean = true) {
         server?.stop()
         server = null
-        lastFailureReason = null
+        if (clearFailure) lastFailureReason = null
         state.onNext(McpServerState.Stopped)
         Log.i(TAG, "MCP server stopped")
     }
@@ -157,16 +157,33 @@ object McpServer {
      *  ! [McpWatchdog] 读到 "已启用但未运行" 并把服务重新拉起.
      */
     @JvmStatic
-    fun enable() {
+    fun enable() = enable("unspecified")
+
+    @JvmStatic
+    fun enable(source: String) {
+        Log.i(TAG, "MCP enable requested from $source")
         Pref.putBoolean(R.string.key_mcp_server_enabled, true)
         McpServerService.start(McpUi.context)
     }
 
     @JvmStatic
-    fun disable() {
+    fun disable() = disable("unspecified")
+
+    @JvmStatic
+    fun disable(source: String) {
+        Log.i(TAG, "MCP disable requested from $source")
         Pref.putBoolean(R.string.key_mcp_server_enabled, false)
         McpWatchdog.stop()
         McpServerService.stop(McpUi.context)
+    }
+
+    /** Surface failures that happen before the Service can call [start]. */
+    @Synchronized
+    fun reportServiceStartFailure(error: Throwable) {
+        val reason = "${error::class.java.simpleName}: ${error.message ?: "no message"}"
+        lastFailureReason = reason
+        Log.e(TAG, "MCP foreground service failed to start: $reason", error)
+        state.onNext(McpServerState.Failed(reason))
     }
 
     /**

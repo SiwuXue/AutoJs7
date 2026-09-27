@@ -2,7 +2,7 @@
 
 基于 [AutoJs6](https://github.com/SuperMonster003/AutoJs6) 二次开发的 Android JavaScript 自动化工具。本分支的重点是让 AI 客户端通过 MCP 连接手机，使用无障碍服务、脚本引擎及设备工具完成自动化任务。
 
-> 仓库名为 AutoJs7；当前安装包和应用内名称仍沿用 **AutoJs6**，并非另一个独立安装的应用。
+> 应用显示名称为 **AutoJs7**，包名仍为 `org.autojs.autojs6`，可沿用原安装与数据；升级时仍需使用与已安装版本一致的签名。
 
 [下载最新版本](https://github.com/SiwuXue/AutoJs7/releases/latest) · [查看构建状态](https://github.com/SiwuXue/AutoJs7/actions/workflows/android.yml) · [MCP 配套 Skill](https://github.com/SiwuXue/autojs7-mcp-skill)
 

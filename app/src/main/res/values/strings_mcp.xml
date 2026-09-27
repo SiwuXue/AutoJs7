@@ -31,6 +31,7 @@
 
     <!-- Summaries. -->
     <string name="summary_mcp_server_running">Running · %1$s</string>
+    <string name="summary_mcp_server_starting">Starting or reconnecting…</string>
     <string name="summary_mcp_server_stopped">Stopped</string>
     <string name="summary_mcp_server_failed">Failed to start · %1$s</string>
     <string name="summary_mcp_server_a11y_required">Accessibility service is not running</string>
@@ -55,7 +56,7 @@
     <string name="dialog_mcp_server_port_invalid">Port must be an integer within 1024 to 65535.</string>
 
     <!-- MCP protocol facing texts. -->
-    <string name="text_mcp_server_instructions">Controls an Android device through the AutoJs6 accessibility service and script engine. Call dump_ui_tree first to understand the current screen, then use ui_find and ui_action to interact with it. When there is no view hierarchy to query -- games, canvases, video surfaces -- reach for find_image or ocr_recognize instead, and use read_notifications for content that never appears in the view tree at all.</string>
+    <string name="text_mcp_server_instructions">Controls an Android device through the AutoJs7 accessibility service and script engine. Call dump_ui_tree first to understand the current screen, then use ui_find and ui_action to interact with it. When there is no view hierarchy to query -- games, canvases, video surfaces -- reach for find_image or ocr_recognize instead, and use read_notifications for content that never appears in the view tree at all.</string>
     <string name="text_mcp_server_name" translatable="false">autojs6-mcp</string>
 
     <!-- Foreground service notification. -->
@@ -71,14 +72,14 @@
     <string name="mcp_endpoint_lan_disabled">LAN: off</string>
 
     <!-- Errors surfaced to the AI client. -->
-    <string name="mcp_error_accessibility_unavailable">Accessibility service is not connected. Enable the AutoJs6 accessibility service first.</string>
-    <string name="mcp_error_ui_not_readable">The screen could not be read at the moment nothing matched, so this empty result does not prove the element is absent. The accessibility service is most likely reconnecting. Retry in a moment, and if it keeps failing re-enable the AutoJs6 accessibility service.</string>
+    <string name="mcp_error_accessibility_unavailable">Accessibility service is not connected. Enable the AutoJs7 accessibility service first.</string>
+    <string name="mcp_error_ui_not_readable">The screen could not be read at the moment nothing matched, so this empty result does not prove the element is absent. The accessibility service is most likely reconnecting. Retry in a moment, and if it keeps failing re-enable the AutoJs7 accessibility service.</string>
     <string name="mcp_error_unauthorized">Missing or invalid access token.</string>
     <string name="mcp_error_invalid_args">Invalid arguments: %1$s</string>
     <string name="mcp_error_tool_failed">Tool execution failed: %1$s</string>
 
     <!-- Dump diagnostics. -->
     <string name="mcp_dump_empty_tree_hint">The dumped window produced no usable nodes (an empty placeholder root at most). Invisible nodes have already been re-included automatically, so if it is still empty the app does not expose its content to accessibility -- fall back to ocr_recognize, find_image or read_notifications.</string>
-    <string name="mcp_dump_no_window_hint">No readable window was found. Make sure an app is in the foreground and the AutoJs6 accessibility service is connected.</string>
+    <string name="mcp_dump_no_window_hint">No readable window was found. Make sure an app is in the foreground and the AutoJs7 accessibility service is connected.</string>
 
 </resources>

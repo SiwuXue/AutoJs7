@@ -50,7 +50,7 @@
     <string name="config_lib_options_contains_unavailable">配置 \"lib\" 含不可用選項</string>
     <string name="confirm_overwrite_directory">資料夾已存在, 是否覆蓋.</string>
     <string name="confirm_overwrite_file">檔案已存在, 是否覆蓋.</string>
-    <string name="content_about_app_tips">1. 長按主頁應用名稱 (AutoJs6) 可跳轉至設定頁面\n2. 設定頁面長按設定選項可檢視詳細資訊</string>
+    <string name="content_about_app_tips">1. 長按主頁應用名稱 (AutoJs7) 可跳轉至設定頁面\n2. 設定頁面長按設定選項可檢視詳細資訊</string>
     <string name="content_current_theme_color_configured_by_palette">當前主題色 %1$s 由調色盤配置</string>
     <string name="content_description_fab_for_display_manifest">用於顯示清單內容的浮動操作按鈕控制元件</string>
     <string name="content_failed_to_determine_index_of_theme_color_item">無法確定主題色條目的索引值</string>
@@ -65,51 +65,51 @@
     <string name="default_script_notification_content">來自指令碼的通知</string>
     <string name="default_script_notification_title">指令碼通知</string>
     <string name="default_value_working_directory">/指令碼</string>
-    <string name="description_about_app_and_developer_preference">AutoJs6 是 Android 平臺支援無障礙服務的 JavaScript 自動化工具, 克隆 (clone) 自 \"hyb1996/Auto.js\" 且保持開源.\n\n如需獲取幫助或提交反饋, 可瀏覽專案的 GitHub 議題 (issues) 板塊, 或加入騰訊 (Tencent) QQ 群組 690946137.</string>
-    <string name="description_about_app_tips_preference">1. 在 \"關於應用與開發者\" 頁面長按應用圖示可跳轉至 AutoJs6 開發者選項頁面</string>
-    <string name="description_accessibility_service">無障礙服務是 AutoJs6 實現自動化操作的核心能力, 用於讀取螢幕控制元件資訊並模擬 [ 點選 / 滑動 / 輸入 ] 等互動.\n\n自動化相關的大部分功能函式以及佈局分析工具等, 均需要啟用無障礙服務才能正常工作.</string>
-    <string name="description_all_files_access" tools:ignore="TypographyEllipsis">\"管理所有檔案\" (或 \"所有檔案訪問\") 許可權允許 AutoJs6 在共享儲存空間中透過常規檔案路徑直接 [ 建立 / 讀取 / 修改 / 刪除 ] 檔案, 使指令碼可以訪問 \"內部儲存 (Internal Storage)\", 使檔案管理器可以正常顯示及管理檔案.\n\n在 Android 11+ 裝置上, 這是實現全盤檔案讀寫能力的主要方式.</string>
-    <string name="description_app_language_preference">設定選項用於修改 AutoJs6 應用的文字內容顯示語言, 同時包括指令碼執行產生的錯誤訊息等.\n\n注: 部分內容可能需要重啟應用才能完成語言切換.</string>
-    <string name="description_auto_night_mode">自動夜間模式開啟後, AutoJs6 將根據系統設定自動切換夜間模式.\n\注: 自動夜間模式開關與夜間模式開關互相關聯且互相影響.</string>
-    <string name="description_background_popup_permission" tools:ignore="TypographyEllipsis">\"後臺彈出介面\" (也稱 \"後臺啟動介面\" 或 \"後臺彈出頁面\") 許可權允許 AutoJs6 在應用位於後臺或未顯示介面時, 仍可主動啟動介面 (Activity) 或開啟特定設定頁, 適合 [ 定時任務觸發時開啟 UI / 在鎖屏或待機後恢復互動 / 由通知或快捷方式喚起指令碼配置頁 ] 等場景.\n\n注: 在 Xiaomi (MIUI/HyperOS), Vivo (OriginOS/Funtouch OS) 等系統上, 該許可權可能預設關閉. 未授予時, 指令碼嘗試從後臺開啟頁面可能會被系統攔截, 表現為 [ 無響應 / 僅後臺執行但不顯示介面 / 跳轉失敗 ].\n\n授予後仍可能受到系統其他策略影響, 如 [ 電池最佳化 / 自啟動限制 / 後臺凍結 / 應用待機 ] 等, 可結合相關許可權或白名單設定一起調整.</string>
+    <string name="description_about_app_and_developer_preference">AutoJs7 是 Android 平臺支援無障礙服務的 JavaScript 自動化工具, 克隆 (clone) 自 \"hyb1996/Auto.js\" 且保持開源.\n\n如需獲取幫助或提交反饋, 可瀏覽專案的 GitHub 議題 (issues) 板塊, 或加入騰訊 (Tencent) QQ 群組 690946137.</string>
+    <string name="description_about_app_tips_preference">1. 在 \"關於應用與開發者\" 頁面長按應用圖示可跳轉至 AutoJs7 開發者選項頁面</string>
+    <string name="description_accessibility_service">無障礙服務是 AutoJs7 實現自動化操作的核心能力, 用於讀取螢幕控制元件資訊並模擬 [ 點選 / 滑動 / 輸入 ] 等互動.\n\n自動化相關的大部分功能函式以及佈局分析工具等, 均需要啟用無障礙服務才能正常工作.</string>
+    <string name="description_all_files_access" tools:ignore="TypographyEllipsis">\"管理所有檔案\" (或 \"所有檔案訪問\") 許可權允許 AutoJs7 在共享儲存空間中透過常規檔案路徑直接 [ 建立 / 讀取 / 修改 / 刪除 ] 檔案, 使指令碼可以訪問 \"內部儲存 (Internal Storage)\", 使檔案管理器可以正常顯示及管理檔案.\n\n在 Android 11+ 裝置上, 這是實現全盤檔案讀寫能力的主要方式.</string>
+    <string name="description_app_language_preference">設定選項用於修改 AutoJs7 應用的文字內容顯示語言, 同時包括指令碼執行產生的錯誤訊息等.\n\n注: 部分內容可能需要重啟應用才能完成語言切換.</string>
+    <string name="description_auto_night_mode">自動夜間模式開啟後, AutoJs7 將根據系統設定自動切換夜間模式.\n\注: 自動夜間模式開關與夜間模式開關互相關聯且互相影響.</string>
+    <string name="description_background_popup_permission" tools:ignore="TypographyEllipsis">\"後臺彈出介面\" (也稱 \"後臺啟動介面\" 或 \"後臺彈出頁面\") 許可權允許 AutoJs7 在應用位於後臺或未顯示介面時, 仍可主動啟動介面 (Activity) 或開啟特定設定頁, 適合 [ 定時任務觸發時開啟 UI / 在鎖屏或待機後恢復互動 / 由通知或快捷方式喚起指令碼配置頁 ] 等場景.\n\n注: 在 Xiaomi (MIUI/HyperOS), Vivo (OriginOS/Funtouch OS) 等系統上, 該許可權可能預設關閉. 未授予時, 指令碼嘗試從後臺開啟頁面可能會被系統攔截, 表現為 [ 無響應 / 僅後臺執行但不顯示介面 / 跳轉失敗 ].\n\n授予後仍可能受到系統其他策略影響, 如 [ 電池最佳化 / 自啟動限制 / 後臺凍結 / 應用待機 ] 等, 可結合相關許可權或白名單設定一起調整.</string>
     <string name="description_change_working_dir_preference">更改包含指令碼的資料夾路徑</string>
-    <string name="description_check_for_updates_preference">AutoJs6 從 GitHub 獲取並下載更新.</string>
-    <string name="description_client_mode">客戶端模式用於讓 AutoJs6 主動連線到遠端服務端, 以便進行 [ 指令碼傳輸 / 列印日誌 / 遠端控制 ] 等.\n\n通常需要裝置與服務端處於同一區域網或可互相訪問的網路環境.</string>
-    <string name="description_display_over_other_app">\"顯示在其他應用上層\" 許可權允許 AutoJs6 在其他應用介面之上展示懸浮窗或浮動按鈕, 以便在任意介面快速執行操作或檢視資訊.\n\n注: 未授予該許可權時, 懸浮窗及浮動按鈕可能會無法顯示或正常使用.</string>
-    <string name="description_documentation_source_preference">本地文件: AutoJs6 內建檔案作為文件來源, 無需網路連線, 隨 AutoJs6 應用更新而發生內容變動.\n線上文件: 使用 GitHub 網頁作為文件來源, 需網路連線, 可隨時保持文件內容為最新.\n\n注: 為最大化線上文件的閱讀體驗, 建議使用桌面顯示器等寬屏顯示裝置閱讀.\n注: 截至 6.2.0 版本, 文件尚處於初步編寫階段, 大部分內容尚未完成編寫或更新.</string>
-    <string name="description_documentation_source_preference_more">文件頁面的深色主題支援需要滿足以下條件:\n1. AutoJs6 開啟夜間模式\n2. WebView (或 Google Chrome 等瀏覽器) 版本要求:\n- API 級別 29 (安卓 10) [Q] 及以上: 版本不低於 76\n- API 級別 28 (安卓 9) [P] 及以下: 版本不低於 105</string>
+    <string name="description_check_for_updates_preference">AutoJs7 從 GitHub 獲取並下載更新.</string>
+    <string name="description_client_mode">客戶端模式用於讓 AutoJs7 主動連線到遠端服務端, 以便進行 [ 指令碼傳輸 / 列印日誌 / 遠端控制 ] 等.\n\n通常需要裝置與服務端處於同一區域網或可互相訪問的網路環境.</string>
+    <string name="description_display_over_other_app">\"顯示在其他應用上層\" 許可權允許 AutoJs7 在其他應用介面之上展示懸浮窗或浮動按鈕, 以便在任意介面快速執行操作或檢視資訊.\n\n注: 未授予該許可權時, 懸浮窗及浮動按鈕可能會無法顯示或正常使用.</string>
+    <string name="description_documentation_source_preference">本地文件: AutoJs7 內建檔案作為文件來源, 無需網路連線, 隨 AutoJs7 應用更新而發生內容變動.\n線上文件: 使用 GitHub 網頁作為文件來源, 需網路連線, 可隨時保持文件內容為最新.\n\n注: 為最大化線上文件的閱讀體驗, 建議使用桌面顯示器等寬屏顯示裝置閱讀.\n注: 截至 6.2.0 版本, 文件尚處於初步編寫階段, 大部分內容尚未完成編寫或更新.</string>
+    <string name="description_documentation_source_preference_more">文件頁面的深色主題支援需要滿足以下條件:\n1. AutoJs7 開啟夜間模式\n2. WebView (或 Google Chrome 等瀏覽器) 版本要求:\n- API 級別 29 (安卓 10) [Q] 及以上: 版本不低於 76\n- API 級別 28 (安卓 9) [P] 及以下: 版本不低於 105</string>
     <string name="description_extending_js_build_in_objects">擴充套件 JavaScript 內建物件可以增加程式碼靈活性並實現更豐富的功能, 但可能造成衝突甚至破壞.\n選項開啟後所有指令碼均預設啟用內建擴充套件.\n內建擴充套件往往是不安全的, 除非明確瞭解內建擴充套件的原理及風險, 否則不建議啟用.\n選項關閉後, 仍然可以透過 plugins 全域性物件啟用內建擴充套件, 詳見專案文件.</string>
     <string name="description_floating_button">浮動按鈕用於在螢幕邊緣顯示一個可拖動的快捷功能入口, 可用於 [ 啟動或停止指令碼 / 佈局分析 / 檢視最近包名或活動名稱 / 顯示指標位置 ] 等.\n\n注: 該功能通常需要授予 \"顯示在其他應用上層\" 許可權.</string>
-    <string name="description_foreground_service">前臺服務用於在後臺更穩定地保持 AutoJs6 執行, 適合 [ 長時間執行指令碼 / 保持連線 / 持續監聽 ] 等場景.\n\n啟用後, 系統會顯示一條 \"前臺服務通知\" 用於告知使用者 AutoJs6 正在持續執行, 該通知通常會保持顯示直到服務停止.\n\n將通知設定為 \"靜音 (Silent)\" 或 \"最小化 (Minimize)\" 只會降低提示強度, 一般不會影響前臺服務功能.\n\n如果關閉通知渠道或禁止 AutoJs6 傳送通知, 可能影響前臺服務的正常啟動及穩定性.</string>
-    <string name="description_hidden_files_preference">用於設定是否在 AutoJs6 檔案管理器中顯示隱藏檔案和資料夾 (通常以 \".\" 開頭).</string>
-    <string name="description_ignore_battery_optimizations">忽略電池最佳化可降低系統對 AutoJs6 的後臺限制, 有助於定時任務或長時間指令碼在待機時相對更加穩定地執行.\n\n注: 不同廠商系統可能仍會有額外的省電策略, 如自啟動限制或後臺凍結等.</string>
-    <string name="description_keep_screen_on_when_in_foreground">用於控制 AutoJs6 位於前臺時是否保持螢幕常亮.</string>
-    <string name="description_keep_screen_on_when_in_foreground_preference">用於當 AutoJs6 位於前臺時使裝置螢幕保持常亮.\n如需在 AutoJs6 應用的所有頁面中, 僅在主頁時保持裝置螢幕常亮, 可選擇 \"僅限主頁\" 選項.</string>
+    <string name="description_foreground_service">前臺服務用於在後臺更穩定地保持 AutoJs7 執行, 適合 [ 長時間執行指令碼 / 保持連線 / 持續監聽 ] 等場景.\n\n啟用後, 系統會顯示一條 \"前臺服務通知\" 用於告知使用者 AutoJs7 正在持續執行, 該通知通常會保持顯示直到服務停止.\n\n將通知設定為 \"靜音 (Silent)\" 或 \"最小化 (Minimize)\" 只會降低提示強度, 一般不會影響前臺服務功能.\n\n如果關閉通知渠道或禁止 AutoJs7 傳送通知, 可能影響前臺服務的正常啟動及穩定性.</string>
+    <string name="description_hidden_files_preference">用於設定是否在 AutoJs7 檔案管理器中顯示隱藏檔案和資料夾 (通常以 \".\" 開頭).</string>
+    <string name="description_ignore_battery_optimizations">忽略電池最佳化可降低系統對 AutoJs7 的後臺限制, 有助於定時任務或長時間指令碼在待機時相對更加穩定地執行.\n\n注: 不同廠商系統可能仍會有額外的省電策略, 如自啟動限制或後臺凍結等.</string>
+    <string name="description_keep_screen_on_when_in_foreground">用於控制 AutoJs7 位於前臺時是否保持螢幕常亮.</string>
+    <string name="description_keep_screen_on_when_in_foreground_preference">用於當 AutoJs7 位於前臺時使裝置螢幕保持常亮.\n如需在 AutoJs7 應用的所有頁面中, 僅在主頁時保持裝置螢幕常亮, 可選擇 \"僅限主頁\" 選項.</string>
     <string name="description_launcher_icon_preference">啟動器圖示支援自適應圖示顯示方式與傳統透明背景圖示顯示方式. 不同安卓系統的圖示實際顯示效果可能有所不同. 切換顯示方式後, 可能需要幾秒鐘的時間生效.</string>
-    <string name="description_launcher_shortcuts">快捷方式可以在 AutoJs6 中執行特定操作, 使用者可以在啟動器中顯示這些快捷方式, 並快速開始某些任務或啟動某個活動, 如閲讀 AutoJs6 應用文件, 啟動 AutoJs6 設定頁面等.</string>
+    <string name="description_launcher_shortcuts">快捷方式可以在 AutoJs7 中執行特定操作, 使用者可以在啟動器中顯示這些快捷方式, 並快速開始某些任務或啟動某個活動, 如閲讀 AutoJs7 應用文件, 啟動 AutoJs7 設定頁面等.</string>
     <string name="description_manage_ignored_updates_preference">點選可檢視或管理列表項.\n長按可移除列表項.</string>
-    <string name="description_night_mode">用於控制並反映 AutoJs6 夜間模式策略.\n\n注: 夜間模式開關與自動夜間模式開關互相關聯且互相影響.</string>
-    <string name="description_night_mode_preference">夜間模式, 亦稱 [ 暗黑模式 / 深色主題 ] 等.\n夜間模式應用於安卓系統 UI (如通知欄和導航欄) 及 AutoJs6 應用頁面.\n夜間模式可提升裝置在低光環境下的易用性, 同時有助於提升弱視或光敏感使用者的視覺體驗.\n\n跟隨系統: AutoJs6 與安卓作業系統的夜間模式設定一致\n總是開啟: AutoJs6 保持開啟夜間模式 (忽略作業系統設定)\n總是關閉: AutoJs6 保持關閉夜間模式 (忽略作業系統設定)\n\n注: 跟隨系統功能僅支援安卓 API 級別 28 (安卓 9) [P] 及以上作業系統.</string>
-    <string name="description_night_mode_preference_more">啟用安卓系統的夜間模式:\n- API 級別 29 (安卓 10) [Q] 及以上: 透過 [ 設定 -> 顯示 -> 主題 ] 開啟.\n- API 級別 28 (安卓 9) [P]: 透過 [ 開發者選項 -> 夜間模式 ] 開啟.\n\n對於基於 WebView 元件的內容 (如 AutoJs6 的文件頁面), 夜間模式支援需要滿足以下條件:\n1. WebView (或 Google Chrome 等瀏覽器) 版本要求:\n- API 級別 29 (安卓 10) [Q] 及以上: 版本不低於 76\n- API 級別 28 (安卓 9) [P]: 版本不低於 105\n2. WebView 元件頁面內容可適配夜間模式 (透過 CSS 或 安卓 XML 資源等方式實現)</string>
-    <string name="description_notification_access">\"通知使用權\" (或 \"通知讀取許可權\") 允許 AutoJs6 讀取系統通知內容, 使指令碼可以監聽通知或獲取通知文字等.</string>
+    <string name="description_night_mode">用於控制並反映 AutoJs7 夜間模式策略.\n\n注: 夜間模式開關與自動夜間模式開關互相關聯且互相影響.</string>
+    <string name="description_night_mode_preference">夜間模式, 亦稱 [ 暗黑模式 / 深色主題 ] 等.\n夜間模式應用於安卓系統 UI (如通知欄和導航欄) 及 AutoJs7 應用頁面.\n夜間模式可提升裝置在低光環境下的易用性, 同時有助於提升弱視或光敏感使用者的視覺體驗.\n\n跟隨系統: AutoJs7 與安卓作業系統的夜間模式設定一致\n總是開啟: AutoJs7 保持開啟夜間模式 (忽略作業系統設定)\n總是關閉: AutoJs7 保持關閉夜間模式 (忽略作業系統設定)\n\n注: 跟隨系統功能僅支援安卓 API 級別 28 (安卓 9) [P] 及以上作業系統.</string>
+    <string name="description_night_mode_preference_more">啟用安卓系統的夜間模式:\n- API 級別 29 (安卓 10) [Q] 及以上: 透過 [ 設定 -> 顯示 -> 主題 ] 開啟.\n- API 級別 28 (安卓 9) [P]: 透過 [ 開發者選項 -> 夜間模式 ] 開啟.\n\n對於基於 WebView 元件的內容 (如 AutoJs7 的文件頁面), 夜間模式支援需要滿足以下條件:\n1. WebView (或 Google Chrome 等瀏覽器) 版本要求:\n- API 級別 29 (安卓 10) [Q] 及以上: 版本不低於 76\n- API 級別 28 (安卓 9) [P]: 版本不低於 105\n2. WebView 元件頁面內容可適配夜間模式 (透過 CSS 或 安卓 XML 資源等方式實現)</string>
+    <string name="description_notification_access">\"通知使用權\" (或 \"通知讀取許可權\") 允許 AutoJs7 讀取系統通知內容, 使指令碼可以監聽通知或獲取通知文字等.</string>
     <string name="description_pointer_location">\"指標位置\" 是安卓開發者選項中的除錯功能.\n開啟後, 系統會在螢幕上顯示觸控點的 [座標/移動軌跡/數量/大小/移動速度/壓力] 等資訊, 便於相關指令碼的 [編寫/除錯/校對] 等.</string>
-    <string name="description_post_notifications">\"傳送通知\" 許可權允許 AutoJs6 向系統釋出通知, 使指令碼可以在通知欄釋出並管理自定義通知等.\n\n注: 在 Android 13+ 裝置上未授予該許可權時, 部分通知可能無法顯示, 並可能影響前臺服務的啟動與穩定性.</string>
+    <string name="description_post_notifications">\"傳送通知\" 許可權允許 AutoJs7 向系統釋出通知, 使指令碼可以在通知欄釋出並管理自定義通知等.\n\n注: 在 Android 13+ 裝置上未授予該許可權時, 部分通知可能無法顯示, 並可能影響前臺服務的啟動與穩定性.</string>
     <string name="description_project_media_access">被授予 \"投影媒體許可權\" 後, 錄製螢幕的安全提示視窗將不再彈出.</string>
-    <string name="description_release_history_preference">檢視 AutoJs6 在 GitHub 發行版本的歷史更新記錄及重要分類的統計資料.</string>
+    <string name="description_release_history_preference">檢視 AutoJs7 在 GitHub 發行版本的歷史更新記錄及重要分類的統計資料.</string>
     <string name="description_restart_strategy">重啟策略僅作用於主頁抽屜欄的重啟按鈕.\n\n快速重啟: 快速重啟應用, 如果重啟失敗或出現非預期情況, 可嘗試切換至 \"計劃重啟\".\n計劃重啟: 提前設定一個短時定時任務, 應用停止後會再次定時啟動, 以實現應用重啟.</string>
     <string name="description_rhino_java_primitive_wrap">開關啟用 (預設): 將 Java 方法返回的 Number/Boolean/Character 包裝為 Java 物件暴露到指令碼 (String 除外). typeof 為 \"object\", species 為 \"JavaObject\", 可訪問這些物件的 Java 方法, 利於保留 Java 精確型別特徵與方法過載行為.\n\n開關禁用: 不再包裝上述型別, 直接作為 JavaScript 基元值 (number/boolean/單字元字串). typeof 為相應 JavaScript 型別, 更貼近 JavaScript 語義與生態. 但仍可透過 new 關鍵字顯式宣告一個 Java 包裝型別, 如 new java.lang.Boolean(true).\n\n參閱: http://issues.autojs6.com/435</string>
     <string name="description_root_mode_preference">如果裝置使用非常規 Root 方式或 Root 許可權檢測結果異常, 可設定 \"強制 Root 模式\" 或 \"強制非 Root 模式\".</string>
     <string name="description_root_record_out_file_type_preference">二進位制檔案: 不可編輯, 副檔名為 \"auto\"\nJavaScript 檔案: 可編輯或直接複製, 副檔名為 \"js\"</string>
     <string name="description_screen_capture_request_delay">申請螢幕捕獲許可權時, 彈出的許可權申請視窗消失時可能存在漸變動畫, 此時如果立即呼叫 `images.captureScreen` 方法, 獲取的螢幕截圖中會出現許可權申請的視窗內容而造成遮擋.\n\n當前設定選項值用於在截圖許可權申請後立即獲取螢幕截圖前增加一個延遲時間 (單位為毫秒), 可用於避免上述遮擋問題.\n\n當前設定選項僅適用於獲取截圖許可權後的首次截圖操作, 後續截圖操作不再受此設定值影響.</string>
-    <string name="description_server_mode">服務端模式用於讓 AutoJs6 在當前裝置開啟服務並等待外部客戶端連線, 以便進行 [ 指令碼傳輸 / 列印日誌 / 遠端控制 ] 等.\n\nAutoJs6 服務端模式支援兩種連線方式:\n1. 區域網 (LAN)\n2. 安卓除錯橋 (ADB)</string>
+    <string name="description_server_mode">服務端模式用於讓 AutoJs7 在當前裝置開啟服務並等待外部客戶端連線, 以便進行 [ 指令碼傳輸 / 列印日誌 / 遠端控制 ] 等.\n\nAutoJs7 服務端模式支援兩種連線方式:\n1. 區域網 (LAN)\n2. 安卓除錯橋 (ADB)</string>
     <string name="description_shizuku_access">透過 Shizuku 可以獲得 ADB 特權並使用系統 API</string>
     <string name="description_stable_mode">穩定模式省略佈局細節, 指令碼分析佈局時更穩定, 但可能影響獲取的控制元件總量.\n需重啟無障礙服務.</string>
-    <string name="description_theme_color_preference">主題色的應用範圍包括但不限於以下部件:\n系統通知欄\n應用欄 (AppBar)\n檔案圖示\n任務項圖示\n浮動操作按鈕 (FAB)\n設定頁面類別標題\n按鈕開關\n\n注: 截至 6.2.0 版本, AutoJs6 主題色暫未對 [ 主要色 (Primary Color) / 主要暗色 (Primary Dark Color) / 強調色 (Accent Color) ] 作出區分.</string>
+    <string name="description_theme_color_preference">主題色的應用範圍包括但不限於以下部件:\n系統通知欄\n應用欄 (AppBar)\n檔案圖示\n任務項圖示\n浮動操作按鈕 (FAB)\n設定頁面類別標題\n按鈕開關\n\n注: 截至 6.2.0 版本, AutoJs7 主題色暫未對 [ 主要色 (Primary Color) / 主要暗色 (Primary Dark Color) / 強調色 (Accent Color) ] 作出區分.</string>
     <string name="description_timed_task_backend">控制指令碼定時觸發的底層機制.\n\nAlarmManager: 透過申請 \"允許設定鬧鐘和提醒\" 許可權, 可使定時任務的觸發更接近準時.\nWorkManager: 系統友好, 適合可接受一定延遲的非關鍵定時任務.\nJobScheduler: 舊實現, 僅用作相容保留, 定時任務出現延遲的機率較大.</string>
     <string name="description_timed_task_backend_more" tools:ignore="TypographyEllipsis">使用場景與差異說明: \n\n1. AlarmManager\n適用於準時性敏感的定時任務, 如 [提醒/嚴格定時指令碼/...].\n在 Android 12+ 裝置上獲取 \"允許設定鬧鐘和提醒\" 許可權後, 在息屏或待機狀態時能夠較準時地執行定時任務.\n在未授予 \"允許設定鬧鐘和提醒\" 許可權時, 系統可能降級為不準時或延後執行任務.\n\n2. WorkManager\n適用於不要求嚴格準時執行的定時任務, 如 [非關鍵性同步/清理/統計/...].\n根據系統 [ 電量/網路/充電情況/待機策略/... ] 進行排程, 息屏或待機狀態時可能推遲任務執行.\n雖無法保證時間精確性, 但在 [ 可靠完成/失敗重試/鏈式執行/唯一任務去重 ] 等方面擁有獨特優勢.\n\n3. Job\n歷史實現, 為相容保留.\n在高版本安卓系統中定時任務可能存在較大的延遲執行問題.\n除非出於相容需要, 一般不推薦使用.</string>
     <string name="description_usage_stats_access">\"檢視使用情況\" 許可權可獲取本裝置過去使用應用的情況, 從而使 \"獲取當前應用\" (currentPackage) 結果更準確</string>
     <string name="description_write_secure_settings">安全設定包含應用程式可讀但不可寫入的設定選項, 這些選項只能由 UI 或系統級別應用修改.\n被授予 \"修改安全設定許可權\" 後, 普通應用可直接修改上述安全設定 (例如無障礙服務).</string>
-    <string name="description_write_system_settings">\"修改系統設定\" 許可權允許 AutoJs6 修改部分系統設定項, 使指令碼可以修改 [ 螢幕亮度 / 自動旋轉 / 螢幕超時 ] 等系統設定引數.</string>
+    <string name="description_write_system_settings">\"修改系統設定\" 許可權允許 AutoJs7 修改部分系統設定項, 使指令碼可以修改 [ 螢幕亮度 / 自動旋轉 / 螢幕超時 ] 等系統設定引數.</string>
     <string name="dialog_button_abandon">放棄</string>
     <string name="dialog_button_abort">中止</string>
     <string name="dialog_button_abort_connection">中止連線</string>
@@ -213,8 +213,8 @@
     <string name="error_arguments_cannot_be_empty">引數列表不可為空</string>
     <string name="error_arguments_must_be_empty">引數列表需為空</string>
     <string name="error_at_least_one_abi_needs_to_be_selected">需要至少選擇一個 ABI</string>
-    <string name="error_autojs6_version_must_not_be_lower_than_ver">AutoJs6 應用版本需不低於 %1$s</string>
-    <string name="error_autojs6_version_number_must_not_be_lower_than_num">AutoJs6 應用版本號需不低於 %1$s</string>
+    <string name="error_autojs6_version_must_not_be_lower_than_ver">AutoJs7 應用版本需不低於 %1$s</string>
+    <string name="error_autojs6_version_number_must_not_be_lower_than_num">AutoJs7 應用版本號需不低於 %1$s</string>
     <string name="error_both_bitmap_and_mat_are_null">Bitmap 與 Mat 不能同時為 null</string>
     <string name="error_cannot_be_null">%s 不能為 null</string>
     <string name="error_cannot_connect_to_github">無法連線到 GitHub</string>
@@ -240,7 +240,7 @@
     <string name="error_empty_broadcast_selection">需至少選擇一個廣播事件</string>
     <string name="error_empty_github_release_assets">無可供下載的 GitHub 發行版資源</string>
     <string name="error_empty_shell_command">命令為空</string>
-    <string name="error_enable_server">AutoJs6 服務啟用失敗: %s</string>
+    <string name="error_enable_server">AutoJs7 服務啟用失敗: %s</string>
     <string name="error_excessive_height_for_template_n_region">高度超限: 模板影象 [%1$d] > 限定區域 [%2$d]</string>
     <string name="error_excessive_width_for_template_n_region">寬度超限: 模板影象 [%1$d] > 限定區域 [%2$d]</string>
     <string name="error_failed_to_apply_current_color_history">應用當前歷史顏色失敗</string>
@@ -295,7 +295,7 @@
     <string name="error_ip_address_should_not_be_empty">IP 地址不可為空</string>
     <string name="error_ipv6_port_requires_brackets">IPv6 埠必須使用 \"[ipv6]:port\" 格式.</string>
     <string name="error_max_listeners_exceeded">超出最大監聽器數量限制: %d</string>
-    <string name="error_may_not_have_root_access_to_run_auto_file">AutoJs6 可能因缺少 Root 許可權而無法執行 \"auto\" 檔案</string>
+    <string name="error_may_not_have_root_access_to_run_auto_file">AutoJs7 可能因缺少 Root 許可權而無法執行 \"auto\" 檔案</string>
     <string name="error_method_called_with_null_argument" formatted="false">%s() 傳入的 %s 引數為空</string>
     <string name="error_method_only_accepts_a_number_of_arguments_in_the_range_n_to_m">方法僅可接受引數數量位於 [%1$d\.\.%2$d] 區間內</string>
     <string name="error_missing_required_plugin_for_module_label">缺少 \"%1$s\" 所需的外掛. 請先安裝外掛, 然後重試.</string>
@@ -351,7 +351,7 @@
     <string name="error_shizuku_is_not_installed">Shizuku 未安裝</string>
     <string name="error_shizuku_service_may_be_not_running">Shizuku 服務可能未執行</string>
     <string name="error_shizuku_version_is_not_supported">Shizuku 版本不支援</string>
-    <string name="error_specified_autojs6_version_number_must_be_greater_than_461">指定的 AutoJs6 應用版本號需大於 461</string>
+    <string name="error_specified_autojs6_version_number_must_be_greater_than_461">指定的 AutoJs7 應用版本號需大於 461</string>
     <string name="error_the_transformer_for_required_property_cannot_return_nullish">必需屬性 \"%1$s\" 的轉換器不能返回空值</string>
     <string name="error_thread_is_not_alive">執行緒處於非活動狀態</string>
     <string name="error_timeout_while_querying_plugin_info">查詢 %1$s 外掛資訊超時.</string>
@@ -384,7 +384,7 @@
     <string name="format_debug_bar_title"><![CDATA[除錯 [ %s ]]]></string>
     <string name="format_editor_info" formatted="false">字元數: %d\n行數: %d\n大小: %s</string>
     <string name="format_file_downloaded">檔案已下載至 %s</string>
-    <string name="go_to_accessibility_settings"><![CDATA[[開啟] 系統設定 -> 無障礙服務 -> AutoJs6 [啟用]]]></string>
+    <string name="go_to_accessibility_settings"><![CDATA[[開啟] 系統設定 -> 無障礙服務 -> AutoJs7 [啟用]]]></string>
     <string name="hint_find_with_regex">支援正則表示式搜尋, 可使用 \"$1\" - \"$9\" 表示分組捕獲</string>
     <string name="hint_long_click_run_to_debug">長按 \"執行\" 圖示可啟動除錯</string>
     <string name="hint_loop_delay">開始迴圈前的延遲</string>
@@ -429,7 +429,7 @@
     <string name="mt_color_picker_title">選擇顏色</string>
     <string name="mt_custom">自定義</string>
     <string name="no_apk_builder_plugin">打包外掛未安裝</string>
-    <string name="no_root_access_for_record">AutoJs6 無 root 許可權, 無法錄製指令碼</string>
+    <string name="no_root_access_for_record">AutoJs7 無 root 許可權, 無法錄製指令碼</string>
     <string name="plugin_item_info_author">開發者</string>
     <string name="plugin_item_info_collaborators">合作者</string>
     <string name="plugin_item_info_first_install_time">首次安裝</string>
@@ -448,17 +448,17 @@
     <string name="screen_capturer_foreground_notification_text">此通知用於捕獲螢幕截圖</string>
     <string name="screen_capturer_foreground_notification_title">螢幕捕獲器前臺服務</string>
     <string name="summary_about_app_tips">更佳的使用者使用體驗</string>
-    <string name="summary_all_files_access">允許 AutoJs6 訪問所有檔案, 包括外部儲存</string>
+    <string name="summary_all_files_access">允許 AutoJs7 訪問所有檔案, 包括外部儲存</string>
     <string name="summary_all_files_access_inrt">允許應用訪問所有檔案, 包括外部儲存</string>
-    <string name="summary_display_over_other_apps">允許 AutoJs6 在其他應用之上顯示內容</string>
+    <string name="summary_display_over_other_apps">允許 AutoJs7 在其他應用之上顯示內容</string>
     <string name="summary_display_over_other_apps_inrt">允許應用在其他應用之上顯示內容</string>
     <string name="summary_enable_a11y_service_with_root_access">自動嘗試使用 root 許可權啟用無障礙服務</string>
     <string name="summary_enable_a11y_service_with_secure_settings">自動嘗試使用修改安全設定許可權啟用無障礙服務</string>
     <string name="summary_extending_js_build_in_objects">擴充套件 JavaScript 內建物件以增加程式碼靈活性</string>
     <string name="summary_foreground_service_inrt">前臺服務用於在後臺更穩定地保持應用及指令碼執行</string>
-    <string name="summary_guard_mode">當 AutoJs6 前置時禁用自動化行為以避免誤操作</string>
+    <string name="summary_guard_mode">當 AutoJs7 前置時禁用自動化行為以避免誤操作</string>
     <string name="summary_not_showing_main_activity">啟動應用後直接執行指令碼</string>
-    <string name="summary_post_notifications_permission">允許 AutoJs6 建立併發送通知</string>
+    <string name="summary_post_notifications_permission">允許 AutoJs7 建立併發送通知</string>
     <string name="summary_post_notifications_permission_inrt">允許應用建立併發送通知</string>
     <string name="summary_pre_execute_script">在指令碼檔案之前執行</string>
     <string name="summary_record_prompt">錄製開始及停止時顯示提示訊息</string>
@@ -515,7 +515,7 @@
     <string name="text_android_sdk_version">安卓 SDK 版本</string>
     <string name="text_apk_builder_plugin_unavailable">打包外掛不可用</string>
     <string name="text_app_and_device_info">應用及裝置資訊</string>
-    <string name="text_app_crashed">AutoJs6 應用崩潰</string>
+    <string name="text_app_crashed">AutoJs7 應用崩潰</string>
     <string name="text_app_language">語言</string>
     <string name="text_app_name">應用名稱</string>
     <string name="text_app_name_alipay">支付寶</string>
@@ -539,13 +539,13 @@
     <string name="text_app_name_wechat">微信</string>
     <string name="text_app_restarting" tools:ignore="TypographyEllipsis">應用重啟中...</string>
     <string name="text_app_shortcut_disabled">此快捷方式已禁用</string>
-    <string name="text_app_shortcut_docs_long_label">AutoJs6 文件</string>
+    <string name="text_app_shortcut_docs_long_label">AutoJs7 文件</string>
     <string name="text_app_shortcut_docs_short_label">文件</string>
-    <string name="text_app_shortcut_log_long_label">AutoJs6 日誌</string>
+    <string name="text_app_shortcut_log_long_label">AutoJs7 日誌</string>
     <string name="text_app_shortcut_log_short_label">日誌</string>
-    <string name="text_app_shortcut_plugin_center_long_label">AutoJs6 外掛</string>
+    <string name="text_app_shortcut_plugin_center_long_label">AutoJs7 外掛</string>
     <string name="text_app_shortcut_plugin_center_short_label">外掛</string>
-    <string name="text_app_shortcut_settings_long_label">AutoJs6 設定</string>
+    <string name="text_app_shortcut_settings_long_label">AutoJs7 設定</string>
     <string name="text_app_shortcut_settings_short_label">設定</string>
     <string name="text_app_source_code">軟體原始碼</string>
     <string name="text_app_version_code">應用版本號</string>
@@ -747,11 +747,11 @@
     <string name="text_documentation_source">文件源</string>
     <string name="text_done">完成</string>
     <string name="text_download">下載</string>
-    <string name="text_download_and_install_autojs6_including_above_abi">下載安裝包含上述 ABI 架構的 AutoJs6 版本 (檔名包含 \"%s\" 字樣)</string>
-    <string name="text_download_and_install_autojs6_including_all_abis">下載安裝包含全部 ABI 架構的 AutoJs6 版本 (檔名包含 \"universal\" 字樣)</string>
+    <string name="text_download_and_install_autojs6_including_above_abi">下載安裝包含上述 ABI 架構的 AutoJs7 版本 (檔名包含 \"%s\" 字樣)</string>
+    <string name="text_download_and_install_autojs6_including_all_abis">下載安裝包含全部 ABI 架構的 AutoJs7 版本 (檔名包含 \"universal\" 字樣)</string>
     <string name="text_download_cancelled">下載已取消</string>
     <string name="text_download_interruption_warning">繼續操作將中斷當前下載</string>
-    <string name="text_download_link_for_autojs6">AutoJs6 下載連結</string>
+    <string name="text_download_link_for_autojs6">AutoJs7 下載連結</string>
     <string name="text_download_url">下載地址</string>
     <string name="text_downloading">下載中</string>
     <string name="text_draft_file_path">草稿檔案路徑</string>
@@ -857,7 +857,7 @@
     <string name="text_github_backup_url_used">備用 URL 已使用</string>
     <string name="text_global_settings">全域性設定</string>
     <string name="text_go_to_settings">開啟 \"設定\"</string>
-    <string name="text_grant_autojs6_access_in_shizuku_app">在 Shizuku 應用中授予 AutoJs6 許可權</string>
+    <string name="text_grant_autojs6_access_in_shizuku_app">在 Shizuku 應用中授予 AutoJs7 許可權</string>
     <string name="text_granted">已授予</string>
     <string name="text_guard_mode">保護模式</string>
     <string name="text_help">幫助</string>
@@ -930,7 +930,7 @@
     <string name="text_launch_splash_visible">啟動時顯示啟動頁</string>
     <string name="text_launcher_icon_title">啟動器圖示</string>
     <string name="text_launcher_shortcuts">啟動器快捷方式</string>
-    <string name="text_launcher_shortcuts_may_be_lost_after_launcher_icon_changed">部分裝置切換啟動器圖示可能導致已建立的 AutoJs6 快捷方式全部丟失, 需謹慎操作</string>
+    <string name="text_launcher_shortcuts_may_be_lost_after_launcher_icon_changed">部分裝置切換啟動器圖示可能導致已建立的 AutoJs7 快捷方式全部丟失, 需謹慎操作</string>
     <string name="text_layout_inspector_is_dumping" tools:ignore="TypographyEllipsis">佈局分析中...</string>
     <string name="text_licenses">開源許可資訊</string>
     <string name="text_loading_a_fallback_solution_with_dots" tools:ignore="TypographyEllipsis">正在嘗試備選方案...</string>
@@ -1142,7 +1142,7 @@
     <string name="text_pointer_location">指標位置</string>
     <string name="text_pointer_location_toggle_failed_with_hint">切換 \"指標位置\" 顯示狀態失敗\n可能缺少 root 許可權</string>
     <string name="text_post_notifications_permission">釋出通知許可權</string>
-    <string name="text_post_notifications_permission_rationale">為確保 AutoJs6 前臺服務等能夠正常執行, 指令碼能夠釋出通知, AutoJs6 需要被授予 \"釋出通知許可權\".</string>
+    <string name="text_post_notifications_permission_rationale">為確保 AutoJs7 前臺服務等能夠正常執行, 指令碼能夠釋出通知, AutoJs7 需要被授予 \"釋出通知許可權\".</string>
     <string name="text_pre_execute_script">預執行指令碼</string>
     <string name="text_prepare">準備</string>
     <string name="text_prepare_completed">準備完成</string>
@@ -1217,7 +1217,7 @@
     <string name="text_retrieving_changelog" tools:ignore="TypographyEllipsis">正在獲取更新日誌...</string>
     <string name="text_retrieving_plugin_list_data" tools:ignore="TypographyEllipsis">正在獲取外掛列表資料...</string>
     <string name="text_retrieving_release_notes" tools:ignore="TypographyEllipsis">正在獲取發行說明...</string>
-    <string name="text_revoke_autojs6_access_in_shizuku_app">在 Shizuku 應用中撤銷 AutoJs6 許可權</string>
+    <string name="text_revoke_autojs6_access_in_shizuku_app">在 Shizuku 應用中撤銷 AutoJs7 許可權</string>
     <string name="text_rhino_java_primitive_wrap">Java 原始型別包裝</string>
     <string name="text_root_mode_title">Root 許可權檢查</string>
     <string name="text_run">執行</string>
@@ -1234,7 +1234,7 @@
     <string name="text_run_on_screen_off">息屏時</string>
     <string name="text_run_on_screen_on">亮屏時</string>
     <string name="text_run_on_screen_unlock">螢幕解鎖時</string>
-    <string name="text_run_on_startup">AutoJs6 啟動時</string>
+    <string name="text_run_on_startup">AutoJs7 啟動時</string>
     <string name="text_run_on_time_tick">每分鐘一次</string>
     <string name="text_run_on_user_defined_broadcast">自定義廣播</string>
     <string name="text_run_repeatedly">迴圈執行</string>
@@ -1356,7 +1356,7 @@
     <string name="text_type">型別</string>
     <string name="text_type_file">檔案</string>
     <string name="text_type_folder">資料夾</string>
-    <string name="text_unable_to_build_apk_as_autojs6_does_not_include_selected_abi">選擇的 ABI 架構 \"%s\" 無法用於建立打包應用, 因當前 AutoJs6 版本未包含上述 ABI 架構.</string>
+    <string name="text_unable_to_build_apk_as_autojs6_does_not_include_selected_abi">選擇的 ABI 架構 \"%s\" 無法用於建立打包應用, 因當前 AutoJs7 版本未包含上述 ABI 架構.</string>
     <string name="text_unavailable">不可用</string>
     <string name="text_unavailable_abi_for">ABI \"%s\" 不可用</string>
     <string name="text_under_development">開發中</string>

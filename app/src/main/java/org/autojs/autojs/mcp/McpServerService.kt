@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import org.autojs.autojs.core.pref.Pref
 import org.autojs.autojs.tool.ForegroundServiceCreator
@@ -51,6 +52,7 @@ class McpServerService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        Log.i(TAG, "MCP service created; enabledIntent=${Pref.isMcpServerEnabled}")
 
         val label = packageManager.getApplicationLabel(applicationInfo).toString()
 
@@ -86,6 +88,7 @@ class McpServerService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == ACTION_STOP) {
+            Log.i(TAG, "MCP service stop action received from notification")
             // The stop button must also clear the stored preference, otherwise the
             // watchdog would read "enabled but not running" and immediately start
             // the service again -- turning a deliberate stop into a restart loop.
@@ -97,6 +100,7 @@ class McpServerService : Service() {
             return START_NOT_STICKY
         }
 
+        Log.i(TAG, "MCP service start command; enabledIntent=${Pref.isMcpServerEnabled}, startId=$startId")
         // Idempotent: McpServer.start() returns early when already listening.
         // zh-CN: 幂等: 若已在监听, McpServer.start() 会提前返回.
         McpServer.start()
@@ -104,6 +108,8 @@ class McpServerService : Service() {
     }
 
     override fun onDestroy() {
+        val enabledIntent = Pref.isMcpServerEnabled
+        Log.i(TAG, "MCP service destroyed; enabledIntent=$enabledIntent")
         McpServer.onClientCountChanged = null
 
         // Only a user-initiated stop should silence the watchdog. A stop issued by
@@ -111,11 +117,11 @@ class McpServerService : Service() {
         // running and brings the service back.
         // zh-CN: 只有用户主动停止才应让看门狗静默. 系统发起的停止正是看门狗存在的意义,
         // 因此它继续运行并把服务带回来.
-        if (!Pref.isMcpServerEnabled) {
+        if (!enabledIntent) {
             McpWatchdog.stop()
         }
 
-        McpServer.stop()
+        McpServer.stop(clearFailure = !enabledIntent)
         foregroundCreator.stopForeground(STOP_FOREGROUND_REMOVE)
         super.onDestroy()
     }
@@ -183,6 +189,8 @@ class McpServerService : Service() {
 
     companion object {
 
+        private const val TAG = "McpServerService"
+
         private const val NOTIFICATION_ID = 0xC0
 
         /**
@@ -208,11 +216,12 @@ class McpServerService : Service() {
                 } else {
                     context.startService(intent)
                 }
-            }
+            }.onFailure { McpServer.reportServiceStartFailure(it) }
         }
 
         fun stop(context: Context) {
             runCatching { context.stopService(Intent(context, McpServerService::class.java)) }
+                .onFailure { Log.e(TAG, "MCP service stop request failed", it) }
         }
 
         fun isRunning(context: Context): Boolean =

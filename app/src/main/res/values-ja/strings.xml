@@ -54,7 +54,7 @@
     <string name="config_lib_options_contains_unavailable">設定 \"lib\" に利用できないオプションが含まれています</string>
     <string name="confirm_overwrite_directory">フォルダーは既に存在します. 上書きしますか?</string>
     <string name="confirm_overwrite_file">ファイルは既に存在します. 上書きしますか?</string>
-    <string name="content_about_app_tips">1. ホーム画面でアプリケーション名 (AutoJs6) を長押しして, 設定画面にジャンプする\n2. 設定ページで特定の設定オプションを長押しすると, 詳細情報が表示されます</string>
+    <string name="content_about_app_tips">1. ホーム画面でアプリケーション名 (AutoJs7) を長押しして, 設定画面にジャンプする\n2. 設定ページで特定の設定オプションを長押しすると, 詳細情報が表示されます</string>
     <string name="content_current_theme_color_configured_by_palette">現在のテーマカラー %1$s はカラーパレットで設定されています</string>
     <string name="content_description_fab_for_display_manifest">マニフェストを表示するためのフローティング操作ボタン部品</string>
     <string name="content_failed_to_determine_index_of_theme_color_item">テーマカラーアイテムのインデックスを特定できません</string>
@@ -69,52 +69,52 @@
     <string name="default_script_notification_content">スクリプトからの通知</string>
     <string name="default_script_notification_title">スクリプト通知</string>
     <string name="default_value_working_directory">/スクリプト</string>
-    <string name="description_about_app_and_developer_preference">AutoJs6 は, Android 用の JavaScript 自動化ツールで, [hyb1996/Auto.js] をクローンしたオープンソースです.\n\nヘルプやフィードバックを求めるには, GitHub issues に行くか, Tencent QQ チャットグループ 690946137 に参加してください</string>
-    <string name="description_about_app_tips_preference">1. アプリと開発者について ページでアプリのアイコンを長押しすると, AutoJs6 の開発者向けオプションページにジャンプします</string>
-    <string name="description_accessibility_service">アクセシビリティサービスは, AutoJs6 が自動化を実現するための中核機能です. 画面上のウィジェット情報を読み取り, [ タップ / スワイプ / 入力 ] などの操作をシミュレートします.\n\n自動化関連の大半の機能やレイアウト解析ツールなどは, アクセシビリティサービスを有効にしないと正常に動作しません.</string>
-    <string name="description_all_files_access" tools:ignore="TypographyEllipsis">\"すべてのファイルを管理\" (または \"すべてのファイルへのアクセス\") 権限により, AutoJs6 は共有ストレージ上で通常のファイルパスを使って直接 [ 作成 / 読み取り / 変更 / 削除 ] を行えます. これによりスクリプトは \"Internal Storage\" にアクセスでき, ファイルマネージャーもファイルを正常に表示・管理できます.\n\nAndroid 11+ では, フルストレージの読み書きを実現する主要な方法です.</string>
-    <string name="description_app_language_preference">この環境設定は, 実行中のスクリプトからの例外メッセージを含む, AutoJs6 の表示言語を変更するためのものです.\n\n注: 言語を期待通りに適用するには, アプリの再起動が必要な場合があります</string>
-    <string name="description_auto_night_mode">自動ナイトモードを有効にすると, AutoJs6 はシステム設定に従って自動的にナイトモードへ切り替えます.\n\nNote: 自動ナイトモードのスイッチとナイトモードのスイッチは相互に関連しており, 互いに影響します.</string>
-    <string name="description_background_popup_permission" tools:ignore="TypographyEllipsis">\"バックグラウンドでのポップアップ表示\" (\"バックグラウンドでの画面起動\" / \"バックグラウンドでの画面表示\" とも呼ばれます) 権限により/アプリがバックグラウンドにある/または画面が表示されていない場合でも/AutoJs6 が Activity を起動したり特定の設定ページを開いたりできます.[ 定時タスク発火時に UI を開く / ロック画面や待機後に対話を復帰する / 通知やショートカットからスクリプト設定ページを開く ] といったシーンに適しています.\n\nNote: Xiaomi (MIUI/HyperOS)/Vivo (OriginOS/Funtouch OS) などでは/この権限が既定でオフになっている場合があります. 未付与の場合/バックグラウンドからページを開こうとするスクリプトがシステムにブロックされ/[ 無反応 / バックグラウンドでのみ実行され画面が出ない / 遷移失敗 ] のように見えることがあります.\n\n 付与後でも/[ バッテリー最適化 / 自動起動制限 / バックグラウンド凍結 / アプリスタンバイ ] など他のシステムポリシーの影響を受ける可能性があります. 関連する権限やホワイトリスト設定と併せて調整してください.</string>
+    <string name="description_about_app_and_developer_preference">AutoJs7 は, Android 用の JavaScript 自動化ツールで, [hyb1996/Auto.js] をクローンしたオープンソースです.\n\nヘルプやフィードバックを求めるには, GitHub issues に行くか, Tencent QQ チャットグループ 690946137 に参加してください</string>
+    <string name="description_about_app_tips_preference">1. アプリと開発者について ページでアプリのアイコンを長押しすると, AutoJs7 の開発者向けオプションページにジャンプします</string>
+    <string name="description_accessibility_service">アクセシビリティサービスは, AutoJs7 が自動化を実現するための中核機能です. 画面上のウィジェット情報を読み取り, [ タップ / スワイプ / 入力 ] などの操作をシミュレートします.\n\n自動化関連の大半の機能やレイアウト解析ツールなどは, アクセシビリティサービスを有効にしないと正常に動作しません.</string>
+    <string name="description_all_files_access" tools:ignore="TypographyEllipsis">\"すべてのファイルを管理\" (または \"すべてのファイルへのアクセス\") 権限により, AutoJs7 は共有ストレージ上で通常のファイルパスを使って直接 [ 作成 / 読み取り / 変更 / 削除 ] を行えます. これによりスクリプトは \"Internal Storage\" にアクセスでき, ファイルマネージャーもファイルを正常に表示・管理できます.\n\nAndroid 11+ では, フルストレージの読み書きを実現する主要な方法です.</string>
+    <string name="description_app_language_preference">この環境設定は, 実行中のスクリプトからの例外メッセージを含む, AutoJs7 の表示言語を変更するためのものです.\n\n注: 言語を期待通りに適用するには, アプリの再起動が必要な場合があります</string>
+    <string name="description_auto_night_mode">自動ナイトモードを有効にすると, AutoJs7 はシステム設定に従って自動的にナイトモードへ切り替えます.\n\nNote: 自動ナイトモードのスイッチとナイトモードのスイッチは相互に関連しており, 互いに影響します.</string>
+    <string name="description_background_popup_permission" tools:ignore="TypographyEllipsis">\"バックグラウンドでのポップアップ表示\" (\"バックグラウンドでの画面起動\" / \"バックグラウンドでの画面表示\" とも呼ばれます) 権限により/アプリがバックグラウンドにある/または画面が表示されていない場合でも/AutoJs7 が Activity を起動したり特定の設定ページを開いたりできます.[ 定時タスク発火時に UI を開く / ロック画面や待機後に対話を復帰する / 通知やショートカットからスクリプト設定ページを開く ] といったシーンに適しています.\n\nNote: Xiaomi (MIUI/HyperOS)/Vivo (OriginOS/Funtouch OS) などでは/この権限が既定でオフになっている場合があります. 未付与の場合/バックグラウンドからページを開こうとするスクリプトがシステムにブロックされ/[ 無反応 / バックグラウンドでのみ実行され画面が出ない / 遷移失敗 ] のように見えることがあります.\n\n 付与後でも/[ バッテリー最適化 / 自動起動制限 / バックグラウンド凍結 / アプリスタンバイ ] など他のシステムポリシーの影響を受ける可能性があります. 関連する権限やホワイトリスト設定と併せて調整してください.</string>
     <string name="description_change_working_dir_preference">スクリプトを含むディレクトリのパスを変更する</string>
-    <string name="description_check_for_updates_preference">AutoJs6 は, GitHub からアップデートを取得し, ダウンロードします.</string>
-    <string name="description_client_mode">クライアントモードは, AutoJs6 がリモートのサーバーへ能動的に接続し, [ スクリプト転送 / ログ出力 / リモート制御 ] などを行うための機能です.\n\n通常は, 端末とサーバーが同一 LAN か, 相互に到達可能なネットワーク環境にある必要があります.</string>
-    <string name="description_display_over_other_app">\"他のアプリの上に表示\" 権限により, AutoJs6 は他のアプリ画面の上にフローティングウィンドウやフローティングボタンを表示でき, どの画面からでも素早く操作や情報確認ができます.\n\nNote: この権限が付与されていない場合, フローティングウィンドウやフローティングボタンが表示されない, または正常に利用できない可能性があります.</string>
-    <string name="description_documentation_source_preference">ローカルドキュメント AutoJs6 に組み込まれたファイルをドキュメントソースとして使用するため, ネットワーク接続は必要ありません. AutoJs6 が更新されると内容も変わります.\nオンライン・ドキュメント. GitHub のページをドキュメントソースとして使用し, ネットワーク接続が必要です. コンテンツは常に最新の状態に保たれます.\n\n注: オンラインドキュメントを最大限に活用するために, デスクトップモニターなどのワイドスクリーンディスプレイを使用することをお勧めします.\n注意: バージョン 6.2.0 時点では, ドキュメントはまだ開発の初期段階にあり, ほとんどのコンテンツはまだ執筆・更新されていません</string>
-    <string name="description_documentation_source_preference_more">ドキュメントページでダークテーマをサポートするには, 以下の条件を満たす必要があります.\n1. AutoJs6 でナイトモードが有効になっている\n2. Android System WebView (または Google Chrome などのブラウザ) .\n- Android API Level 29 (Android 10) [Q] 以上: バージョン >= 76\n- Android API Level 28 (Android 9) [P] 以下: バージョン >= 105</string>
+    <string name="description_check_for_updates_preference">AutoJs7 は, GitHub からアップデートを取得し, ダウンロードします.</string>
+    <string name="description_client_mode">クライアントモードは, AutoJs7 がリモートのサーバーへ能動的に接続し, [ スクリプト転送 / ログ出力 / リモート制御 ] などを行うための機能です.\n\n通常は, 端末とサーバーが同一 LAN か, 相互に到達可能なネットワーク環境にある必要があります.</string>
+    <string name="description_display_over_other_app">\"他のアプリの上に表示\" 権限により, AutoJs7 は他のアプリ画面の上にフローティングウィンドウやフローティングボタンを表示でき, どの画面からでも素早く操作や情報確認ができます.\n\nNote: この権限が付与されていない場合, フローティングウィンドウやフローティングボタンが表示されない, または正常に利用できない可能性があります.</string>
+    <string name="description_documentation_source_preference">ローカルドキュメント AutoJs7 に組み込まれたファイルをドキュメントソースとして使用するため, ネットワーク接続は必要ありません. AutoJs7 が更新されると内容も変わります.\nオンライン・ドキュメント. GitHub のページをドキュメントソースとして使用し, ネットワーク接続が必要です. コンテンツは常に最新の状態に保たれます.\n\n注: オンラインドキュメントを最大限に活用するために, デスクトップモニターなどのワイドスクリーンディスプレイを使用することをお勧めします.\n注意: バージョン 6.2.0 時点では, ドキュメントはまだ開発の初期段階にあり, ほとんどのコンテンツはまだ執筆・更新されていません</string>
+    <string name="description_documentation_source_preference_more">ドキュメントページでダークテーマをサポートするには, 以下の条件を満たす必要があります.\n1. AutoJs7 でナイトモードが有効になっている\n2. Android System WebView (または Google Chrome などのブラウザ) .\n- Android API Level 29 (Android 10) [Q] 以上: バージョン >= 76\n- Android API Level 28 (Android 9) [P] 以下: バージョン >= 105</string>
     <string name="description_extending_js_build_in_objects">JavaScript の組み込みオブジェクトを拡張すると, コードの柔軟性が増し, より豊かな機能を実現できますが, 衝突や破損を引き起こす可能性もあります.\nこのオプションをオンにすると, すべてのスクリプトはデフォルトで組み込みの拡張機能を有効にします.\n組み込みの拡張機能は安全でないことが多いので, 組み込みの拡張機能の原理とリスクが明確に理解されていない限り, 推奨されません.\nこのオプションをオフにした場合でも, プロジェクトのドキュメントで説明されているように, plugins グローバルオブジェクトを使用して組み込み拡張機能を有効にすることができます</string>
-    <string name="description_file_extensions_preference">AutoJs6のファイルエクスプローラーでファイル拡張子を表示するかどうかの設定に使用されます.</string>
+    <string name="description_file_extensions_preference">AutoJs7のファイルエクスプローラーでファイル拡張子を表示するかどうかの設定に使用されます.</string>
     <string name="description_floating_button">フローティングボタンは, 画面端にドラッグ可能なクイック入口を表示し, [ スクリプトの開始/停止 / レイアウト解析 / 最近のパッケージ名やアクティビティ名の表示 / ポインター位置の表示 ] などに利用できます.\n\nNote: この機能は通常, \"他のアプリの上に表示\" 権限が必要です.</string>
-    <string name="description_foreground_service">フォアグラウンドサービスは, AutoJs6 をバックグラウンドでもより安定して動作させるための機能で, [ 長時間スクリプト実行 / 接続の維持 / 継続的な監視 ] などの用途に適しています.\n\n有効化すると, システムは \"フォアグラウンドサービス通知\" を表示して AutoJs6 が継続稼働中であることをユーザーに知らせます. この通知は通常, サービスが停止するまで表示され続けます.\n\n通知を \"Silent\" または \"Minimize\" に設定しても, 通知の強さが下がるだけで, 一般的にフォアグラウンドサービス機能には影響しません.\n\n通知チャネルを無効化したり AutoJs6 の通知送信を禁止したりすると, フォアグラウンドサービスの正常な起動や安定性に影響する可能性があります.</string>
-    <string name="description_hidden_files_preference">AutoJs6 ファイルエクスプローラーで隠しファイルや隠しフォルダ (通常は [.] で始まる) を表示するかどうかを設定するために使用します</string>
-    <string name="description_ignore_battery_optimizations">バッテリー最適化の無視により, AutoJs6 に対するバックグラウンド制限を緩和でき, スケジュールタスクや長時間スクリプトが待機中でも比較的安定して動作しやすくなります.\n\nNote: メーカーにより, 追加の省電力ポリシー (自動起動制限, バックグラウンド凍結など) が存在する場合があります.</string>
-    <string name="description_keep_screen_on_when_in_foreground">AutoJs6 が前面にあるときに画面を常時点灯させるかどうかを制御します.</string>
-    <string name="description_keep_screen_on_when_in_foreground_preference">AutoJs6 がフォアグラウンドにあるとき, デバイスの画面をオンにして明るく保つための設定です.\nAutoJs6 アプリケーションの全ページのうち, ホームページでのみ使用する場合は, \"ホームページのみ\" オプションを選択します</string>
+    <string name="description_foreground_service">フォアグラウンドサービスは, AutoJs7 をバックグラウンドでもより安定して動作させるための機能で, [ 長時間スクリプト実行 / 接続の維持 / 継続的な監視 ] などの用途に適しています.\n\n有効化すると, システムは \"フォアグラウンドサービス通知\" を表示して AutoJs7 が継続稼働中であることをユーザーに知らせます. この通知は通常, サービスが停止するまで表示され続けます.\n\n通知を \"Silent\" または \"Minimize\" に設定しても, 通知の強さが下がるだけで, 一般的にフォアグラウンドサービス機能には影響しません.\n\n通知チャネルを無効化したり AutoJs7 の通知送信を禁止したりすると, フォアグラウンドサービスの正常な起動や安定性に影響する可能性があります.</string>
+    <string name="description_hidden_files_preference">AutoJs7 ファイルエクスプローラーで隠しファイルや隠しフォルダ (通常は [.] で始まる) を表示するかどうかを設定するために使用します</string>
+    <string name="description_ignore_battery_optimizations">バッテリー最適化の無視により, AutoJs7 に対するバックグラウンド制限を緩和でき, スケジュールタスクや長時間スクリプトが待機中でも比較的安定して動作しやすくなります.\n\nNote: メーカーにより, 追加の省電力ポリシー (自動起動制限, バックグラウンド凍結など) が存在する場合があります.</string>
+    <string name="description_keep_screen_on_when_in_foreground">AutoJs7 が前面にあるときに画面を常時点灯させるかどうかを制御します.</string>
+    <string name="description_keep_screen_on_when_in_foreground_preference">AutoJs7 がフォアグラウンドにあるとき, デバイスの画面をオンにして明るく保つための設定です.\nAutoJs7 アプリケーションの全ページのうち, ホームページでのみ使用する場合は, \"ホームページのみ\" オプションを選択します</string>
     <string name="description_launcher_icon_preference">ランチャーアイコンはアダプティブアイコンと従来の透過背景アイコンの表示モードに対応しています. 実際の表示効果はAndroidシステムによって異なる場合があります. 表示モードを切り替えた後, 反映されるまで数秒かかることがあります.</string>
-    <string name="description_launcher_shortcuts">ショートカットは, AutoJs6 で特定のアクションを実行することができます. ユーザーは, サポートされているランチャーにこれらのショートカットを表示し, AutoJs6 アプリケーションのドキュメントを読んだり, AutoJs6 の設定ページを起動したりするなど, いくつかのタスクを素早く開始したり, アクティビティを起動したりすることができます</string>
+    <string name="description_launcher_shortcuts">ショートカットは, AutoJs7 で特定のアクションを実行することができます. ユーザーは, サポートされているランチャーにこれらのショートカットを表示し, AutoJs7 アプリケーションのドキュメントを読んだり, AutoJs7 の設定ページを起動したりするなど, いくつかのタスクを素早く開始したり, アクティビティを起動したりすることができます</string>
     <string name="description_manage_ignored_updates_preference">クリックすると, リストアイテムを表示または管理できます.\nリストアイテムを削除するには, 長押しします</string>
-    <string name="description_night_mode">AutoJs6 のナイトモード方針を制御し, その状態を反映します.\n\nNote: ナイトモードのスイッチと自動ナイトモードのスイッチは相互に関連しており, 互いに影響します.</string>
-    <string name="description_night_mode_preference">ナイトモード (ダークテーマとも呼ばれる) は, Android システムの UI と端末上で動作するアプリケーションの両方に適用され, 弱視のユーザーや明るい光に敏感なユーザーの視認性を向上させ, 誰でも簡単に暗い環境下で端末を使用できるようにします.\n\nフォローシステム AutoJs6 では, Android と同じ Night モードが設定できます.\n常にオン Android のシステム設定に関係なく, 常に Night モードが ON になります.\n常にオフ Android のシステム設定に関係なく, AutoJs6 はナイトモードをオフにします.\n\n注: Follow system オプションは, Android API Level 28 (Android 9) [P] 以上の場合のみです</string>
-    <string name="description_night_mode_preference_more">Android システムでナイトモードを有効にするには\n- Android API Level 29 (Android 10) [Q] 以上の場合: [設定] -> [ディスプレイ] -> [テーマ].\n- Android API Level 28 (Android 9) [P]: [開発者向けオプション] -> [ナイトモード].\n\nWebView コンポーネント (AutoJs6 のドキュメントページなど) を使って, Web ベースのコンテンツにナイトモード (ダークテーマ) を適用するには, 以下の条件を満たす必要があります.\n1. Android System WebView (または Google Chrome のようなブラウザ) .\n- Android API Level 29 (Android 10) [Q] 以上: バージョン >= 76\n- Android API Level 28 (Android 9) [P]: バージョン >= 105\n2. WebView コンポーネントの Web ベースのコンテンツは, Dark テーマに適合している (CSS や Android XML リソースなどによる)</string>
-    <string name="description_notification_access">\"通知へのアクセス\" (または \"通知読み取り権限\") により, AutoJs6 はシステム通知の内容を読み取れるようになり, スクリプトで通知を監視したり通知テキストを取得したりできます.</string>
+    <string name="description_night_mode">AutoJs7 のナイトモード方針を制御し, その状態を反映します.\n\nNote: ナイトモードのスイッチと自動ナイトモードのスイッチは相互に関連しており, 互いに影響します.</string>
+    <string name="description_night_mode_preference">ナイトモード (ダークテーマとも呼ばれる) は, Android システムの UI と端末上で動作するアプリケーションの両方に適用され, 弱視のユーザーや明るい光に敏感なユーザーの視認性を向上させ, 誰でも簡単に暗い環境下で端末を使用できるようにします.\n\nフォローシステム AutoJs7 では, Android と同じ Night モードが設定できます.\n常にオン Android のシステム設定に関係なく, 常に Night モードが ON になります.\n常にオフ Android のシステム設定に関係なく, AutoJs7 はナイトモードをオフにします.\n\n注: Follow system オプションは, Android API Level 28 (Android 9) [P] 以上の場合のみです</string>
+    <string name="description_night_mode_preference_more">Android システムでナイトモードを有効にするには\n- Android API Level 29 (Android 10) [Q] 以上の場合: [設定] -> [ディスプレイ] -> [テーマ].\n- Android API Level 28 (Android 9) [P]: [開発者向けオプション] -> [ナイトモード].\n\nWebView コンポーネント (AutoJs7 のドキュメントページなど) を使って, Web ベースのコンテンツにナイトモード (ダークテーマ) を適用するには, 以下の条件を満たす必要があります.\n1. Android System WebView (または Google Chrome のようなブラウザ) .\n- Android API Level 29 (Android 10) [Q] 以上: バージョン >= 76\n- Android API Level 28 (Android 9) [P]: バージョン >= 105\n2. WebView コンポーネントの Web ベースのコンテンツは, Dark テーマに適合している (CSS や Android XML リソースなどによる)</string>
+    <string name="description_notification_access">\"通知へのアクセス\" (または \"通知読み取り権限\") により, AutoJs7 はシステム通知の内容を読み取れるようになり, スクリプトで通知を監視したり通知テキストを取得したりできます.</string>
     <string name="description_pointer_location">\"ポインタの位置\" は Android の開発者向けオプションにあるデバッグ機能です.\n有効にすると, システムが画面上にタッチポイントの [座標/移動軌跡/数/サイズ/移動速度/圧力] などの情報を表示し, 関連スクリプトの [作成/デバッグ/検証] に役立ちます.</string>
-    <string name="description_post_notifications">\"通知の送信\" 権限により, AutoJs6 はシステムに通知を投稿でき, スクリプトで通知バーへカスタム通知を投稿・管理できます.\n\nNote: Android 13+ 端末でこの権限が付与されていない場合, 一部の通知が表示されない可能性があり, フォアグラウンドサービスの起動や安定性に影響することがあります.</string>
+    <string name="description_post_notifications">\"通知の送信\" 権限により, AutoJs7 はシステムに通知を投稿でき, スクリプトで通知バーへカスタム通知を投稿・管理できます.\n\nNote: Android 13+ 端末でこの権限が付与されていない場合, 一部の通知が表示されない可能性があり, フォアグラウンドサービスの起動や安定性に影響することがあります.</string>
     <string name="description_project_media_access">プロジェクトのメディアアクセス権を使用すると, 画面録画のセキュリティ警告が表示されなくなります</string>
-    <string name="description_release_history_preference">GitHub 上の AutoJs6 のリリース版変更履歴と主要カテゴリの統計データを確認する.</string>
+    <string name="description_release_history_preference">GitHub 上の AutoJs7 のリリース版変更履歴と主要カテゴリの統計データを確認する.</string>
     <string name="description_restart_strategy">再起動戦略はホームページのドロワーにある再起動ボタンにのみ適用されます.\n\nクイック再起動: アプリをすばやく再起動します. 再起動に失敗したり予期しない状況が発生した場合は/\"スケジュール再起動\" に切り替えてください.\nスケジュール再起動: あらかじめ短時間のタイマーを設定します. アプリが停止した後/スケジュールに従って再度起動し/アプリの再起動を実現します.</string>
     <string name="description_rhino_java_primitive_wrap">スイッチ有効 (デフォルト): Java メソッドが返す Number/Boolean/Character は Java オブジェクトとしてラップされ/スクリプトに公開されます (String は除外). typeof は \"object\"/species は \"JavaObject\". Java のメソッドを呼び出せるため/Java の厳密な型特性やオーバーロード解決を保持しやすくなります.\n\nスイッチ無効: 上記の型はラップされず/JavaScript のプリミティブ値 (number/boolean/1 文字の文字列) として直接公開されます. typeof は対応する JavaScript 型となり/JavaScript のセマンティクス／エコシステムにより沿います. 必要なら new によって明示的に Java ラッパーを生成できます (例: new java.lang.Boolean(true)).\n\n参照: http://issues.autojs6.com/435</string>
     <string name="description_root_mode_preference">異国の root や root アクセスに異常がある場合, root を強制的に root または non-root に設定することができます</string>
     <string name="description_root_record_out_file_type_preference">バイナリタイプ: 編集不可, ファイル拡張子は \"auto\"\nJavaScript タイプ: 直接編集またはコピー可能, ファイル拡張子は \"js\"</string>
     <string name="description_screen_capture_request_delay">画面キャプチャ権限を要求する際, 表示される権限リクエスト画面が閉じるときにフェード等のアニメーションが発生する場合があります. この直後に `images.captureScreen` を呼び出すと, 取得したスクリーンショットに権限リクエスト画面の内容が写り込み, 遮蔽が発生することがあります. \n\nこの設定値は, 権限取得直後に最初のスクリーンショットを取得する前に遅延時間（ミリ秒）を追加し, 上記の遮蔽問題を回避するために使用します. \n\nこの設定は権限取得後の最初のスクリーンショットにのみ適用され, 以降のスクリーンショットには影響しません.</string>
-    <string name="description_server_mode">サーバーモードは, AutoJs6 が端末上でサービスを起動して外部クライアントからの接続を待ち, [ スクリプト転送 / ログ出力 / リモート制御 ] などを行うための機能です.\n\nAutoJs6 のサーバーモードは 2 つの接続方式に対応しています:\n1. LAN\n2. Android Debug Bridge (ADB)</string>
+    <string name="description_server_mode">サーバーモードは, AutoJs7 が端末上でサービスを起動して外部クライアントからの接続を待ち, [ スクリプト転送 / ログ出力 / リモート制御 ] などを行うための機能です.\n\nAutoJs7 のサーバーモードは 2 つの接続方式に対応しています:\n1. LAN\n2. Android Debug Bridge (ADB)</string>
     <string name="description_shizuku_access">Shizuku を使用すると, ADB 権限を取得し, システム API にアクセスできるようになります</string>
     <string name="description_stable_mode">安定モードにするとレイアウト境界を取得する際に安定しますが, 一部の結果が無視されることがあります.\nアクセシビリティサービスの再起動が必要です</string>
-    <string name="description_theme_color_preference">テーマカラーは, 以下のウィジェットに適用されますが, これに限定されるものではありません.\nステータスバー\nアプリバー\nファイルアイコン\nタスクアイテムアイコン\nファブ\n設定カテゴリのタイトル\nスイッチボタン\n\n注: AutoJs6 バージョン 6.2.0 では, 原色, 原色暗色, アクセントカラーの区別はまだありません</string>
+    <string name="description_theme_color_preference">テーマカラーは, 以下のウィジェットに適用されますが, これに限定されるものではありません.\nステータスバー\nアプリバー\nファイルアイコン\nタスクアイテムアイコン\nファブ\n設定カテゴリのタイトル\nスイッチボタン\n\n注: AutoJs7 バージョン 6.2.0 では, 原色, 原色暗色, アクセントカラーの区別はまだありません</string>
     <string name="description_timed_task_backend">スクリプトを定時で起動するための基盤メカニズムを制御します.\n\nAlarmManager: システムの \"アラームとリマインダーの設定を許可\" 権限を付与すると/より正確な時刻での実行に近づきます.\nWorkManager: システムに優しく/一定の遅延を許容できる非重要タスクに適しています.\nJobScheduler: 旧来の実装で互換性のために残されていますが/遅延が発生しやすいです.</string>
     <string name="description_timed_task_backend_more" tools:ignore="TypographyEllipsis">利用シーンと違い: \n\n1. AlarmManager\n[リマインダー/厳密な時刻のスクリプト/...] など/時刻精度が重要なタスクに適しています.\nAndroid 12 以降で \"アラームとリマインダーの設定を許可\" 権限がある場合/画面消灯/待機中でも比較的正確に実行されます.\n権限がない場合/システムにより不正確または遅延実行になる可能性があります.\n\n2. WorkManager\n[非重要な同期/クリーンアップ/統計/...] など/厳密な時刻精度を必要としないタスクに適しています.\n[バッテリー/ネットワーク/充電状況/待機ポリシー/...] に応じてスケジューリングされ/消灯/待機中は実行が遅れることがあります.\n時間精度は保証されませんが/[確実な完了/失敗時の再試行/チェーン実行/一意タスクの重複排除] に強みがあります.\n\n3. JobScheduler\n互換性維持のための歴史的実装です.\n新しい Android では遅延が大きくなりやすい傾向があります.\n互換性の必要がない限り/通常は非推奨です.</string>
     <string name="description_usage_stats_access">デバイスの使用履歴や統計情報にアクセスできるようになり, currentPackage()の結果がより正確になります</string>
     <string name="description_write_secure_settings">アプリケーションが読み取ることはできるが, 書き込むことはできないシステム環境設定を含む, 安全なシステム設定です.\nこれは, ユーザーがシステムアプリの UI を通じて明示的に変更する必要がある環境設定のためのものです.\nセキュアなシステム設定を許可すると, 通常のアプリケーションはセキュアな設定 (アクセシビリティサービスなど) を直接変更できるようになります</string>
-    <string name="description_write_system_settings">\"システム設定の変更\" 権限により, AutoJs6 は一部のシステム設定を変更でき, スクリプトで [ 画面の明るさ / 自動回転 / 画面タイムアウト ] などを調整できます.</string>
+    <string name="description_write_system_settings">\"システム設定の変更\" 権限により, AutoJs7 は一部のシステム設定を変更でき, スクリプトで [ 画面の明るさ / 自動回転 / 画面タイムアウト ] などを調整できます.</string>
     <string name="dialog_button_abandon">放棄</string>
     <string name="dialog_button_abort">中止</string>
     <string name="dialog_button_abort_connection">接続を中止</string>
@@ -218,8 +218,8 @@
     <string name="error_arguments_cannot_be_empty">引数を空にできません</string>
     <string name="error_arguments_must_be_empty">引数は空でなければなりません</string>
     <string name="error_at_least_one_abi_needs_to_be_selected">少なくとも 1 つの ABI を選択する必要がある</string>
-    <string name="error_autojs6_version_must_not_be_lower_than_ver">AutoJs6 のバージョンは %1$s 未満であってはなりません</string>
-    <string name="error_autojs6_version_number_must_not_be_lower_than_num">AutoJs6 のバージョン番号は %1$s 未満であってはなりません</string>
+    <string name="error_autojs6_version_must_not_be_lower_than_ver">AutoJs7 のバージョンは %1$s 未満であってはなりません</string>
+    <string name="error_autojs6_version_number_must_not_be_lower_than_num">AutoJs7 のバージョン番号は %1$s 未満であってはなりません</string>
     <string name="error_both_bitmap_and_mat_are_null">ビットマップとマットの両方が null です</string>
     <string name="error_cannot_be_null">%s は null にできません</string>
     <string name="error_cannot_connect_to_github">GitHub に接続できません</string>
@@ -245,7 +245,7 @@
     <string name="error_empty_broadcast_selection">少なくとも一つのブロードキャストが選択されていなければならない</string>
     <string name="error_empty_github_release_assets">ダウンロードする GitHub リリースアセットがない</string>
     <string name="error_empty_shell_command">コマンドが空である</string>
-    <string name="error_enable_server">AutoJs6 サーバーを有効にできません. %s</string>
+    <string name="error_enable_server">AutoJs7 サーバーを有効にできません. %s</string>
     <string name="error_excessive_height_for_template_n_region">高さ超過: テンプレート [%1$d] > 領域 [%2$d]</string>
     <string name="error_excessive_width_for_template_n_region">幅が超過しています: テンプレート [%1$d] > 領域 [%2$d]</string>
     <string name="error_failed_to_apply_current_color_history">現在のカラー履歴の適用に失敗しました</string>
@@ -300,7 +300,7 @@
     <string name="error_ip_address_should_not_be_empty">IP アドレスは空であってはならない</string>
     <string name="error_ipv6_port_requires_brackets">IPv6 のポートは \"[ipv6]:port\" 形式で指定する必要があります.</string>
     <string name="error_max_listeners_exceeded">リスナーの最大数を超えています: %d</string>
-    <string name="error_may_not_have_root_access_to_run_auto_file">AutoJs6 は \"auto\" ファイルを実行するためのルート・アクセス権を持っていない可能性があります</string>
+    <string name="error_may_not_have_root_access_to_run_auto_file">AutoJs7 は \"auto\" ファイルを実行するためのルート・アクセス権を持っていない可能性があります</string>
     <string name="error_method_called_with_null_argument" formatted="false">null 引数で %s() が呼び出されました: %s</string>
     <string name="error_method_only_accepts_a_number_of_arguments_in_the_range_n_to_m">メソッドは [%1$d..%2$d] の範囲の引数しか受け付けません</string>
     <string name="error_missing_required_plugin_for_module_label">\"%1$s\" に必要なプラグインが見つかりません. プラグインをインストールしてから再試行してください.</string>
@@ -356,7 +356,7 @@
     <string name="error_shizuku_is_not_installed">Shizuku がインストールされていない</string>
     <string name="error_shizuku_service_may_be_not_running">Shizuku サービスが実行されていない可能性があります</string>
     <string name="error_shizuku_version_is_not_supported">Shizuku のバージョンがサポートされていない</string>
-    <string name="error_specified_autojs6_version_number_must_be_greater_than_461">指定された AutoJs6 のバージョン番号は 461 より大きくなければなりません</string>
+    <string name="error_specified_autojs6_version_number_must_be_greater_than_461">指定された AutoJs7 のバージョン番号は 461 より大きくなければなりません</string>
     <string name="error_the_transformer_for_required_property_cannot_return_nullish">必要なプロパティ \"%1$s\" のトランスフォーマーは null を返すことができません</string>
     <string name="error_thread_is_not_alive">スレッドが生きていない</string>
     <string name="error_timeout_while_querying_plugin_info">%1$s プラグイン情報の取得がタイムアウトしました.</string>
@@ -389,7 +389,7 @@
     <string name="format_debug_bar_title"><![CDATA[デバッグ [ %s ]]]></string>
     <string name="format_editor_info" formatted="false">文字数: %d\n行数 %d\nサイズ: %s</string>
     <string name="format_file_downloaded" formatted="true">ファイルは %s にダウンロードされました</string>
-    <string name="go_to_accessibility_settings"><![CDATA[設定 -> アクセシビリティサービス -> AutoJs6 [を有効にする]]></string>
+    <string name="go_to_accessibility_settings"><![CDATA[設定 -> アクセシビリティサービス -> AutoJs7 [を有効にする]]></string>
     <string name="hint_find_with_regex">Regex に対応しています. キャプチャしたグループには, \"$1\" 〜 \"$9\" を使用します</string>
     <string name="hint_long_click_run_to_debug">実行 ボタン長押しでデバッグ</string>
     <string name="hint_loop_delay">ループ前の遅延時間</string>
@@ -434,7 +434,7 @@
     <string name="mt_color_picker_title">カラーピッカー</string>
     <string name="mt_custom">カスタム</string>
     <string name="no_apk_builder_plugin">APK Builder がインストールされていない</string>
-    <string name="no_root_access_for_record">AutoJs6 にスクリプトを記録するためのルートアクセス権がない</string>
+    <string name="no_root_access_for_record">AutoJs7 にスクリプトを記録するためのルートアクセス権がない</string>
     <string name="plugin_item_info_author">作者</string>
     <string name="plugin_item_info_collaborators">協力者</string>
     <string name="plugin_item_info_first_install_time">初回インストール</string>
@@ -453,17 +453,17 @@
     <string name="screen_capturer_foreground_notification_text">画面のキャプチャを行うため, この通知が表示される</string>
     <string name="screen_capturer_foreground_notification_title">スクリーンキャプチャーのフォアグラウンドサービス</string>
     <string name="summary_about_app_tips">より良いユーザーエクスペリエンス</string>
-    <string name="summary_all_files_access">AutoJs6 が外部ストレージを含むすべてのファイルにアクセスすることを許可します</string>
+    <string name="summary_all_files_access">AutoJs7 が外部ストレージを含むすべてのファイルにアクセスすることを許可します</string>
     <string name="summary_all_files_access_inrt">アプリが外部ストレージを含むすべてのファイルにアクセスすることを許可する</string>
-    <string name="summary_display_over_other_apps">AutoJs6 が他のアプリの上にコンテンツを表示することを許可します</string>
+    <string name="summary_display_over_other_apps">AutoJs7 が他のアプリの上にコンテンツを表示することを許可します</string>
     <string name="summary_display_over_other_apps_inrt">アプリが他のアプリの上にコンテンツを表示することを許可する</string>
     <string name="summary_enable_a11y_service_with_root_access">必要なときに自動的に root 権限でアクセシビリティサービスを有効にする</string>
     <string name="summary_enable_a11y_service_with_secure_settings">必要なときに自動的にセキュアな設定のアクセシビリティサービスを有効にする</string>
     <string name="summary_extending_js_build_in_objects">JavaScript の組み込みオブジェクトを拡張することで, コードの柔軟性を高め, より豊かな機能を実現します</string>
     <string name="summary_foreground_service_inrt">フォアグラウンドサービスは, バックグラウンドでアプリとスクリプトの実行をより安定して維持します</string>
-    <string name="summary_guard_mode">AutoJs6 がフォアグラウンドにあるときにスクリプトから自動化アクションが実行されないようにする</string>
+    <string name="summary_guard_mode">AutoJs7 がフォアグラウンドにあるときにスクリプトから自動化アクションが実行されないようにする</string>
     <string name="summary_not_showing_main_activity">メインのアクティビティを表示せずにスクリプトを直接実行</string>
-    <string name="summary_post_notifications_permission">AutoJs6 が通知を作成して送信することを許可します</string>
+    <string name="summary_post_notifications_permission">AutoJs7 が通知を作成して送信することを許可します</string>
     <string name="summary_post_notifications_permission_inrt">アプリが通知を作成して送信することを許可する</string>
     <string name="summary_pre_execute_script">スクリプトファイルの前に実行する</string>
     <string name="summary_record_prompt">スクリプトの録音を開始または停止するときにメッセージを表示する</string>
@@ -520,7 +520,7 @@
     <string name="text_android_sdk_version">Android SDK バージョン</string>
     <string name="text_apk_builder_plugin_unavailable">APK Builder は使用できません</string>
     <string name="text_app_and_device_info">アプリとデバイスの情報</string>
-    <string name="text_app_crashed">AutoJs6 がクラッシュしました</string>
+    <string name="text_app_crashed">AutoJs7 がクラッシュしました</string>
     <string name="text_app_language">言語</string>
     <string name="text_app_name">アプリ名</string>
     <string name="text_app_name_alipay">アリペイ</string>
@@ -544,13 +544,13 @@
     <string name="text_app_name_wechat">ウィーチャット</string>
     <string name="text_app_restarting" tools:ignore="TypographyEllipsis">アプリを再起動しています...</string>
     <string name="text_app_shortcut_disabled">このショートカットは無効です</string>
-    <string name="text_app_shortcut_docs_long_label">AutoJs6 文書</string>
+    <string name="text_app_shortcut_docs_long_label">AutoJs7 文書</string>
     <string name="text_app_shortcut_docs_short_label">文書</string>
-    <string name="text_app_shortcut_log_long_label">AutoJs6 ログ</string>
+    <string name="text_app_shortcut_log_long_label">AutoJs7 ログ</string>
     <string name="text_app_shortcut_log_short_label">ログ</string>
-    <string name="text_app_shortcut_plugin_center_long_label">AutoJs6 プラグイン</string>
+    <string name="text_app_shortcut_plugin_center_long_label">AutoJs7 プラグイン</string>
     <string name="text_app_shortcut_plugin_center_short_label">プラグイン</string>
-    <string name="text_app_shortcut_settings_long_label">AutoJs6 設定</string>
+    <string name="text_app_shortcut_settings_long_label">AutoJs7 設定</string>
     <string name="text_app_shortcut_settings_short_label">設定</string>
     <string name="text_app_source_code">ソースコード</string>
     <string name="text_app_version_code">アプリバージョンコード</string>
@@ -752,11 +752,11 @@
     <string name="text_documentation_source">ドキュメントのソース</string>
     <string name="text_done">完了</string>
     <string name="text_download">ダウンロード</string>
-    <string name="text_download_and_install_autojs6_including_above_abi">上記の ABI を含むバージョンの AutoJs6 をダウンロードしてインストールします (ファイル名に \"%s\" が含まれています)</string>
-    <string name="text_download_and_install_autojs6_including_all_abis">すべての ABI を含むバージョンの AutoJs6 をダウンロードしてインストールする (ファイル名に \"universal\" が含まれている)</string>
+    <string name="text_download_and_install_autojs6_including_above_abi">上記の ABI を含むバージョンの AutoJs7 をダウンロードしてインストールします (ファイル名に \"%s\" が含まれています)</string>
+    <string name="text_download_and_install_autojs6_including_all_abis">すべての ABI を含むバージョンの AutoJs7 をダウンロードしてインストールする (ファイル名に \"universal\" が含まれている)</string>
     <string name="text_download_cancelled">ダウンロード中止</string>
     <string name="text_download_interruption_warning">このままでは現在のダウンロードが中断されます</string>
-    <string name="text_download_link_for_autojs6">AutoJs6 のダウンロードリンク</string>
+    <string name="text_download_link_for_autojs6">AutoJs7 のダウンロードリンク</string>
     <string name="text_download_url">ダウンロード URL</string>
     <string name="text_downloading">ダウンロード中</string>
     <string name="text_draft_file_path">下書きのパス</string>
@@ -862,7 +862,7 @@
     <string name="text_github_backup_url_used">バックアップ URL を使用しました</string>
     <string name="text_global_settings">グローバル設定</string>
     <string name="text_go_to_settings">\"設定\" に進む</string>
-    <string name="text_grant_autojs6_access_in_shizuku_app">Shizuku アプリケーションで AutoJs6 権限を付与する</string>
+    <string name="text_grant_autojs6_access_in_shizuku_app">Shizuku アプリケーションで AutoJs7 権限を付与する</string>
     <string name="text_granted">許可する</string>
     <string name="text_guard_mode">ガードモード</string>
     <string name="text_help">ヘルプ</string>
@@ -935,7 +935,7 @@
     <string name="text_launch_splash_visible">起動時にスプラッシュ画面を表示</string>
     <string name="text_launcher_icon_title">ランチャーアイコン</string>
     <string name="text_launcher_shortcuts">ランチャーショートカット</string>
-    <string name="text_launcher_shortcuts_may_be_lost_after_launcher_icon_changed">一部のデバイスでランチャーアイコンを切り替えると既存の AutoJs6 ショートカットがすべて失われる可能性があります, 注意して操作してください</string>
+    <string name="text_launcher_shortcuts_may_be_lost_after_launcher_icon_changed">一部のデバイスでランチャーアイコンを切り替えると既存の AutoJs7 ショートカットがすべて失われる可能性があります, 注意して操作してください</string>
     <string name="text_layout_inspector_is_dumping" tools:ignore="TypographyEllipsis">レイアウトの検査中...</string>
     <string name="text_licenses">オープンソースライセンス</string>
     <string name="text_loading_a_fallback_solution_with_dots" tools:ignore="TypographyEllipsis">バックアップ策を試しています...</string>
@@ -1147,7 +1147,7 @@
     <string name="text_pointer_location">ポインターの位置</string>
     <string name="text_pointer_location_toggle_failed_with_hint">トグル [ポインターの位置] に失敗しました.\nroot 権限が必要です</string>
     <string name="text_post_notifications_permission">ゆうびんけいほう</string>
-    <string name="text_post_notifications_permission_rationale">AutoJs6 のフォアグラウンドサービス等が正常に動作し, スクリプトが通知を投稿できるようにするため, AutoJs6 には \"通知の送信\" 権限を付与する必要があります.</string>
+    <string name="text_post_notifications_permission_rationale">AutoJs7 のフォアグラウンドサービス等が正常に動作し, スクリプトが通知を投稿できるようにするため, AutoJs7 には \"通知の送信\" 権限を付与する必要があります.</string>
     <string name="text_pre_execute_script">スクリプトの事前実行</string>
     <string name="text_prepare">準備</string>
     <string name="text_prepare_completed">準備完了</string>
@@ -1222,7 +1222,7 @@
     <string name="text_retrieving_changelog" tools:ignore="TypographyEllipsis">更新ログを取得しています...</string>
     <string name="text_retrieving_plugin_list_data" tools:ignore="TypographyEllipsis">プラグイン一覧のデータを取得しています...</string>
     <string name="text_retrieving_release_notes" tools:ignore="TypographyEllipsis">リリースノートを取得しています...</string>
-    <string name="text_revoke_autojs6_access_in_shizuku_app">Shizuku アプリケーションで AutoJs6 権限を取り消す</string>
+    <string name="text_revoke_autojs6_access_in_shizuku_app">Shizuku アプリケーションで AutoJs7 権限を取り消す</string>
     <string name="text_rhino_java_primitive_wrap">Java プリミティブ型のラップ</string>
     <string name="text_root_mode_title">Root 権限の確認</string>
     <string name="text_run">実行</string>
@@ -1239,7 +1239,7 @@
     <string name="text_run_on_screen_off">オン スクリーン オフ</string>
     <string name="text_run_on_screen_on">On 画面をオンにした</string>
     <string name="text_run_on_screen_unlock">画面のロックが解除された</string>
-    <string name="text_run_on_startup">AutoJs6 が起動したとき</string>
+    <string name="text_run_on_startup">AutoJs7 が起動したとき</string>
     <string name="text_run_on_time_tick">1 分ごとにオン</string>
     <string name="text_run_on_user_defined_broadcast">カスタムブロードキャスト</string>
     <string name="text_run_repeatedly">繰り返し実行</string>
@@ -1361,7 +1361,7 @@
     <string name="text_type">種類</string>
     <string name="text_type_file">ファイル</string>
     <string name="text_type_folder">フォルダー</string>
-    <string name="text_unable_to_build_apk_as_autojs6_does_not_include_selected_abi">現在のバージョンの AutoJs6 には上記の ABI が含まれていないため, 選択した ABI \"%s\" を使用してパッケージ・アプリケーションを作成できません</string>
+    <string name="text_unable_to_build_apk_as_autojs6_does_not_include_selected_abi">現在のバージョンの AutoJs7 には上記の ABI が含まれていないため, 選択した ABI \"%s\" を使用してパッケージ・アプリケーションを作成できません</string>
     <string name="text_unavailable">使用できません</string>
     <string name="text_unavailable_abi_for">ABI \"%s\" は使用できません</string>
     <string name="text_under_development">開発中</string>

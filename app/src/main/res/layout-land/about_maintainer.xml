@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="140dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="?selectableItemBackground">
+
+    <TextView
+        android:layout_width="@dimen/about_item_avatar_side_length_land"
+        android:layout_height="@dimen/about_item_avatar_side_length_land"
+        android:background="@drawable/avatar_autojs7_maintainer"
+        android:gravity="center"
+        android:text="S"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:contentDescription="@string/autojs7_maintainer_name" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/autojs7_maintainer_name"
+        android:textColor="@color/github_color_fg_default"
+        android:textSize="@dimen/github_font_size_full_name_compat"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/autojs7_maintainer_role"
+        android:textColor="@color/github_color_fg_muted"
+        android:textSize="@dimen/github_font_size_nickname_compat" />
+</LinearLayout>

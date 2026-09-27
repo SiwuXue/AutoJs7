@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:minHeight="@dimen/about_item_avatar_side_length">
+
+    <TextView
+        android:id="@+id/avatar_maintainer"
+        android:layout_width="@dimen/about_item_avatar_side_length"
+        android:layout_height="@dimen/about_item_avatar_side_length"
+        android:background="@drawable/avatar_autojs7_maintainer"
+        android:gravity="center"
+        android:text="S"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:contentDescription="@string/autojs7_maintainer_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@id/avatar_maintainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/autojs7_maintainer_name"
+            android:textColor="@color/github_color_fg_default"
+            android:textSize="@dimen/github_font_size_full_name"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/autojs7_maintainer_role"
+            android:textColor="@color/github_color_fg_muted"
+            android:textSize="@dimen/github_font_size_nickname" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

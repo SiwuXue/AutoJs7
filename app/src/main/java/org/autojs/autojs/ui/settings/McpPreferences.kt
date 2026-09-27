@@ -1,18 +1,21 @@
 package org.autojs.autojs.ui.settings
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
+import io.reactivex.disposables.Disposable
 import org.autojs.autojs.core.pref.Pref
 import org.autojs.autojs.mcp.McpSecurity
 import org.autojs.autojs.mcp.McpServer
 import org.autojs.autojs.mcp.McpServerService
+import org.autojs.autojs.mcp.McpSwitchState
 import org.autojs.autojs.mcp.McpUi
 import org.autojs.autojs.theme.preference.MaterialPreference
-import org.autojs.autojs.theme.preference.ThemeColorServiceSwitchPreference
+import org.autojs.autojs.theme.preference.Syncable
 import org.autojs.autojs.theme.preference.ThemeColorSwitchPreference
 import org.autojs.autojs6.R
 
@@ -26,17 +29,23 @@ import org.autojs.autojs6.R
  * Master switch.
  *
  * @Design
- *  ! `isChecked` mirrors the live socket rather than a stored boolean, so the
- *  ! screen never claims the server is up when the port was actually taken by
- *  ! another app. Informed consent is requested once, before the port first
- *  ! opens, and the long-click description remains as the permanent reference.
- *  ! zh-CN: `isChecked` 反映真实 socket 状态而非存储的布尔值,
- *  ! 因此界面不会在端口实际已被其他应用占用时仍声称服务正在运行.
- *  ! 端口首次开放前会请求一次知情同意, 长按说明则作为长期可查的依据.
+ *  ! The switch mirrors the persisted user intent, while its summary reports
+ *  ! whether the service and socket are actually running. The generic service
+ *  ! switch toggles from a potentially stale UI value before the asynchronous
+ *  ! foreground service finishes starting; this preference must not use it.
+ *  ! zh-CN: 开关反映持久化的用户意图, 状态文字反映服务和端口的真实状态.
+ *  ! 通用服务开关会根据可能过时的 UI 值切换, 与异步启动前台服务存在竞态,
+ *  ! 因此这里不使用通用服务开关的点击逻辑.
  */
-class McpServerSwitchPreference : ThemeColorServiceSwitchPreference {
+class McpServerSwitchPreference : ThemeColorSwitchPreference, Syncable {
 
     private var riskDialog: MaterialDialog? = null
+    private var stateSubscription: Disposable? = null
+    private var attached = false
+    private val mainHandler = Handler(Looper.getMainLooper())
+    private val enabledListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == prefContext.getString(R.string.key_mcp_server_enabled)) refreshUi()
+    }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
@@ -47,62 +56,56 @@ class McpServerSwitchPreference : ThemeColorServiceSwitchPreference {
     constructor(context: Context) : super(context)
 
     init {
-        // McpServer owns the persisted intent. The base service switch toggles
-        // its own stored value after starting the asynchronous foreground service,
-        // which can overwrite a newer value when the screen is recreated.
-        // zh-CN: 启用意图由 McpServer 统一保存; 前台服务异步启动期间,
-        // 基类再次写入开关值会与页面重建时的状态同步发生竞态.
+        // McpServer is the sole writer of the persisted enabled intent.
         isPersistent = false
         summaryProvider = SummaryProvider<McpServerSwitchPreference> { describeState() }
     }
 
     override fun onAttached() {
         super.onAttached()
+        attached = true
+        Pref.get().registerOnSharedPreferenceChangeListener(enabledListener)
+        stateSubscription = McpServer.state.subscribe { refreshUi() }
         sync()
     }
 
-    override fun isRunning(): Boolean = McpServer.isRunning || McpServerService.isRunning(prefContext)
-
-    /**
-     * The foreground service owns the socket lifecycle, so starting the service
-     * is enough: its `onCreate` brings the server up, and its `onDestroy` tears
-     * it down again.
-     * zh-CN: 前台服务持有 socket 生命周期, 因此只需启动服务:
-     * 其 `onCreate` 会拉起服务端, `onDestroy` 会将其关闭.
-     */
-    override fun start(): Boolean {
-        McpServer.enable()
-        return true
-    }
-
-    override fun stop(): Boolean {
-        McpServer.disable()
-        return true
-    }
+    override fun sync() = refreshUi()
 
     override fun onClick() {
-        if (requiresConsent()) {
+        if (!Pref.isMcpServerEnabled && requiresConsent()) {
             showRiskDialog()
             return
         }
         proceedWithToggle()
     }
 
-    /**
-     * Split out from [onClick] because the base `onClick` is protected: calling
-     * it from inside a callback lambda is not guaranteed to be accessible, while
-     * a private method of the same class always is.
-     * zh-CN: 从 [onClick] 中拆分出来, 因为基类的 `onClick` 是 protected:
-     * 在回调 lambda 中调用它无法保证可访问性, 而同类的私有方法总是可访问的.
-     */
     private fun proceedWithToggle() {
-        super.onClick()
+        if (McpSwitchState.nextEnabled(Pref.isMcpServerEnabled)) {
+            McpServer.enable("developer-options")
+        } else {
+            McpServer.disable("developer-options")
+        }
+        refreshUi()
     }
 
     override fun onDetached() {
+        attached = false
+        Pref.get().unregisterOnSharedPreferenceChangeListener(enabledListener)
+        stateSubscription?.dispose()
+        stateSubscription = null
         riskDialog?.dismiss()
         riskDialog = null
         super.onDetached()
+    }
+
+    private fun refreshUi() {
+        val update = {
+            if (attached) {
+                isChecked = Pref.isMcpServerEnabled
+                notifyChanged()
+            }
+        }
+        if (Looper.myLooper() == Looper.getMainLooper()) update() else mainHandler.post(update)
     }
 
     /** Stopping needs no consent, and consent is only ever asked once. */
@@ -129,12 +132,19 @@ class McpServerSwitchPreference : ThemeColorServiceSwitchPreference {
     }
 
     private fun describeState(): CharSequence {
-        if (!isRunning()) {
-            val failure = McpServer.lastFailure
-            return when (failure) {
-                null -> prefContext.getString(R.string.summary_mcp_server_stopped)
-                else -> prefContext.getString(R.string.summary_mcp_server_failed, failure)
-            }
+        when (McpSwitchState.summary(
+            Pref.isMcpServerEnabled,
+            McpServer.isRunning,
+            McpServerService.isRunning(prefContext),
+            McpServer.lastFailure,
+        )) {
+            McpSwitchState.Summary.STOPPED -> return prefContext.getString(R.string.summary_mcp_server_stopped)
+            McpSwitchState.Summary.STARTING -> return prefContext.getString(R.string.summary_mcp_server_starting)
+            McpSwitchState.Summary.FAILED -> return prefContext.getString(
+                R.string.summary_mcp_server_failed,
+                McpServer.lastFailure ?: "unknown error",
+            )
+            McpSwitchState.Summary.RUNNING -> Unit
         }
 
         val base = prefContext.getString(R.string.summary_mcp_server_running, endpointSummary())

@@ -17,6 +17,7 @@
 
     <!-- Summaries. -->
     <string name="summary_mcp_server_running">运行中 · %1$s</string>
+    <string name="summary_mcp_server_starting">正在启动或重新连接…</string>
     <string name="summary_mcp_server_stopped">已停止</string>
     <string name="summary_mcp_server_failed">启动失败 · %1$s</string>
     <string name="summary_mcp_server_a11y_required">无障碍服务未运行</string>
@@ -41,7 +42,7 @@
     <string name="dialog_mcp_server_port_invalid">端口必须是 1024 至 65535 之间的整数.</string>
 
     <!-- MCP protocol facing texts. -->
-    <string name="text_mcp_server_instructions">通过 AutoJs6 的无障碍服务与脚本引擎操控 Android 设备. 建议先调用 dump_ui_tree 了解当前屏幕, 再用 ui_find 与 ui_action 进行交互. 当没有可查询的视图树时 —— 游戏, 画布, 视频层 —— 改用 find_image 或 ocr_recognize, 而完全不体现在视图树中的内容则用 read_notifications 获取.</string>
+    <string name="text_mcp_server_instructions">通过 AutoJs7 的无障碍服务与脚本引擎操控 Android 设备. 建议先调用 dump_ui_tree 了解当前屏幕, 再用 ui_find 与 ui_action 进行交互. 当没有可查询的视图树时 —— 游戏, 画布, 视频层 —— 改用 find_image 或 ocr_recognize, 而完全不体现在视图树中的内容则用 read_notifications 获取.</string>
 
     <!-- Foreground service notification. -->
     <string name="mcp_notification_channel_name">%1$s MCP 服务</string>
@@ -56,14 +57,14 @@
     <string name="mcp_endpoint_lan_disabled">局域网地址: 未开启</string>
 
     <!-- Errors surfaced to the AI client. -->
-    <string name="mcp_error_accessibility_unavailable">无障碍服务未连接, 请先启用 AutoJs6 的无障碍服务.</string>
-    <string name="mcp_error_ui_not_readable">没有任何匹配的同时也读不到屏幕, 因此这个空结果不能说明元素不存在. 无障碍服务很可能正在重连, 请稍后重试; 若持续失败, 请重新启用 AutoJs6 的无障碍服务.</string>
+    <string name="mcp_error_accessibility_unavailable">无障碍服务未连接, 请先启用 AutoJs7 的无障碍服务.</string>
+    <string name="mcp_error_ui_not_readable">没有任何匹配的同时也读不到屏幕, 因此这个空结果不能说明元素不存在. 无障碍服务很可能正在重连, 请稍后重试; 若持续失败, 请重新启用 AutoJs7 的无障碍服务.</string>
     <string name="mcp_error_unauthorized">访问令牌缺失或无效.</string>
     <string name="mcp_error_invalid_args">参数无效: %1$s</string>
     <string name="mcp_error_tool_failed">工具执行失败: %1$s</string>
 
     <!-- Dump diagnostics. -->
     <string name="mcp_dump_empty_tree_hint">被 dump 的窗口没有产生可用节点(至多是一个空的占位根). 已自动重新包含不可见节点; 若仍为空, 说明该应用没有向无障碍暴露内容 —— 请改用 ocr_recognize, find_image 或 read_notifications.</string>
-    <string name="mcp_dump_no_window_hint">没有找到可读取的窗口. 请确认有应用处于前台, 且 AutoJs6 的无障碍服务已连接.</string>
+    <string name="mcp_dump_no_window_hint">没有找到可读取的窗口. 请确认有应用处于前台, 且 AutoJs7 的无障碍服务已连接.</string>
 
 </resources>

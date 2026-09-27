@@ -342,7 +342,7 @@ public class CircularMenu implements LayoutInspector.CaptureAvailableListener {
 
     private void toggleMcpServer() {
         if (McpServer.isActive()) {
-            McpServer.disable();
+            McpServer.disable("floating-menu");
             ViewUtils.showToast(mContext, mContext.getString(R.string.summary_mcp_server_stopped));
             return;
         }
@@ -354,7 +354,7 @@ public class CircularMenu implements LayoutInspector.CaptureAvailableListener {
     }
 
     private void enableMcpServer() {
-        McpServer.enable();
+        McpServer.enable("floating-menu");
         ViewUtils.showToast(mContext, mContext.getString(R.string.mcp_notification_title));
     }
 
